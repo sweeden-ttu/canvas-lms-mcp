@@ -1,0 +1,7 @@
+{
+  "valid_course_ids": [58606, 53482, 51243],
+  "test_assignment_id": null,
+  "test_module_id": null,
+  "test_discussion_id": null,
+  "_comment": "These course IDs were discovered from successful API tests on 2025-12-09"
+}

@@ -1,0 +1,83 @@
+[project]
+name = "canvas-lms-mcp"
+version = "0.1.0"
+description = "MCP Server for Canvas LMS at Texas Tech University"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Scott Weeden", email = "sweeden@ttu.edu" }
+]
+keywords = ["mcp", "canvas", "lms", "claude", "anthropic"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Education",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "mcp[cli]>=1.2.0",
+    "httpx>=0.27.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.0.0",
+    "mypy>=1.8.0",
+    "ruff>=0.3.0",
+]
+
+[project.scripts]
+canvas-mcp = "server:main"
+
+[project.urls]
+Homepage = "https://github.com/sweeden-ttu/canvas-lms-mcp"
+Documentation = "https://github.com/sweeden-ttu/canvas-lms-mcp#readme"
+Repository = "https://github.com/sweeden-ttu/canvas-lms-mcp.git"
+Issues = "https://github.com/sweeden-ttu/canvas-lms-mcp/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501"]  # Line too long - handled by formatter
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pyright]
+# Point Pyright/Pylance at the project virtual environment so imports like httpx resolve
+venvPath = "."
+venv = ".venv"

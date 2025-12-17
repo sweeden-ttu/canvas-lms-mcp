@@ -160,6 +160,75 @@ claude mcp list
 claude
 ```
 
+### Option E: Cursor IDE Integration
+
+1. **Locate Cursor MCP Configuration:**
+   - Open Cursor Settings (Cmd+, on macOS)
+   - Navigate to **Features** → **MCP**
+   - Or manually edit the configuration file (location varies by OS)
+
+2. **Add Canvas MCP Server:**
+   - Click **"+ Add New MCP Server"** or edit the configuration file directly
+   - Use the configuration from `cursor-mcp-config.json` as a reference
+   - Update the path in the `args` array to match your installation:
+     ```json
+     {
+       "mcpServers": {
+         "canvas_mcp": {
+           "command": "uv",
+           "args": [
+             "--directory",
+             "/ABSOLUTE/PATH/TO/canvas-lms-mcp",
+             "run",
+             "python",
+             "server.py"
+           ]
+         }
+       }
+     }
+     ```
+
+3. **Set Environment Variables:**
+   - Ensure your `.env` file is in the `canvas-lms-mcp` directory
+   - Or set environment variables in the MCP server configuration
+
+4. **Restart Cursor:**
+   - Completely quit and restart Cursor (Cmd+Q on macOS)
+
+### Option F: Cline (VS Code Extension) Integration
+
+1. **Open Cline Settings:**
+   - In VS Code, click the Cline icon in the sidebar
+   - Navigate to **MCP Servers** tab
+   - Click **"Configure"** or **"+ Add New MCP Server"**
+
+2. **Add Canvas MCP Server:**
+   - Use the configuration from `cline-mcp-config.json` as a reference
+   - Update the path to match your installation:
+     ```json
+     {
+       "mcpServers": {
+         "canvas_mcp": {
+           "command": "uv",
+           "args": [
+             "--directory",
+             "/ABSOLUTE/PATH/TO/canvas-lms-mcp",
+             "run",
+             "python",
+             "server.py"
+           ]
+         }
+       }
+     }
+     ```
+
+3. **Set Environment Variables:**
+   - Ensure your `.env` file is in the `canvas-lms-mcp` directory
+   - Or configure environment variables in the MCP server settings
+
+4. **Restart VS Code:**
+   - Completely quit and restart VS Code to apply changes
+
 ---
 
 ## Available Tools

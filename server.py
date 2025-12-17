@@ -241,18 +241,17 @@ class ListCoursesInput(BaseModel):
     """Input model for listing courses."""
     model_config = ConfigDict(extra='forbid')
     
-    enrollment_state: str = Field(
+    enrollment_state: Optional[str] = Field(
         default="active",
         description="Filter by enrollment state: 'active', 'completed', or 'all'",
-        pattern="^(active|completed|all)$",
     )
-    per_page: int = Field(
+    per_page: Optional[int] = Field(
         default=DEFAULT_PER_PAGE,
         description="Number of courses to return",
         ge=1,
         le=MAX_PER_PAGE,
     )
-    response_format: ResponseFormat = Field(
+    response_format: Optional[ResponseFormat] = Field(
         default=ResponseFormat.MARKDOWN,
         description="Output format: 'markdown' for human-readable or 'json' for structured data"
     )
@@ -397,7 +396,7 @@ async def canvas_get_profile(params: EmptyInput) -> str:
     name="canvas_list_courses",
     annotations=_tool_annotations("List Canvas Courses")
 )
-async def canvas_list_courses(params: ListCoursesInput) -> str:
+async def canvas_list_courses(params: Optional[ListCoursesInput] = None) -> str:
     """
     List courses the user is enrolled in.
     
@@ -405,23 +404,40 @@ async def canvas_list_courses(params: ListCoursesInput) -> str:
     Use the course IDs from this response for other course-specific tools.
     
     Args:
-        params (ListCoursesInput): Filter and pagination options
+        params: Optional filter and pagination options. If not provided, defaults to active courses.
         
     Returns:
         str: List of courses in requested format
     """
+    # Use defaults if params not provided
+    if params is None:
+        params = ListCoursesInput()
+    
+    # Validate enrollment_state
+    if params.enrollment_state and params.enrollment_state not in ("active", "completed", "all"):
+        return f"Error: enrollment_state must be 'active', 'completed', or 'all', got '{params.enrollment_state}'"
+    
+    # Use defaults
+    enrollment_state = params.enrollment_state or "active"
+    per_page = params.per_page or DEFAULT_PER_PAGE
+    response_format = params.response_format or ResponseFormat.MARKDOWN
+    
+    # Validate per_page
+    if per_page < 1 or per_page > MAX_PER_PAGE:
+        return f"Error: per_page must be between 1 and {MAX_PER_PAGE}, got {per_page}"
+    
     async with _get_client() as client:
         try:
             query_params: dict[str, Any] = {
-                "per_page": params.per_page,
+                "per_page": per_page,
             }
-            if params.enrollment_state != "all":
-                query_params["enrollment_state"] = params.enrollment_state
+            if enrollment_state != "all":
+                query_params["enrollment_state"] = enrollment_state
             
             response = await client.get("/api/v1/courses", params=query_params)
             response.raise_for_status()
             data = response.json()
-            return _format_response(data, params.response_format, "Your Canvas Courses")
+            return _format_response(data, response_format, "Your Canvas Courses")
         except Exception as e:
             return _handle_canvas_error(e, "listing courses")
 

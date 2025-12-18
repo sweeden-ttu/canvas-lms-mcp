@@ -346,6 +346,10 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ---
 
+## Amazon Q CLI Integration
+
+For integration with Amazon Q CLI (qchat), see [QCHAT_INTEGRATION.md](QCHAT_INTEGRATION.md).
+
 ## Links
 
 - [MCP Documentation](https://modelcontextprotocol.io/)

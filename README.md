@@ -147,7 +147,43 @@ Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/
 
 Restart Claude Desktop completely (Cmd+Q on macOS, not just close the window).
 
-### Option D: Claude Code Integration
+### Option D: Kiro CLI Integration
+
+For integration with Kiro CLI, add the server to your MCP configuration:
+
+1. **Install the Canvas LMS MCP Server:**
+   ```bash
+   git clone https://github.com/sweeden-ttu/canvas-lms-mcp.git
+   cd canvas-lms-mcp
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -e .
+   ```
+
+2. **Configure your Canvas API token:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your Canvas API token and base URL
+   ```
+
+3. **Add to Kiro CLI MCP configuration** (`~/.kiro/mcp_servers.json`):
+   ```json
+   {
+     "mcpServers": {
+       "canvas-lms": {
+         "command": "/ABSOLUTE/PATH/TO/canvas-lms-mcp/venv/bin/python",
+         "args": ["/ABSOLUTE/PATH/TO/canvas-lms-mcp/server.py"],
+         "env": {}
+       }
+     }
+   }
+   ```
+
+4. **Restart Kiro CLI** to load the new MCP server.
+
+> **Important**: Use absolute paths and ensure the `.env` file contains your Canvas API token.
+
+### Option E: Claude Code Integration
 
 ```bash
 # Add the MCP server
@@ -343,12 +379,15 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - [Anthropic](https://anthropic.com) for creating the Model Context Protocol
 - [Canvas LMS](https://www.instructure.com/canvas) for their comprehensive REST API
 - [FastMCP](https://github.com/modelcontextprotocol/python-sdk) for the Python MCP SDK
+- [Amazon Web Services](https://aws.amazon.com) for Kiro CLI integration support
 
 ---
 
-## Amazon Q CLI Integration
+## Integration Documentation
 
-For integration with Amazon Q CLI (qchat), see [QCHAT_INTEGRATION.md](QCHAT_INTEGRATION.md).
+- **Kiro CLI Integration**: See installation instructions above for Kiro CLI setup
+- **Claude Desktop Integration**: See [CLAUDE.md](CLAUDE.md) for detailed Claude Desktop setup
+- **Amazon Q CLI Integration**: See [QCHAT_INTEGRATION.md](QCHAT_INTEGRATION.md) for Q CLI setup
 
 ## Links
 

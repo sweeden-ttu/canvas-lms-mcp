@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-09T08:14:43.812366+00:00",
+  "generated_at": "2025-12-19T23:02:13.506101+00:00",
   "canvas_base_url": "https://texastech.instructure.com",
   "verified_endpoints": {
     "GET /api/v1/users/self/profile": {
@@ -7,7 +7,7 @@
       "method": "GET",
       "verified": true,
       "status_code": 200,
-      "response_time_ms": 410,
+      "response_time_ms": 481,
       "error": null,
       "sample_response": {
         "id": 17639,
@@ -57,7 +57,7 @@
       "method": "GET",
       "verified": true,
       "status_code": 200,
-      "response_time_ms": 179,
+      "response_time_ms": 183,
       "error": null,
       "sample_response": [
         {
@@ -70,7 +70,7 @@
           "default_view": "modules",
           "enrollment_term_id": 134,
           "is_public": false,
-          "grading_standard_id": null,
+          "grading_standard_id": 74696,
           "root_account_id": 1,
           "uuid": "03HZU9NLrq7VTIiGq5FL2utb4YUDwMQqM4nBrgjZ",
           "license": "private",
@@ -114,7 +114,7 @@
           "default_view": "modules",
           "enrollment_term_id": 134,
           "is_public": false,
-          "grading_standard_id": null,
+          "grading_standard_id": 74808,
           "root_account_id": 1,
           "uuid": "e9uMgjboVbU7hbf5ElaawlcFYLbloy8qtERJRCOF",
           "license": "private",
@@ -127,7 +127,7 @@
           "homeroom_course": false,
           "course_color": null,
           "friendly_name": null,
-          "apply_assignment_group_weights": false,
+          "apply_assignment_group_weights": true,
           "calendar": {
             "ics": "https://texastech.instructure.com/feeds/calendars/course_e9uMgjboVbU7hbf5ElaawlcFYLbloy8qtERJRCOF.ics"
           },
@@ -159,7 +159,7 @@
         "default_view": "string",
         "enrollment_term_id": "integer",
         "is_public": "boolean",
-        "grading_standard_id": "null",
+        "grading_standard_id": "integer",
         "root_account_id": "integer",
         "uuid": "string",
         "license": "string",
@@ -188,33 +188,33 @@
       "method": "GET",
       "verified": true,
       "status_code": 200,
-      "response_time_ms": 608,
+      "response_time_ms": 989,
       "error": null,
       "sample_response": [
         {
           "context_type": "Course",
-          "course_id": 58606,
-          "context_name": "Fall 2025 TTU Intelligent Systems (CS-5368-D01) Full Term",
+          "course_id": 51243,
+          "context_name": "Fall 2025 TTU Theory of Automata: Theory of Automata (CS-5383-001 & D01) Full Term",
           "type": "submitting",
-          "ignore": "https://texastech.instructure.com/api/v1/users/self/todo/assignment_1412656/submitting?permanent=0",
-          "ignore_permanently": "https://texastech.instructure.com/api/v1/users/self/todo/assignment_1412656/submitting?permanent=1",
+          "ignore": "https://texastech.instructure.com/api/v1/users/self/todo/assignment_1412883/submitting?permanent=0",
+          "ignore_permanently": "https://texastech.instructure.com/api/v1/users/self/todo/assignment_1412883/submitting?permanent=1",
           "assignment": {
-            "id": 1412656,
-            "position": 4,
-            "description": "<p>Please fill up the answers for the questions included in the Word document attached and submit them as PDF or Word.<br>Type in your answers. Scanned documents are not acceptable.<br>The due date is November 17th</p>\n<p><a class=\"instructure_file_link instructure_scribd_file inline_disabled\" title=\"CS5368_Fa25_Project3_report.docx\" href=\"https://texastech.instructure.com/courses/58606/files/9433335?verifier=RvoeDXcusfiXT4REnB2Rn0UMS1MeuH243KabvEiA&amp;wrap=1\" target=\"_blank\" data-canvas-previewable=\"false\" data-api-endpoint=\"https://texastech.instructure.com/api/v1/courses/58606/files/9433335\" data-api-returntype=\"File\">CS5368_Fa25_Project3_report.docx</a></p>",
-            "points_possible": 10.0,
+            "id": 1412883,
+            "position": 2,
+            "description": "<p data-start=\"157\" data-end=\"169\">Hello all,</p>\n<p data-start=\"171\" data-end=\"335\">This is your Final Project for the course. Please read through the attached PDF carefully and make sure you fulfill all requirements before the due dates.</p>\n<p data-start=\"337\" data-end=\"528\">The first PDF file contains the full instructions, deadlines, and guidelines for the project. All other necessary materials, documents, and files are also attached for your use.</p>\n<p data-start=\"530\" data-end=\"609\">If you have any questions or need clarification, don\u2019t hesitate to reach out.</p>\n<p data-start=\"611\" data-end=\"626\"><a class=\"instructure_file_link instructure_scribd_file inline_disabled\" title=\"Project_file..pdf\" href=\"https://texastech.instructure.com/courses/51243/files/9437643?verifier=STpJPMd5BuxMELI0mTTj3Q3ZBLUyTeAccHf5bW2v&amp;wrap=1\" target=\"_blank\" data-canvas-previewable=\"false\" data-api-endpoint=\"https://texastech.instructure.com/api/v1/courses/51243/files/9437643\" data-api-returntype=\"File\">Project_file..pdf</a></p>\n<p data-start=\"611\" data-end=\"626\"><a class=\"instructure_file_link instructure_scribd_file inline_disabled\" title=\"proj-1-algorithmIdeas (2).pdf\" href=\"https://texastech.instructure.com/courses/51243/files/9437650?verifier=P1YMWfzAvCCFB4ksjn7sK4QWcY8AaGvcVoAmH8q2&amp;wrap=1\" target=\"_blank\" data-canvas-previewable=\"false\" data-api-endpoint=\"https://texastech.instructure.com/api/v1/courses/51243/files/9437650\" data-api-returntype=\"File\">proj-1-algorithmIdeas (2).pdf</a></p>\n<p data-start=\"611\" data-end=\"626\"><a class=\"instructure_file_link instructure_scribd_file inline_disabled\" title=\"proj-1-machine-1.txt\" href=\"https://texastech.instructure.com/courses/51243/files/9437662?verifier=S7mqdpwv9Rj3xN5ABSbjAn1rRHtaGfzedGmBAjnf&amp;wrap=1\" target=\"_blank\" data-canvas-previewable=\"false\" data-api-endpoint=\"https://texastech.instructure.com/api/v1/courses/51243/files/9437662\" data-api-returntype=\"File\">proj-1-machine-1.txt</a></p>\n<p data-start=\"611\" data-end=\"626\"><a class=\"instructure_file_link instructure_scribd_file inline_disabled\" title=\"proj-1-machine.txt\" href=\"https://texastech.instructure.com/courses/51243/files/9437666?verifier=7DWd2pSMi16smgaiHs6ssmuEiSVupaDPKgXQdUco&amp;wrap=1\" target=\"_blank\" data-canvas-previewable=\"false\" data-api-endpoint=\"https://texastech.instructure.com/api/v1/courses/51243/files/9437666\" data-api-returntype=\"File\">proj-1-machine.txt</a></p>\n<p data-start=\"611\" data-end=\"626\">&nbsp;</p>",
+            "points_possible": 100.0,
             "grading_type": "points",
-            "created_at": "2025-10-31T14:49:28Z",
-            "updated_at": "2025-10-31T14:49:57Z",
-            "due_at": "2025-11-17T16:00:00Z",
+            "created_at": "2025-10-31T20:14:55Z",
+            "updated_at": "2025-12-01T16:07:12Z",
+            "due_at": "2025-11-24T05:59:59Z",
             "final_grader_id": null,
             "grader_count": 0,
             "graders_anonymous_to_graders": false,
             "grader_comments_visible_to_graders": true,
             "grader_names_visible_to_final_grader": true,
             "lock_at": null,
-            "unlock_at": null,
-            "assignment_group_id": 294360,
+            "unlock_at": "2025-10-31T21:30:00Z",
+            "assignment_group_id": 294416,
             "peer_reviews": false,
             "anonymous_peer_reviews": false,
             "automatic_peer_reviews": false,
@@ -229,12 +229,12 @@
             "suppress_assignment": false,
             "anonymous_instructor_annotations": false,
             "anonymous_grading": false,
-            "allowed_attempts": -1,
+            "allowed_attempts": 3,
             "annotatable_attachment_id": null,
-            "secure_params": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsdGlfYXNzaWdubWVudF9pZCI6ImQwZDA2ZTYyLWQ4ZjctNGE4ZS05OThiLTNhZmEzNjY2ZmMyZCIsImx0aV9hc3NpZ25tZW50X2Rlc2NyaXB0aW9uIjoiXHUwMDNjcFx1MDAzZVBsZWFzZSBmaWxsIHVwIHRoZSBhbnN3ZXJzIGZvciB0aGUgcXVlc3Rpb25zIGluY2x1ZGVkIGluIHRoZSBXb3JkIGRvY3VtZW50IGF0dGFjaGVkIGFuZCBzdWJtaXQgdGhlbSBhcyBQREYgb3IgV29yZC5cdTAwM2Niclx1MDAzZVR5cGUgaW4geW91ciBhbnN3ZXJzLiBTY2FubmVkIGRvY3VtZW50cyBhcmUgbm90IGFjY2VwdGFibGUuXHUwMDNjYnJcdTAwM2VUaGUgZHVlIGRhdGUgaXMgTm92ZW1iZXIgMTd0aFx1MDAzYy9wXHUwMDNlXG5cdTAwM2NwXHUwMDNlXHUwMDNjYSBjbGFzcz1cImluc3RydWN0dXJlX2ZpbGVfbGluayBpbnN0cnVjdHVyZV9zY3JpYmRfZmlsZSBpbmxpbmVfZGlzYWJsZWRcIiB0aXRsZT1cIkNTNTM2OF9GYTI1X1Byb2plY3QzX3JlcG9ydC5kb2N4XCIgaHJlZj1cIi9jb3Vyc2VzLzU4NjA2L2ZpbGVzLzk0MzMzMzU_d3JhcD0xXCIgdGFyZ2V0PVwiX2JsYW5rXCIgZGF0YS1jYW52YXMtcHJldmlld2FibGU9XCJmYWxzZVwiIGRhdGEtYXBpLWVuZHBvaW50PVwiaHR0cHM6Ly90ZXhhc3RlY2guaW5zdHJ1Y3R1cmUuY29tL2FwaS92MS9jb3Vyc2VzLzU4NjA2L2ZpbGVzLzk0MzMzMzVcIiBkYXRhLWFwaS1yZXR1cm50eXBlPVwiRmlsZVwiXHUwMDNlQ1M1MzY4X0ZhMjVfUHJvamVjdDNfcmVwb3J0LmRvY3hcdTAwM2MvYVx1MDAzZVx1MDAzYy9wXHUwMDNlIn0.QXqEe3-RbfMG4fDMKVvsshrOjzUd99oAEZ5_fgbAcHg",
-            "lti_context_id": "d0d06e62-d8f7-4a8e-998b-3afa3666fc2d",
-            "course_id": 58606,
-            "name": "Assigment 3_Report",
+            "secure_params": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsdGlfYXNzaWdubWVudF9pZCI6ImY0YzA4MjJjLTYzNmQtNGVkMi1hNmUyLTlhYTVlMTI4MzA3NCIsImx0aV9hc3NpZ25tZW50X2Rlc2NyaXB0aW9uIjoiXHUwMDNjcCBkYXRhLXN0YXJ0PVwiMTU3XCIgZGF0YS1lbmQ9XCIxNjlcIlx1MDAzZUhlbGxvIGFsbCxcdTAwM2MvcFx1MDAzZVxuXHUwMDNjcCBkYXRhLXN0YXJ0PVwiMTcxXCIgZGF0YS1lbmQ9XCIzMzVcIlx1MDAzZVRoaXMgaXMgeW91ciBGaW5hbCBQcm9qZWN0IGZvciB0aGUgY291cnNlLiBQbGVhc2UgcmVhZCB0aHJvdWdoIHRoZSBhdHRhY2hlZCBQREYgY2FyZWZ1bGx5IGFuZCBtYWtlIHN1cmUgeW91IGZ1bGZpbGwgYWxsIHJlcXVpcmVtZW50cyBiZWZvcmUgdGhlIGR1ZSBkYXRlcy5cdTAwM2MvcFx1MDAzZVxuXHUwMDNjcCBkYXRhLXN0YXJ0PVwiMzM3XCIgZGF0YS1lbmQ9XCI1MjhcIlx1MDAzZVRoZSBmaXJzdCBQREYgZmlsZSBjb250YWlucyB0aGUgZnVsbCBpbnN0cnVjdGlvbnMsIGRlYWRsaW5lcywgYW5kIGd1aWRlbGluZXMgZm9yIHRoZSBwcm9qZWN0LiBBbGwgb3RoZXIgbmVjZXNzYXJ5IG1hdGVyaWFscywgZG9jdW1lbnRzLCBhbmQgZmlsZXMgYXJlIGFsc28gYXR0YWNoZWQgZm9yIHlvdXIgdXNlLlx1MDAzYy9wXHUwMDNlXG5cdTAwM2NwIGRhdGEtc3RhcnQ9XCI1MzBcIiBkYXRhLWVuZD1cIjYwOVwiXHUwMDNlSWYgeW91IGhhdmUgYW55IHF1ZXN0aW9ucyBvciBuZWVkIGNsYXJpZmljYXRpb24sIGRvbuKAmXQgaGVzaXRhdGUgdG8gcmVhY2ggb3V0Llx1MDAzYy9wXHUwMDNlXG5cdTAwM2NwIGRhdGEtc3RhcnQ9XCI2MTFcIiBkYXRhLWVuZD1cIjYyNlwiXHUwMDNlXHUwMDNjYSBjbGFzcz1cImluc3RydWN0dXJlX2ZpbGVfbGluayBpbnN0cnVjdHVyZV9zY3JpYmRfZmlsZSBpbmxpbmVfZGlzYWJsZWRcIiB0aXRsZT1cIlByb2plY3RfZmlsZS4ucGRmXCIgaHJlZj1cIi9jb3Vyc2VzLzUxMjQzL2ZpbGVzLzk0Mzc2NDM_d3JhcD0xXCIgdGFyZ2V0PVwiX2JsYW5rXCIgZGF0YS1jYW52YXMtcHJldmlld2FibGU9XCJmYWxzZVwiIGRhdGEtYXBpLWVuZHBvaW50PVwiaHR0cHM6Ly90ZXhhc3RlY2guaW5zdHJ1Y3R1cmUuY29tL2FwaS92MS9jb3Vyc2VzLzUxMjQzL2ZpbGVzLzk0Mzc2NDNcIiBkYXRhLWFwaS1yZXR1cm50eXBlPVwiRmlsZVwiXHUwMDNlUHJvamVjdF9maWxlLi5wZGZcdTAwM2MvYVx1MDAzZVx1MDAzYy9wXHUwMDNlXG5cdTAwM2NwIGRhdGEtc3RhcnQ9XCI2MTFcIiBkYXRhLWVuZD1cIjYyNlwiXHUwMDNlXHUwMDNjYSBjbC4uLiAodHJ1bmNhdGVkKSJ9.b7S7tmzxX895EXmgItM-CJ_SZcDZJgC1pKLG9hz_7fo",
+            "lti_context_id": "f4c0822c-636d-4ed2-a6e2-9aa5e1283074",
+            "course_id": 51243,
+            "name": "Final Project",
             "submission_types": [
               "online_upload"
             ],
@@ -253,11 +253,11 @@
             "workflow_state": "published",
             "important_dates": false,
             "muted": true,
-            "html_url": "https://texastech.instructure.com/courses/58606/assignments/1412656",
+            "html_url": "https://texastech.instructure.com/courses/51243/assignments/1412883",
             "all_dates": [
               {
-                "due_at": "2025-11-17T16:00:00Z",
-                "unlock_at": null,
+                "due_at": "2025-11-24T05:59:59Z",
+                "unlock_at": "2025-10-31T21:30:00Z",
                 "lock_at": null,
                 "title": "Everyone",
                 "base": true
@@ -267,39 +267,39 @@
             "only_visible_to_overrides": false,
             "visible_to_everyone": true,
             "locked_for_user": false,
-            "submissions_download_url": "https://texastech.instructure.com/courses/58606/assignments/1412656/submissions?zip=1",
+            "submissions_download_url": "https://texastech.instructure.com/courses/51243/assignments/1412883/submissions?zip=1",
             "post_manually": true,
             "anonymize_students": false,
             "new_quizzes_anonymous_participants": false,
             "require_lockdown_browser": false,
             "restrict_quantitative_data": false
           },
-          "html_url": "https://texastech.instructure.com/courses/58606/assignments/1412656#submit"
+          "html_url": "https://texastech.instructure.com/courses/51243/assignments/1412883#submit"
         },
         {
           "context_type": "Course",
-          "course_id": 58606,
-          "context_name": "Fall 2025 TTU Intelligent Systems (CS-5368-D01) Full Term",
+          "course_id": 51243,
+          "context_name": "Fall 2025 TTU Theory of Automata: Theory of Automata (CS-5383-001 & D01) Full Term",
           "type": "submitting",
-          "ignore": "https://texastech.instructure.com/api/v1/users/self/todo/assignment_1412651/submitting?permanent=0",
-          "ignore_permanently": "https://texastech.instructure.com/api/v1/users/self/todo/assignment_1412651/submitting?permanent=1",
+          "ignore": "https://texastech.instructure.com/api/v1/users/self/todo/assignment_1429868/submitting?permanent=0",
+          "ignore_permanently": "https://texastech.instructure.com/api/v1/users/self/todo/assignment_1429868/submitting?permanent=1",
           "assignment": {
-            "id": 1412651,
-            "position": 5,
-            "description": "<p>This is the assignment 3 instruction file in addition to the code. It is due on Monday, November 17th</p>\n<p>The assignment is designed to help you understand and implement Q-learning and RL</p>\n<p>Please don't submit your report here. Reports are to be submitted via a separate submission link.</p>\n<p>Note: Please let me know if you found errors or mismatches</p>\n<p><a class=\"instructure_file_link instructure_scribd_file inline_disabled\" title=\"CS5368_Fall2025_Project3_RL-1.pdf\" href=\"https://texastech.instructure.com/courses/58606/files/10550207?verifier=jmXaRD2T3Gg1xAnKUuXTn8hrmLk8TGrieEiFoXY8&amp;wrap=1\" target=\"_blank\" data-canvas-previewable=\"false\" data-api-endpoint=\"https://texastech.instructure.com/api/v1/courses/58606/files/10550207\" data-api-returntype=\"File\">CS5368_Fall2025_Project3_RL-1.pdf</a></p>\n<p><a id=\"9433218\" class=\"instructure_file_link inline_disabled\" title=\"Link\" href=\"https://texastech.instructure.com/courses/58606/files/9433218?verifier=6PAohfTvjX6cFrHAkRLYBD5jjZQCV4f5gApZ45wg&amp;wrap=1\" target=\"_blank\" data-api-endpoint=\"https://texastech.instructure.com/api/v1/courses/58606/files/9433218\" data-api-returntype=\"File\">CS5368_Fall2025_Project3_RL.zip</a></p>\n<p>&nbsp;</p>",
-            "points_possible": 50.0,
+            "id": 1429868,
+            "position": 7,
+            "description": "<p><span>Hello all, Instructions on submission for Assignment 6 are attached to the PDF file.</span></p>\n<p><a class=\"instructure_file_link instructure_scribd_file inline_disabled\" title=\"homework 6.pdf\" href=\"https://texastech.instructure.com/courses/51243/files/10774947?verifier=r89SVOssMaKu2MCAygz3vr8cCzHJagJrS6wzuu2l&amp;wrap=1\" target=\"_blank\" data-canvas-previewable=\"false\" data-api-endpoint=\"https://texastech.instructure.com/api/v1/courses/51243/files/10774947\" data-api-returntype=\"File\">homework 6.pdf</a></p>\n<p><a class=\"instructure_file_link inline_disabled\" title=\"hw6.tex\" href=\"https://texastech.instructure.com/courses/51243/files/10774953?verifier=hRs3hCKxSeILgTDuKKNsdUclxr2K8nuJ0SeP8fYl&amp;wrap=1\" target=\"_blank\" data-canvas-previewable=\"false\" data-api-endpoint=\"https://texastech.instructure.com/api/v1/courses/51243/files/10774953\" data-api-returntype=\"File\">hw6.tex</a></p>",
+            "points_possible": 100.0,
             "grading_type": "points",
-            "created_at": "2025-10-31T14:41:55Z",
-            "updated_at": "2025-11-10T18:04:48Z",
-            "due_at": "2025-11-18T05:59:59Z",
+            "created_at": "2025-11-21T16:21:25Z",
+            "updated_at": "2025-11-30T18:22:40Z",
+            "due_at": "2025-11-29T05:59:59Z",
             "final_grader_id": null,
             "grader_count": 0,
             "graders_anonymous_to_graders": false,
             "grader_comments_visible_to_graders": true,
             "grader_names_visible_to_final_grader": true,
             "lock_at": null,
-            "unlock_at": null,
-            "assignment_group_id": 294359,
+            "unlock_at": "2025-11-21T23:00:00Z",
+            "assignment_group_id": 251985,
             "peer_reviews": false,
             "anonymous_peer_reviews": false,
             "automatic_peer_reviews": false,
@@ -314,12 +314,12 @@
             "suppress_assignment": false,
             "anonymous_instructor_annotations": false,
             "anonymous_grading": false,
-            "allowed_attempts": -1,
+            "allowed_attempts": 3,
             "annotatable_attachment_id": null,
-            "secure_params": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsdGlfYXNzaWdubWVudF9pZCI6ImU0ZmQ4ZmE1LTM2MTYtNGMwOC1iZTVmLTcwYTdjMzkxNzdhMSIsImx0aV9hc3NpZ25tZW50X2Rlc2NyaXB0aW9uIjoiXHUwMDNjcFx1MDAzZVRoaXMgaXMgdGhlIGFzc2lnbm1lbnQgMyBpbnN0cnVjdGlvbiBmaWxlIGluIGFkZGl0aW9uIHRvIHRoZSBjb2RlLiBJdCBpcyBkdWUgb24gTW9uZGF5LCBOb3ZlbWJlciAxN3RoXHUwMDNjL3BcdTAwM2Vcblx1MDAzY3BcdTAwM2VUaGUgYXNzaWdubWVudCBpcyBkZXNpZ25lZCB0byBoZWxwIHlvdSB1bmRlcnN0YW5kIGFuZCBpbXBsZW1lbnQgUS1sZWFybmluZyBhbmQgUkxcdTAwM2MvcFx1MDAzZVxuXHUwMDNjcFx1MDAzZVBsZWFzZSBkb24ndCBzdWJtaXQgeW91ciByZXBvcnQgaGVyZS4gUmVwb3J0cyBhcmUgdG8gYmUgc3VibWl0dGVkIHZpYSBhIHNlcGFyYXRlIHN1Ym1pc3Npb24gbGluay5cdTAwM2MvcFx1MDAzZVxuXHUwMDNjcFx1MDAzZU5vdGU6IFBsZWFzZSBsZXQgbWUga25vdyBpZiB5b3UgZm91bmQgZXJyb3JzIG9yIG1pc21hdGNoZXNcdTAwM2MvcFx1MDAzZVxuXHUwMDNjcFx1MDAzZVx1MDAzY2EgY2xhc3M9XCJpbnN0cnVjdHVyZV9maWxlX2xpbmsgaW5zdHJ1Y3R1cmVfc2NyaWJkX2ZpbGUgaW5saW5lX2Rpc2FibGVkXCIgdGl0bGU9XCJDUzUzNjhfRmFsbDIwMjVfUHJvamVjdDNfUkwtMS5wZGZcIiBocmVmPVwiL2NvdXJzZXMvNTg2MDYvZmlsZXMvMTA1NTAyMDc_d3JhcD0xXCIgdGFyZ2V0PVwiX2JsYW5rXCIgZGF0YS1jYW52YXMtcHJldmlld2FibGU9XCJmYWxzZVwiXHUwMDNlQ1M1MzY4X0ZhbGwyMDI1X1Byb2plY3QzX1JMLTEucGRmXHUwMDNjL2FcdTAwM2VcdTAwM2MvcFx1MDAzZVxuXHUwMDNjcFx1MDAzZVx1MDAzY2EgaWQ9XCI5NDMzMjE4XCIgY2xhc3M9XCJpbnN0cnVjdHVyZV9maWxlX2xpbmsgaW5saW5lX2Rpc2FibGVkXCIgdGl0bGU9XCJMaW5rXCIgaHJlZj1cIi9jb3Vyc2VzLzU4NjA2L2ZpbGVzLzk0MzMyMTg_d3JhcD0xXCIgdGFyZ2V0PVwiX2JsYW5rXCIgZGF0YS1hcGktZW5kcG9pbnQ9XCJodHRwczovL3RleGFzdGVjaC5pbnN0cnVjdHVyZS5jb20vYXBpL3YxL2NvdXJzZXMvNTg2MDYvZmlsZXMvOTQzMzIxOFwiIGRhdGEtYXBpLXJldHVybnR5cGU9XCJGaWxlXCJcdTAwM2VDUzUzNjhfRmFsbDIwMjVfUHJvamVjdDNfUkwuemlwXHUwMDNjL2FcdTAwM2VcdTAwM2MvcFx1MDAzZVxuXHUwMDNjcFx1MDAzZVx1MDAyNm5ic3A7XHUwMDNjL3BcdTAwM2UifQ.bhBGmbcfiA4NW4E6h1XJVdstfuYSapAuCHva8KpiHfE",
-            "lti_context_id": "e4fd8fa5-3616-4c08-be5f-70a7c39177a1",
-            "course_id": 58606,
-            "name": "Assignment 3_programming",
+            "secure_params": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsdGlfYXNzaWdubWVudF9pZCI6ImFjMTgwNDQyLTM2YWItNDIyZC1hNGMyLTEwYmU4YWM3ZWY5MiIsImx0aV9hc3NpZ25tZW50X2Rlc2NyaXB0aW9uIjoiXHUwMDNjcFx1MDAzZVx1MDAzY3NwYW5cdTAwM2VIZWxsbyBhbGwsIEluc3RydWN0aW9ucyBvbiBzdWJtaXNzaW9uIGZvciBBc3NpZ25tZW50IDYgYXJlIGF0dGFjaGVkIHRvIHRoZSBQREYgZmlsZS5cdTAwM2Mvc3Bhblx1MDAzZVx1MDAzYy9wXHUwMDNlXG5cdTAwM2NwXHUwMDNlXHUwMDNjYSBjbGFzcz1cImluc3RydWN0dXJlX2ZpbGVfbGluayBpbnN0cnVjdHVyZV9zY3JpYmRfZmlsZSBpbmxpbmVfZGlzYWJsZWRcIiB0aXRsZT1cImhvbWV3b3JrIDYucGRmXCIgaHJlZj1cIi9jb3Vyc2VzLzUxMjQzL2ZpbGVzLzEwNzc0OTQ3P3dyYXA9MVwiIHRhcmdldD1cIl9ibGFua1wiIGRhdGEtY2FudmFzLXByZXZpZXdhYmxlPVwiZmFsc2VcIlx1MDAzZWhvbWV3b3JrIDYucGRmXHUwMDNjL2FcdTAwM2VcdTAwM2MvcFx1MDAzZVxuXHUwMDNjcFx1MDAzZVx1MDAzY2EgY2xhc3M9XCJpbnN0cnVjdHVyZV9maWxlX2xpbmsgaW5saW5lX2Rpc2FibGVkXCIgdGl0bGU9XCJodzYudGV4XCIgaHJlZj1cIi9jb3Vyc2VzLzUxMjQzL2ZpbGVzLzEwNzc0OTUzP3dyYXA9MVwiIHRhcmdldD1cIl9ibGFua1wiIGRhdGEtY2FudmFzLXByZXZpZXdhYmxlPVwiZmFsc2VcIlx1MDAzZWh3Ni50ZXhcdTAwM2MvYVx1MDAzZVx1MDAzYy9wXHUwMDNlIn0.FX-HozTwGJq0atC-EmPaBek6oQvNWBUqAJ77zPB6hxU",
+            "lti_context_id": "ac180442-36ab-422d-a4c2-10be8ac7ef92",
+            "course_id": 51243,
+            "name": "Homework 6",
             "submission_types": [
               "online_upload"
             ],
@@ -338,11 +338,11 @@
             "workflow_state": "published",
             "important_dates": false,
             "muted": true,
-            "html_url": "https://texastech.instructure.com/courses/58606/assignments/1412651",
+            "html_url": "https://texastech.instructure.com/courses/51243/assignments/1429868",
             "all_dates": [
               {
-                "due_at": "2025-11-18T05:59:59Z",
-                "unlock_at": null,
+                "due_at": "2025-11-29T05:59:59Z",
+                "unlock_at": "2025-11-21T23:00:00Z",
                 "lock_at": null,
                 "title": "Everyone",
                 "base": true
@@ -352,14 +352,14 @@
             "only_visible_to_overrides": false,
             "visible_to_everyone": true,
             "locked_for_user": false,
-            "submissions_download_url": "https://texastech.instructure.com/courses/58606/assignments/1412651/submissions?zip=1",
+            "submissions_download_url": "https://texastech.instructure.com/courses/51243/assignments/1429868/submissions?zip=1",
             "post_manually": true,
             "anonymize_students": false,
             "new_quizzes_anonymous_participants": false,
             "require_lockdown_browser": false,
             "restrict_quantitative_data": false
           },
-          "html_url": "https://texastech.instructure.com/courses/58606/assignments/1412651#submit"
+          "html_url": "https://texastech.instructure.com/courses/51243/assignments/1429868#submit"
         }
       ],
       "field_types": {
@@ -378,15 +378,15 @@
       "method": "GET",
       "verified": true,
       "status_code": 200,
-      "response_time_ms": 153,
+      "response_time_ms": 335,
       "error": null,
       "sample_response": [
         {
-          "id": 33200,
+          "id": 33205,
           "created_at": "2025-08-27T22:44:47Z",
           "updated_at": "2025-08-27T22:49:24Z",
-          "start_at": "2025-12-10T15:00:00Z",
-          "end_at": "2025-12-10T15:50:00Z",
+          "start_at": "2025-12-22T15:00:00Z",
+          "end_at": "2025-12-22T15:50:00Z",
           "all_day": false,
           "all_day_date": null,
           "title": "CS 5384 Lecture",
@@ -407,18 +407,18 @@
           "parent_event_id": null,
           "hidden": false,
           "child_events": [],
-          "url": "https://texastech.instructure.com/api/v1/calendar_events/33200",
-          "html_url": "https://texastech.instructure.com/calendar?event_id=33200&include_contexts=course_53482",
+          "url": "https://texastech.instructure.com/api/v1/calendar_events/33205",
+          "html_url": "https://texastech.instructure.com/calendar?event_id=33205&include_contexts=course_53482",
           "duplicates": [],
           "important_dates": false,
           "series_head": false
         },
         {
-          "id": 33201,
+          "id": 33206,
           "created_at": "2025-08-27T22:44:47Z",
           "updated_at": "2025-08-27T22:49:24Z",
-          "start_at": "2025-12-12T15:00:00Z",
-          "end_at": "2025-12-12T15:50:00Z",
+          "start_at": "2025-12-24T15:00:00Z",
+          "end_at": "2025-12-24T15:50:00Z",
           "all_day": false,
           "all_day_date": null,
           "title": "CS 5384 Lecture",
@@ -439,8 +439,8 @@
           "parent_event_id": null,
           "hidden": false,
           "child_events": [],
-          "url": "https://texastech.instructure.com/api/v1/calendar_events/33201",
-          "html_url": "https://texastech.instructure.com/calendar?event_id=33201&include_contexts=course_53482",
+          "url": "https://texastech.instructure.com/api/v1/calendar_events/33206",
+          "html_url": "https://texastech.instructure.com/calendar?event_id=33206&include_contexts=course_53482",
           "duplicates": [],
           "important_dates": false,
           "series_head": false
@@ -479,12 +479,112 @@
         "series_head": "boolean"
       }
     },
+    "GET /api/v1/calendar_events": {
+      "endpoint": "/api/v1/calendar_events",
+      "method": "GET",
+      "verified": true,
+      "status_code": 200,
+      "response_time_ms": 170,
+      "error": null,
+      "sample_response": [],
+      "field_types": {}
+    },
+    "GET /api/v1/planner/items": {
+      "endpoint": "/api/v1/planner/items",
+      "method": "GET",
+      "verified": true,
+      "status_code": 200,
+      "response_time_ms": 176,
+      "error": null,
+      "sample_response": [
+        {
+          "context_type": "User",
+          "user_id": 17639,
+          "plannable_id": 9382,
+          "planner_override": {
+            "id": 64781,
+            "plannable_type": "calendar_event",
+            "plannable_id": 9382,
+            "user_id": 17639,
+            "workflow_state": "active",
+            "marked_complete": true,
+            "deleted_at": null,
+            "created_at": "2025-07-15T10:46:25Z",
+            "updated_at": "2025-07-15T10:46:25Z",
+            "dismissed": false,
+            "assignment_id": null
+          },
+          "plannable_type": "calendar_event",
+          "new_activity": false,
+          "submissions": false,
+          "plannable_date": "2025-07-16T01:00:00Z",
+          "plannable": {
+            "id": 9382,
+            "title": "Class practice 1 announcement",
+            "location_name": "Killeen, TX",
+            "created_at": "2025-07-15T10:43:10Z",
+            "updated_at": "2025-07-15T10:43:10Z",
+            "all_day": false,
+            "location_address": null,
+            "description": null,
+            "start_at": "2025-07-16T01:00:00Z",
+            "end_at": "2025-07-16T03:00:00Z"
+          },
+          "html_url": "https://texastech.instructure.com/calendar?event_id=9382&include_contexts=user_17639",
+          "context_name": "Scott Weeden"
+        },
+        {
+          "context_type": "Course",
+          "course_id": 51243,
+          "plannable_id": 1752462,
+          "planner_override": null,
+          "plannable_type": "announcement",
+          "new_activity": false,
+          "submissions": false,
+          "plannable_date": "2025-08-23T23:39:21Z",
+          "plannable": {
+            "id": 1752462,
+            "title": "No class on Monday (08/25) and Wednesday (08/27)  ",
+            "unread_count": 0,
+            "read_state": "read",
+            "created_at": "2025-08-23T23:39:21Z",
+            "updated_at": "2025-08-23T23:39:21Z"
+          },
+          "html_url": "/courses/51243/discussion_topics/1752462",
+          "context_name": "Fall 2025 TTU Theory of Automata: Theory of Automata (CS-5383-001 & D01) Full Term",
+          "context_image": null
+        }
+      ],
+      "field_types": {
+        "context_type": "string",
+        "user_id": "integer",
+        "plannable_id": "integer",
+        "planner_override": "object",
+        "plannable_type": "string",
+        "new_activity": "boolean",
+        "submissions": "boolean",
+        "plannable_date": "string",
+        "plannable": "object",
+        "html_url": "string",
+        "context_name": "string"
+      }
+    },
+    "GET /api/v1/planner_notes": {
+      "endpoint": "/api/v1/planner_notes",
+      "method": "GET",
+      "verified": true,
+      "status_code": 200,
+      "response_time_ms": 153,
+      "error": null,
+      "sample_response": [],
+      "field_types": {}
+    },
     "GET /api/v1/courses/{course_id}/assignments": {
       "endpoint": "/api/v1/courses/58606/assignments",
       "method": "GET",
       "verified": true,
       "status_code": 200,
-      "response_time_ms": 504,
+      "response_time_ms": 683,
       "error": null,
       "sample_response": [
         {
@@ -693,7 +793,7 @@
       "method": "GET",
       "verified": true,
       "status_code": 200,
-      "response_time_ms": 212,
+      "response_time_ms": 373,
       "error": null,
       "sample_response": [
         {
@@ -745,7 +845,7 @@
       "method": "GET",
       "verified": true,
       "status_code": 200,
-      "response_time_ms": 201,
+      "response_time_ms": 332,
       "error": null,
       "sample_response": [],
       "field_types": {}
@@ -755,7 +855,7 @@
       "method": "GET",
       "verified": true,
       "status_code": 200,
-      "response_time_ms": 258,
+      "response_time_ms": 199,
       "error": null,
       "sample_response": [
         {
@@ -774,15 +874,15 @@
           "enrollment_state": "active",
           "role": "StudentEnrollment",
           "role_id": 3,
-          "last_activity_at": "2025-12-09T08:14:41Z",
+          "last_activity_at": "2025-12-19T23:02:16Z",
           "last_attended_at": null,
-          "total_activity_time": 97944,
+          "total_activity_time": 105533,
           "grades": {
             "html_url": "https://texastech.instructure.com/courses/58606/grades/17639",
-            "current_grade": null,
-            "current_score": 41.01,
-            "final_grade": null,
-            "final_score": 41.01
+            "current_grade": "F",
+            "current_score": 35.76,
+            "final_grade": "F",
+            "final_score": 35.76
           },
           "html_url": "https://texastech.instructure.com/courses/58606/users/17639",
           "user": {
@@ -818,12 +918,132 @@
         "user": "object"
       }
     },
+    "GET /api/v1/courses/{course_id}/sections": {
+      "endpoint": "/api/v1/courses/58606/sections",
+      "method": "GET",
+      "verified": true,
+      "status_code": 200,
+      "response_time_ms": 210,
+      "error": null,
+      "sample_response": [
+        {
+          "id": 44377,
+          "name": "Fall 2025 TTU Intelligent Systems (CS-5368-D01) Full Term",
+          "course_id": 58606,
+          "nonxlist_course_id": null,
+          "start_at": "2025-08-25T05:00:00Z",
+          "end_at": "2026-04-10T04:59:59Z",
+          "restrict_enrollments_to_section_dates": false,
+          "created_at": "2025-06-28T21:52:04Z"
+        },
+        {
+          "id": 47687,
+          "name": "Fall 2025 TTU Intelligent Systems (CS-5368-D01) Full Term",
+          "course_id": 58606,
+          "nonxlist_course_id": null,
+          "start_at": null,
+          "end_at": null,
+          "restrict_enrollments_to_section_dates": null,
+          "created_at": "2025-09-03T13:05:23Z"
+        }
+      ],
+      "field_types": {
+        "id": "integer",
+        "name": "string",
+        "course_id": "integer",
+        "nonxlist_course_id": "null",
+        "start_at": "string",
+        "end_at": "string",
+        "restrict_enrollments_to_section_dates": "boolean",
+        "created_at": "string"
+      }
+    },
+    "GET /api/v1/courses/{course_id}/settings": {
+      "endpoint": "/api/v1/courses/58606/settings",
+      "method": "GET",
+      "verified": true,
+      "status_code": 200,
+      "response_time_ms": 166,
+      "error": null,
+      "sample_response": {
+        "allow_final_grade_override": false,
+        "allow_student_discussion_topics": true,
+        "allow_student_forum_attachments": true,
+        "allow_student_discussion_editing": true,
+        "allow_student_discussion_reporting": true,
+        "allow_student_anonymous_discussion_topics": false,
+        "filter_speed_grader_by_student_group": false,
+        "grading_standard_enabled": true,
+        "grading_standard_id": 74696,
+        "grade_passback_setting": null,
+        "allow_student_organized_groups": true,
+        "hide_final_grades": false,
+        "hide_distribution_graphs": false,
+        "hide_sections_on_course_users_page": false,
+        "lock_all_announcements": false,
+        "usage_rights_required": false,
+        "restrict_student_past_view": false,
+        "restrict_student_future_view": true,
+        "restrict_quantitative_data": false,
+        "show_announcements_on_home_page": false,
+        "home_page_announcement_limit": 3,
+        "syllabus_course_summary": true,
+        "homeroom_course": false,
+        "image_url": null,
+        "image_id": null,
+        "image": null,
+        "banner_image_url": null,
+        "banner_image_id": null,
+        "banner_image": null,
+        "course_color": null,
+        "friendly_name": null,
+        "default_due_time": "23:59:59",
+        "conditional_release": false,
+        "default_student_gradebook_view": false
+      },
+      "field_types": {
+        "allow_final_grade_override": "boolean",
+        "allow_student_discussion_topics": "boolean",
+        "allow_student_forum_attachments": "boolean",
+        "allow_student_discussion_editing": "boolean",
+        "allow_student_discussion_reporting": "boolean",
+        "allow_student_anonymous_discussion_topics": "boolean",
+        "filter_speed_grader_by_student_group": "boolean",
+        "grading_standard_enabled": "boolean",
+        "grading_standard_id": "integer",
+        "grade_passback_setting": "null",
+        "allow_student_organized_groups": "boolean",
+        "hide_final_grades": "boolean",
+        "hide_distribution_graphs": "boolean",
+        "hide_sections_on_course_users_page": "boolean",
+        "lock_all_announcements": "boolean",
+        "usage_rights_required": "boolean",
+        "restrict_student_past_view": "boolean",
+        "restrict_student_future_view": "boolean",
+        "restrict_quantitative_data": "boolean",
+        "show_announcements_on_home_page": "boolean",
+        "home_page_announcement_limit": "integer",
+        "syllabus_course_summary": "boolean",
+        "homeroom_course": "boolean",
+        "image_url": "null",
+        "image_id": "null",
+        "image": "null",
+        "banner_image_url": "null",
+        "banner_image_id": "null",
+        "banner_image": "null",
+        "course_color": "null",
+        "friendly_name": "null",
+        "default_due_time": "string",
+        "conditional_release": "boolean",
+        "default_student_gradebook_view": "boolean"
+      }
+    },
     "GET /api/v1/announcements": {
       "endpoint": "/api/v1/announcements",
       "method": "GET",
       "verified": true,
       "status_code": 200,
-      "response_time_ms": 358,
+      "response_time_ms": 332,
       "error": null,
       "sample_response": [
         {
@@ -1020,6 +1240,124 @@
         "expanded": "boolean",
         "expanded_locked": "boolean"
       }
+    },
+    "GET /api/v1/courses/{course_id}/modules/{module_id}/items": {
+      "endpoint": "/api/v1/courses/58606/modules/736479/items",
+      "method": "GET",
+      "verified": true,
+      "status_code": 200,
+      "response_time_ms": 208,
+      "error": null,
+      "sample_response": [
+        {
+          "id": 3589723,
+          "position": 1,
+          "title": "CS5368_Fall2025_Syllabus.pdf",
+          "indent": 0,
+          "quiz_lti": false,
+          "type": "File",
+          "module_id": 736479,
+          "html_url": "https://texastech.instructure.com/courses/58606/modules/items/3589723",
+          "content_id": 8566941,
+          "url": "https://texastech.instructure.com/api/v1/courses/58606/files/8566941"
+        },
+        {
+          "id": 3495636,
+          "position": 2,
+          "title": "Artificial Intelligence: A Modern Approach.pdf",
+          "indent": 0,
+          "quiz_lti": false,
+          "type": "File",
+          "module_id": 736479,
+          "html_url": "https://texastech.instructure.com/courses/58606/modules/items/3495636",
+          "content_id": 8231263,
+          "url": "https://texastech.instructure.com/api/v1/courses/58606/files/8231263"
+        }
+      ],
+      "field_types": {
+        "id": "integer",
+        "position": "integer",
+        "title": "string",
+        "indent": "integer",
+        "quiz_lti": "boolean",
+        "type": "string",
+        "module_id": "integer",
+        "html_url": "string",
+        "content_id": "integer",
+        "url": "string"
+      }
+    },
+    "GET /api/v1/courses/{course_id}/files/{file_id}": {
+      "endpoint": "/api/v1/courses/58606/files/8566941",
+      "method": "GET",
+      "verified": true,
+      "status_code": 200,
+      "response_time_ms": 181,
+      "error": null,
+      "sample_response": {
+        "id": 8566941,
+        "folder_id": 724242,
+        "display_name": "CS5368_Fall2025_Syllabus.pdf",
+        "filename": "CS5368_Fall2025_Syllabus.pdf",
+        "upload_status": "success",
+        "content-type": "application/pdf",
+        "url": "https://texastech.instructure.com/files/8566941/download?download_frd=1&verifier=8shPBheDE0eJGSni7kdZWk9TxnF448dVWBjPyuCQ",
+        "size": 318222,
+        "created_at": "2025-09-05T14:32:46Z",
+        "updated_at": "2025-09-05T14:33:29Z",
+        "unlock_at": null,
+        "locked": false,
+        "hidden": false,
+        "lock_at": null,
+        "hidden_for_user": false,
+        "thumbnail_url": null,
+        "modified_at": "2025-09-05T14:32:46Z",
+        "mime_class": "pdf",
+        "media_entry_id": null,
+        "category": "uncategorized",
+        "locked_for_user": false,
+        "visibility_level": "inherit",
+        "canvadoc_session_url": "/api/v1/canvadoc_session?blob=%7B%22user_id%22:246900000000017639,%22attachment_id%22:8566941,%22type%22:%22canvadoc%22%7D&hmac=8f9385acbd6c466f99b24cdac2299209f9eec849"
+      },
+      "field_types": {
+        "id": "integer",
+        "folder_id": "integer",
+        "display_name": "string",
+        "filename": "string",
+        "upload_status": "string",
+        "content-type": "string",
+        "url": "string",
+        "size": "integer",
+        "created_at": "string",
+        "updated_at": "string",
+        "unlock_at": "null",
+        "locked": "boolean",
+        "hidden": "boolean",
+        "lock_at": "null",
+        "hidden_for_user": "boolean",
+        "thumbnail_url": "null",
+        "modified_at": "string",
+        "mime_class": "string",
+        "media_entry_id": "null",
+        "category": "string",
+        "locked_for_user": "boolean",
+        "visibility_level": "string",
+        "canvadoc_session_url": "string"
+      }
+    },
+    "GET /api/v1/files/{file_id}/public_url": {
+      "endpoint": "/api/v1/files/8566941/public_url",
+      "method": "GET",
+      "verified": true,
+      "status_code": 200,
+      "response_time_ms": 162,
+      "error": null,
+      "sample_response": {
+        "public_url": "https://inst-fs-pdx-prod.inscloudgate.net/files/96a16dfb-d4b7-4090-ada8-2adafdeaa396/CS5368_Fall2025_Syllabus.pdf?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3NjYxNzAzMjksInVzZXJfaWQiOm51bGwsInJlc291cmNlIjoiL2ZpbGVzLzk2YTE2ZGZiLWQ0YjctNDA5MC1hZGE4LTJhZGFmZGVhYTM5Ni9DUzUzNjhfRmFsbDIwMjVfU3lsbGFidXMucGRmIiwiaG9zdCI6bnVsbCwianRpIjoiNWQyNTJkNmYtNTIwYS00MTM0LTljNTUtZjVmNjQyOTU2NmNmIiwiZXhwIjoxNzY2MjU2NzI5fQ.o28LZFjhN17l_KpKyU9IdqOZtT6p7Z6u4Puwj5WBS0UnE5gmZ5MP3eC__ZwVS5e0hieva9XyARggBpWAxQvCXA"
+      },
+      "field_types": {
+        "public_url": "string"
+      }
     }
   },
   "failed_endpoints": {
@@ -1028,7 +1366,37 @@
       "method": "GET",
       "verified": false,
       "status_code": 403,
-      "response_time_ms": 147,
+      "response_time_ms": 145,
+      "error": "HTTP 403: Forbidden",
+      "sample_response": null,
+      "field_types": null
+    },
+    "GET /api/v1/courses/{course_id}/pages": {
+      "endpoint": "/api/v1/courses/58606/pages",
+      "method": "GET",
+      "verified": false,
+      "status_code": 404,
+      "response_time_ms": 195,
+      "error": "HTTP 404: Not Found",
+      "sample_response": null,
+      "field_types": null
+    },
+    "GET /api/v1/courses/{course_id}/quizzes": {
+      "endpoint": "/api/v1/courses/58606/quizzes",
+      "method": "GET",
+      "verified": false,
+      "status_code": 404,
+      "response_time_ms": 140,
+      "error": "HTTP 404: Not Found",
+      "sample_response": null,
+      "field_types": null
+    },
+    "GET /api/v1/courses/{course_id}/assignments/{assignment_id}/submissions": {
+      "endpoint": "/api/v1/courses/58606/assignments/1409525/submissions",
+      "method": "GET",
+      "verified": false,
+      "status_code": 403,
+      "response_time_ms": 151,
       "error": "HTTP 403: Forbidden",
       "sample_response": null,
       "field_types": null
@@ -1040,7 +1408,7 @@
     51243
   ],
   "summary": {
-    "total_verified": 9,
-    "total_failed": 1
+    "total_verified": 17,
+    "total_failed": 4
   }
 }

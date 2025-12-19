@@ -238,19 +238,19 @@ For debugging or scripting, you can query the Canvas API directly:
 
 ```bash
 # Set your token
-export CANVAS_TOKEN="your_token_here"
+export CANVAS_API_TOKEN="your_token_here"
 export CANVAS_URL="https://texastech.instructure.com"
 
 # Get your profile
-curl -H "Authorization: Bearer $CANVAS_TOKEN" \
+curl -H "Authorization: Bearer $CANVAS_API_TOKEN" \
      "$CANVAS_URL/api/v1/users/self/profile"
 
 # List courses
-curl -H "Authorization: Bearer $CANVAS_TOKEN" \
+curl -H "Authorization: Bearer $CANVAS_API_TOKEN" \
      "$CANVAS_URL/api/v1/courses?enrollment_state=active&per_page=50"
 
 # Get assignments for a course
-curl -H "Authorization: Bearer $CANVAS_TOKEN" \
+curl -H "Authorization: Bearer $CANVAS_API_TOKEN" \
      "$CANVAS_URL/api/v1/courses/58606/assignments?per_page=50"
 ```
 

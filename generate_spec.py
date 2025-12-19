@@ -172,6 +172,9 @@ async def generate_specification(course_id: int | None = None) -> dict[str, Any]
             ("GET", "/api/v1/courses", {"enrollment_state": "active", "per_page": DEFAULT_PER_PAGE}),
             ("GET", "/api/v1/users/self/todo", {"per_page": DEFAULT_PER_PAGE}),
             ("GET", "/api/v1/users/self/upcoming_events", {"per_page": DEFAULT_PER_PAGE}),
+            ("GET", "/api/v1/calendar_events", {"per_page": DEFAULT_PER_PAGE}),
+            ("GET", "/api/v1/planner/items", {"per_page": DEFAULT_PER_PAGE}),
+            ("GET", "/api/v1/planner_notes", {"per_page": DEFAULT_PER_PAGE}),
         ]
         
         print("Verifying user-level endpoints...")
@@ -196,7 +199,12 @@ async def generate_specification(course_id: int | None = None) -> dict[str, Any]
                 ("GET", "/api/v1/courses/{course_id}/modules", {"per_page": DEFAULT_PER_PAGE}),
                 ("GET", "/api/v1/courses/{course_id}/discussion_topics", {"per_page": DEFAULT_PER_PAGE}),
                 ("GET", "/api/v1/courses/{course_id}/enrollments", {"user_id": "self", "type[]": "StudentEnrollment"}),
+                ("GET", "/api/v1/courses/{course_id}/sections", {"per_page": DEFAULT_PER_PAGE}),
+                ("GET", "/api/v1/courses/{course_id}/settings", None),
                 ("GET", "/api/v1/courses/{course_id}/files", {"per_page": DEFAULT_PER_PAGE}),
+                # These may return 404 if not available, but we'll test them
+                ("GET", "/api/v1/courses/{course_id}/pages", {"per_page": DEFAULT_PER_PAGE}),
+                ("GET", "/api/v1/courses/{course_id}/quizzes", {"per_page": DEFAULT_PER_PAGE}),
             ]
             
             # Also test announcements (uses course_ids as context_codes)
@@ -238,6 +246,118 @@ async def generate_specification(course_id: int | None = None) -> dict[str, Any]
                 spec["failed_endpoints"][endpoint_key] = result
                 spec["summary"]["total_failed"] += 1
                 print(f"❌ ({result['error']})")
+            
+            # Discover module_id and test module items
+            print(f"\nDiscovering module and file IDs...")
+            modules_result = await verify_endpoint(
+                client,
+                "GET",
+                f"/api/v1/courses/{test_course_id}/modules",
+                {"per_page": 10}
+            )
+            
+            if modules_result["verified"] and modules_result["sample_response"]:
+                modules = modules_result["sample_response"]
+                if isinstance(modules, list) and len(modules) > 0:
+                    module_id = modules[0].get("id")
+                    if module_id:
+                        print(f"  Found module ID: {module_id}")
+                        # Test module items
+                        print(f"  GET /api/v1/courses/{test_course_id}/modules/{module_id}/items...", end=" ", flush=True)
+                        result = await verify_endpoint(
+                            client,
+                            "GET",
+                            f"/api/v1/courses/{test_course_id}/modules/{module_id}/items",
+                            {"per_page": DEFAULT_PER_PAGE}
+                        )
+                        endpoint_key = "GET /api/v1/courses/{course_id}/modules/{module_id}/items"
+                        if result["verified"]:
+                            spec["verified_endpoints"][endpoint_key] = result
+                            spec["summary"]["total_verified"] += 1
+                            print(f"✅ ({result['response_time_ms']}ms)")
+                            
+                            # Try to find a file_id from module items
+                            items = result["sample_response"]
+                            if isinstance(items, list):
+                                for item in items:
+                                    if item.get("type") == "File" and item.get("content_id"):
+                                        file_id = item["content_id"]
+                                        print(f"  Found file ID: {file_id}")
+                                        
+                                        # Test file metadata
+                                        print(f"  GET /api/v1/courses/{test_course_id}/files/{file_id}...", end=" ", flush=True)
+                                        file_result = await verify_endpoint(
+                                            client,
+                                            "GET",
+                                            f"/api/v1/courses/{test_course_id}/files/{file_id}",
+                                            None
+                                        )
+                                        endpoint_key = "GET /api/v1/courses/{course_id}/files/{file_id}"
+                                        if file_result["verified"]:
+                                            spec["verified_endpoints"][endpoint_key] = file_result
+                                            spec["summary"]["total_verified"] += 1
+                                            print(f"✅ ({file_result['response_time_ms']}ms)")
+                                        else:
+                                            spec["failed_endpoints"][endpoint_key] = file_result
+                                            spec["summary"]["total_failed"] += 1
+                                            print(f"❌ ({file_result['error']})")
+                                        
+                                        # Test file public URL
+                                        print(f"  GET /api/v1/files/{file_id}/public_url...", end=" ", flush=True)
+                                        url_result = await verify_endpoint(
+                                            client,
+                                            "GET",
+                                            f"/api/v1/files/{file_id}/public_url",
+                                            None
+                                        )
+                                        endpoint_key = "GET /api/v1/files/{file_id}/public_url"
+                                        if url_result["verified"]:
+                                            spec["verified_endpoints"][endpoint_key] = url_result
+                                            spec["summary"]["total_verified"] += 1
+                                            print(f"✅ ({url_result['response_time_ms']}ms)")
+                                        else:
+                                            spec["failed_endpoints"][endpoint_key] = url_result
+                                            spec["summary"]["total_failed"] += 1
+                                            print(f"❌ ({url_result['error']})")
+                                        
+                                        break  # Only test first file found
+                        else:
+                            spec["failed_endpoints"][endpoint_key] = result
+                            spec["summary"]["total_failed"] += 1
+                            print(f"❌ ({result['error']})")
+            
+            # Discover assignment_id and test submissions
+            print(f"\nDiscovering assignment ID...")
+            assignments_result = await verify_endpoint(
+                client,
+                "GET",
+                f"/api/v1/courses/{test_course_id}/assignments",
+                {"per_page": 10}
+            )
+            
+            if assignments_result["verified"] and assignments_result["sample_response"]:
+                assignments = assignments_result["sample_response"]
+                if isinstance(assignments, list) and len(assignments) > 0:
+                    assignment_id = assignments[0].get("id")
+                    if assignment_id:
+                        print(f"  Found assignment ID: {assignment_id}")
+                        # Test submissions (may return 403)
+                        print(f"  GET /api/v1/courses/{test_course_id}/assignments/{assignment_id}/submissions...", end=" ", flush=True)
+                        result = await verify_endpoint(
+                            client,
+                            "GET",
+                            f"/api/v1/courses/{test_course_id}/assignments/{assignment_id}/submissions",
+                            {"user_id": "self", "per_page": 10}
+                        )
+                        endpoint_key = "GET /api/v1/courses/{course_id}/assignments/{assignment_id}/submissions"
+                        if result["verified"]:
+                            spec["verified_endpoints"][endpoint_key] = result
+                            spec["summary"]["total_verified"] += 1
+                            print(f"✅ ({result['response_time_ms']}ms)")
+                        else:
+                            spec["failed_endpoints"][endpoint_key] = result
+                            spec["summary"]["total_failed"] += 1
+                            print(f"❌ ({result['error']})")
     
     return spec
 

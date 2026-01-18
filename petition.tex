@@ -1,0 +1,162 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+\usepackage{adjustbox}
+\setlength{\parindent}{0pt}
+
+\title{Petition}
+\author{}
+\date{}
+
+% Petition text macro
+\newcommand{\petitiontext}{%
+\vspace*{-0.2in}
+\noindent\textbf{PETITION STATEMENT:}\\[0.15in]
+\noindent I support elected judges and term limits of one year in my county.\\[0.15in]
+\noindent\textbf{SIGNATURES:}\\[0.1in]
+}
+
+% Set row height to fit pages - adjust based on number of rows
+\setlength{\extrarowheight}{0pt}
+\setlength{\tabcolsep}{4pt}
+
+\begin{document}
+
+\maketitle
+
+% Page 1: 100 rows (portrait)
+\renewcommand{\arraystretch}{0.5}
+\petitiontext
+\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_100.tex}
+\end{tabular}
+
+\newpage
+
+% Page 2: 90 rows (portrait)
+\renewcommand{\arraystretch}{0.55}
+\petitiontext
+\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_90.tex}
+\end{tabular}
+
+\newpage
+
+% Page 3: 80 rows (portrait)
+\renewcommand{\arraystretch}{0.6}
+\petitiontext
+\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_80.tex}
+\end{tabular}
+
+\newpage
+
+% Page 4: 70 rows (portrait)
+\renewcommand{\arraystretch}{0.65}
+\petitiontext
+\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_70.tex}
+\end{tabular}
+
+\newpage
+
+% Page 5: 60 rows (portrait)
+\renewcommand{\arraystretch}{0.7}
+\petitiontext
+\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_60.tex}
+\end{tabular}
+
+\newpage
+
+% Page 6: 50 rows (portrait)
+\renewcommand{\arraystretch}{0.75}
+\petitiontext
+\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_50.tex}
+\end{tabular}
+
+\newpage
+
+% Page 7: 40 rows (landscape)
+\begin{landscape}
+\renewcommand{\arraystretch}{0.8}
+\petitiontext
+\begin{tabular}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_40.tex}
+\end{tabular}
+\end{landscape}
+
+\newpage
+
+% Page 8: 30 rows (landscape)
+\begin{landscape}
+\renewcommand{\arraystretch}{0.9}
+\petitiontext
+\begin{tabular}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_30.tex}
+\end{tabular}
+\end{landscape}
+
+\newpage
+
+% Page 9: 20 rows (landscape)
+\begin{landscape}
+\renewcommand{\arraystretch}{1.0}
+\petitiontext
+\begin{tabular}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_20.tex}
+\end{tabular}
+\end{landscape}
+
+\newpage
+
+% Page 10: 10 rows (landscape)
+\begin{landscape}
+\renewcommand{\arraystretch}{1.1}
+\petitiontext
+\begin{tabular}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
+\hline
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\input{rows_10.tex}
+\end{tabular}
+\end{landscape}
+
+\vspace{0.5in}
+
+\noindent\textit{By signing above, I affirm that I support elected judges and term limits of one year in my county.}
+
+\end{document}

@@ -1,158 +1,232 @@
-\documentclass[11pt,letterpaper]{article}
+\documentclass[11pt,letterpaper,twoside]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[margin=0.75in]{geometry}
+\usepackage[margin=1in]{geometry}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{pdflscape}
-\usepackage{afterpage}
-\usepackage{adjustbox}
-\setlength{\parindent}{0pt}
 
 \title{Petition}
 \author{}
 \date{}
 
-% Petition text macro
-\newcommand{\petitiontext}{%
-\vspace*{-0.2in}
-\noindent\textbf{PETITION STATEMENT:}\\[0.15in]
-\noindent I support elected judges and term limits of one year in my county.\\[0.15in]
-\noindent\textbf{SIGNATURES:}\\[0.1in]
+\newcommand{\petitionheader}{%
+\multicolumn{4}{|c|}{\parbox{\textwidth}{\textbf{PETITION STATEMENT:} I support elected judges and term limits of one year in my county.}} \\
+\hline
 }
-
-% Set row height to fit pages - adjust based on number of rows
-\setlength{\extrarowheight}{0pt}
-\setlength{\tabcolsep}{4pt}
 
 \begin{document}
 
 \maketitle
 
-% Page 1: 100 rows (portrait)
-\renewcommand{\arraystretch}{0.5}
-\petitiontext
-\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
-\hline
+\vspace{0.5in}
+
+\noindent\textbf{PETITION STATEMENT:}
+
+\vspace{0.25in}
+
+\noindent I support elected judges and term limits of one year in my county.
+
+\vspace{0.5in}
+
+\noindent\textbf{SIGNATURES:}
+
+\vspace{0.25in}
+
+% Page 1: 100 rows
+\begin{longtable}{|p{1.25in}|p{1.25in}|p{2.15in}|p{0.65in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_100.tex}
-\end{tabular}
+\end{longtable}
 
 \newpage
 
-% Page 2: 90 rows (portrait)
-\renewcommand{\arraystretch}{0.55}
-\petitiontext
-\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
-\hline
+% Page 2: 90 rows
+\begin{longtable}{|p{1.25in}|p{1.25in}|p{2.15in}|p{0.65in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_90.tex}
-\end{tabular}
+\end{longtable}
 
 \newpage
 
-% Page 3: 80 rows (portrait)
-\renewcommand{\arraystretch}{0.6}
-\petitiontext
-\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
-\hline
+% Page 3: 80 rows
+\begin{longtable}{|p{1.25in}|p{1.25in}|p{2.15in}|p{0.65in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_80.tex}
-\end{tabular}
+\end{longtable}
 
 \newpage
 
-% Page 4: 70 rows (portrait)
-\renewcommand{\arraystretch}{0.65}
-\petitiontext
-\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
-\hline
+% Page 4: 70 rows
+\begin{longtable}{|p{1.25in}|p{1.25in}|p{2.15in}|p{0.65in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_70.tex}
-\end{tabular}
+\end{longtable}
 
 \newpage
 
-% Page 5: 60 rows (portrait)
-\renewcommand{\arraystretch}{0.7}
-\petitiontext
-\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
-\hline
+% Page 5: 60 rows
+\begin{longtable}{|p{1.25in}|p{1.25in}|p{2.15in}|p{0.65in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_60.tex}
-\end{tabular}
+\end{longtable}
 
 \newpage
 
-% Page 6: 50 rows (portrait)
-\renewcommand{\arraystretch}{0.75}
-\petitiontext
-\begin{tabular}{|p{1.3in}|p{1.3in}|p{2.2in}|p{0.7in}|}
-\hline
+% Page 6: 50 rows
+\begin{longtable}{|p{1.25in}|p{1.25in}|p{2.15in}|p{0.65in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_50.tex}
-\end{tabular}
+\end{longtable}
 
 \newpage
 
-% Page 7: 40 rows (landscape)
+% Page 7: 40 rows (LANDSCAPE)
 \begin{landscape}
-\renewcommand{\arraystretch}{0.8}
-\petitiontext
-\begin{tabular}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
-\hline
+\begin{longtable}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_40.tex}
-\end{tabular}
+\end{longtable}
 \end{landscape}
 
 \newpage
 
-% Page 8: 30 rows (landscape)
+% Page 8: 30 rows (LANDSCAPE)
 \begin{landscape}
-\renewcommand{\arraystretch}{0.9}
-\petitiontext
-\begin{tabular}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
-\hline
+\begin{longtable}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_30.tex}
-\end{tabular}
+\end{longtable}
 \end{landscape}
 
 \newpage
 
-% Page 9: 20 rows (landscape)
+% Page 9: 20 rows (LANDSCAPE)
 \begin{landscape}
-\renewcommand{\arraystretch}{1.0}
-\petitiontext
-\begin{tabular}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
-\hline
+\begin{longtable}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_20.tex}
-\end{tabular}
+\end{longtable}
 \end{landscape}
 
 \newpage
 
-% Page 10: 10 rows (landscape)
+% Page 10: 10 rows (LANDSCAPE)
 \begin{landscape}
-\renewcommand{\arraystretch}{1.1}
-\petitiontext
-\begin{tabular}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
-\hline
+\begin{longtable}{|p{1.8in}|p{1.8in}|p{3.2in}|p{1in}|}
+\petitionheader
 \textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
 \hline
+\endfirsthead
+\petitionheader
+\textbf{First Name} & \textbf{Last Name} & \textbf{Phone/Email/Address} & \textbf{YES} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
 \input{rows_10.tex}
-\end{tabular}
+\end{longtable}
 \end{landscape}
 
 \vspace{0.5in}

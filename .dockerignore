@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
+
+# Environment files (should be provided at runtime)
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Tests (optional - uncomment if you don't want tests in image)
+# tests/
+# *.py.test
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cursor specific
+.cursor/
+activate/
+
+# Skills directory (not needed in container)
+.cursor/skills/
+
+# Duplicate skills directory
+skills/
+
+# GitHub workflows (not needed in container)
+.github/
+
+# Node modules (if any)
+node_modules/
+package-lock.json
+
+# Temporary files
+*.tmp
+*.bak
+*.swp

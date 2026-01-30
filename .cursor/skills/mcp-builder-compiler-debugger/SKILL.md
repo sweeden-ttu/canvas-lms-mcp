@@ -1,6 +1,6 @@
 ---
 name: mcp-builder-compiler-debugger
-description: Build, test, and debug MCP (Model Context Protocol) servers. Use when creating MCP servers, testing endpoints, debugging connection issues, or working with FastMCP, MCP Inspector, or Claude Desktop integration.
+description: Build, test, and debug MCP (Model Context Protocol) servers using FastMCP. Use when creating MCP servers, testing endpoints, debugging connection issues, integrating with Claude Desktop, or working with MCP Inspector. Covers project setup, tool implementation patterns, error handling, testing workflows, and debugging techniques.
 ---
 
 # MCP Builder, Compiler, Debugger
@@ -9,20 +9,15 @@ Guide for building, testing, and debugging MCP servers using FastMCP.
 
 ## Quick Start
 
-**Project Setup:**
+**Initialize project:**
 ```bash
-# Create project structure
 mkdir mcp-server-name && cd mcp-server-name
 uv init --name mcp-server-name --python 3.10+
-
-# Install MCP dependencies
 uv add "mcp[cli]>=1.2.0" httpx python-dotenv pydantic
-
-# Install dev dependencies
 uv add --dev pytest pytest-asyncio pytest-cov mypy ruff
 ```
 
-**Basic Server Template:**
+**Minimal server template:**
 ```python
 #!/usr/bin/env python3
 from mcp.server.fastmcp import FastMCP
@@ -49,7 +44,7 @@ if __name__ == "__main__":
 
 ## Building MCP Servers
 
-### Project Structure
+### Standard Project Structure
 
 ```
 mcp-server/
@@ -90,9 +85,14 @@ def load_config() -> Config:
     )
 ```
 
-### Tool Implementation Pattern
+**Key points:**
+- Fail fast if `.env` is missing
+- Use Pydantic for validation
+- Load config at module level for server initialization
 
-**Input Models:**
+### Tool Implementation Workflow
+
+**Step 1: Define Input Model**
 ```python
 from pydantic import BaseModel, Field
 from enum import Enum
@@ -107,8 +107,11 @@ class CourseInput(BaseModel):
     response_format: ResponseFormat = Field(default=ResponseFormat.MARKDOWN)
 ```
 
-**Tool Functions:**
+**Step 2: Implement Tool Function**
 ```python
+import json
+import httpx
+
 @mcp.tool(
     name="get_resource",
     annotations={
@@ -120,7 +123,11 @@ class CourseInput(BaseModel):
 )
 async def get_resource(params: CourseInput) -> str:
     """Get resource description."""
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(
+        base_url=_config.base_url,
+        headers={"Authorization": f"Bearer {_config.api_token}"},
+        timeout=30.0
+    ) as client:
         try:
             response = await client.get(
                 f"/api/v1/courses/{params.course_id}/resource",
@@ -132,54 +139,54 @@ async def get_resource(params: CourseInput) -> str:
             if params.response_format == ResponseFormat.JSON:
                 return json.dumps(data, indent=2)
             return format_as_markdown(data)
-        except httpx.HTTPStatusError as e:
-            return handle_error(e)
+        except Exception as e:
+            return handle_error(e, "fetching resource")
 ```
 
-**Error Handling:**
+**Step 3: Error Handling Pattern**
 ```python
 def handle_error(e: Exception, context: str = "") -> str:
+    prefix = f"Error {context}: " if context else "Error: "
+    
     if isinstance(e, httpx.HTTPStatusError):
         status = e.response.status_code
         if status == 401:
-            return "Error: Invalid API token. Check .env file."
+            return f"{prefix}Invalid API token. Check .env file."
         elif status == 403:
-            return "Error: Permission denied."
+            return f"{prefix}Permission denied."
         elif status == 404:
-            return "Error: Resource not found."
+            return f"{prefix}Resource not found."
         elif status == 429:
-            return "Error: Rate limited. Wait before retrying."
-    return f"Error: {type(e).__name__}: {str(e)}"
+            return f"{prefix}Rate limited. Wait before retrying."
+        return f"{prefix}HTTP {status}: {e.response.reason_phrase}"
+    
+    return f"{prefix}{type(e).__name__}: {str(e)}"
 ```
 
-## Compiling & Testing
+**Implementation checklist:**
+- [ ] Define Pydantic input model with Field descriptions
+- [ ] Use async httpx.AsyncClient for API calls
+- [ ] Set appropriate tool annotations
+- [ ] Handle errors with actionable messages
+- [ ] Support both JSON and Markdown output formats
+- [ ] Include docstring describing tool purpose
 
-### Running Tests
+## Testing Workflow
 
-**Live API Tests:**
-```bash
-# Run all tests
-uv run pytest tests/ -v
+### Test-First Development Pattern
 
-# Run specific test file
-uv run pytest tests/test_live.py -v
-
-# Run with coverage
-uv run pytest tests/ --cov=. --cov-report=html
-```
-
-**Test Pattern:**
+**1. Write live API tests before implementing tools:**
 ```python
 import pytest
 import httpx
-from config import get_config, get_api_headers
+from config import load_config
 
 @pytest.fixture(scope="module")
 def api_client():
-    config, _ = get_config()
+    config = load_config()
     client = httpx.Client(
         base_url=config.base_url,
-        headers=get_api_headers(config.api_token),
+        headers={"Authorization": f"Bearer {config.api_token}"},
         timeout=30.0,
     )
     yield client
@@ -192,11 +199,16 @@ def test_endpoint(api_client):
     assert isinstance(data, list)
 ```
 
-### Specification Generation
+**2. Run tests:**
+```bash
+uv run pytest tests/ -v                    # All tests
+uv run pytest tests/test_live.py -v        # Specific file
+uv run pytest tests/ --cov=. --cov-report=html  # With coverage
+```
 
-Create a `generate_spec.py` script to verify endpoints and generate documentation:
-
+**3. Generate specification from verified endpoints:**
 ```python
+# generate_spec.py
 async def verify_endpoint(client, method, path, params=None):
     result = {
         "endpoint": path,
@@ -220,85 +232,75 @@ async def verify_endpoint(client, method, path, params=None):
 
 Run: `uv run python generate_spec.py`
 
-### Type Checking & Linting
+**4. Only implement tools for verified endpoints**
+
+### Code Quality Checks
 
 ```bash
-# Type checking
-uv run mypy server.py
-
-# Linting
-uv run ruff check .
-
-# Formatting
-uv run ruff format .
+uv run mypy server.py          # Type checking
+uv run ruff check .            # Linting
+uv run ruff format .           # Formatting
 ```
 
-## Debugging
+## Debugging Workflow
 
-### MCP Inspector
+### Step-by-Step Debugging Process
 
-**Start server with HTTP transport:**
+**1. Test server locally:**
 ```bash
+uv run python server.py
+# Should start without errors (stdio transport)
+```
+
+**2. Use MCP Inspector for interactive testing:**
+```bash
+# Terminal 1: Start server with HTTP transport
 uv run python server.py --transport streamable-http --port 8000
-```
 
-**In another terminal:**
-```bash
+# Terminal 2: Launch Inspector
 npx @modelcontextprotocol/inspector
 ```
-
 Open `http://localhost:8000/mcp` in Inspector to test tools interactively.
 
-### Common Issues
+**3. Verify configuration:**
+```python
+from config import load_config
+config = load_config()
+print(f"Base URL: {config.base_url}")
+print(f"Token: {'*' * 8}...{config.api_token[-4:]}")
+```
+
+**4. Check logs:**
+- Claude Desktop: `~/Library/Logs/Claude/mcp*.log` (macOS)
+- Server stderr output (stdio transport)
+
+### Common Issues & Solutions
 
 **Server not appearing in Claude Desktop:**
-1. Check JSON syntax in `claude_desktop_config.json`
-2. Use absolute paths (not relative)
-3. Restart Claude Desktop completely (Cmd+Q on macOS)
-4. Check logs: `~/Library/Logs/Claude/mcp*.log` (macOS)
+- [ ] Validate JSON syntax in `claude_desktop_config.json`
+- [ ] Use absolute paths (not relative)
+- [ ] Restart Claude Desktop completely (Cmd+Q on macOS, not just close window)
+- [ ] Check MCP logs for startup errors
 
 **401 Unauthorized:**
 - Verify API token in `.env` is valid
 - Token may have expired - regenerate in service settings
+- Check token hasn't been revoked
 
 **403 Forbidden:**
 - Expected for some endpoints with limited permissions
-- Check if account has required role/permissions
+- Verify account has required role/permissions
+- Some endpoints may be instructor-only
 
 **Connection Refused:**
-- Ensure server is running
-- Verify path in config is correct
+- Ensure server process is running
+- Verify path in config is correct and executable
 - Check Python/uv are in PATH
 
 **Rate Limiting (429):**
-- Implement exponential backoff
-- Wait before retrying
-- Check rate limit headers: `X-Rate-Limit-Remaining`
-
-### Debugging Workflow
-
-1. **Test locally first:**
-   ```bash
-   uv run python server.py
-   ```
-
-2. **Use MCP Inspector for interactive testing:**
-   ```bash
-   uv run python server.py --transport streamable-http --port 8000
-   npx @modelcontextprotocol/inspector
-   ```
-
-3. **Check logs:**
-   - Claude Desktop: `~/Library/Logs/Claude/mcp*.log`
-   - Server stderr output (stdio transport)
-
-4. **Verify configuration:**
-   ```python
-   from config import load_config
-   config = load_config()
-   print(f"Base URL: {config.base_url}")
-   print(f"Token: {'*' * 8}...{config.api_token[-4:]}")
-   ```
+- Implement exponential backoff in error handler
+- Wait before retrying (check `Retry-After` header)
+- Monitor rate limit headers: `X-Rate-Limit-Remaining`
 
 ### Transport Options
 
@@ -308,7 +310,7 @@ if __name__ == "__main__":
     mcp.run()  # Uses stdio by default
 ```
 
-**streamable-http (for Inspector):**
+**streamable-http (for Inspector debugging):**
 ```python
 if __name__ == "__main__":
     import argparse
@@ -328,7 +330,7 @@ if __name__ == "__main__":
 
 ## Claude Desktop Integration
 
-**Configuration (`~/Library/Application Support/Claude/claude_desktop_config.json`):**
+**Configuration file (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):**
 ```json
 {
   "mcpServers": {
@@ -346,25 +348,29 @@ if __name__ == "__main__":
 }
 ```
 
-**Important:**
-- Use absolute paths
-- Restart Claude Desktop completely after changes
-- Check logs for errors
+**Integration checklist:**
+- [ ] Use absolute paths (required)
+- [ ] Verify JSON syntax is valid
+- [ ] Restart Claude Desktop completely (Cmd+Q on macOS)
+- [ ] Check logs: `~/Library/Logs/Claude/mcp*.log`
+- [ ] Test tools appear in Claude's tool list
 
-## Best Practices
+## Best Practices Checklist
 
-1. **Test-first approach:** Verify endpoints work before implementing tools
-2. **Type safety:** Use Pydantic for all inputs
-3. **Error handling:** Provide actionable error messages
-4. **Security:** Never commit `.env` files
-5. **Documentation:** Include tool descriptions and parameter docs
-6. **Tool annotations:** Set appropriate hints (readOnlyHint, destructiveHint, etc.)
-7. **Pagination:** Handle pagination for list endpoints
-8. **Rate limiting:** Implement backoff for rate-limited APIs
+- [ ] **Test-first:** Verify endpoints via live API tests before implementing tools
+- [ ] **Type safety:** Use Pydantic BaseModel for all tool inputs with Field descriptions
+- [ ] **Error handling:** Provide actionable error messages with context
+- [ ] **Security:** Never commit `.env` files (add to `.gitignore`)
+- [ ] **Documentation:** Include clear docstrings describing tool purpose and parameters
+- [ ] **Tool annotations:** Set appropriate hints (see patterns below)
+- [ ] **Pagination:** Handle pagination for list endpoints (check Link headers)
+- [ ] **Rate limiting:** Implement exponential backoff for rate-limited APIs
+- [ ] **Response formats:** Support both JSON and Markdown output formats
+- [ ] **Async/await:** Use async httpx.AsyncClient for all HTTP requests
 
-## Tool Annotation Guidelines
+## Tool Annotation Patterns
 
-**Read-only tools:**
+**Read-only tools (GET operations):**
 ```python
 annotations={
     "readOnlyHint": True,
@@ -374,7 +380,7 @@ annotations={
 }
 ```
 
-**Create tools:**
+**Create tools (POST operations):**
 ```python
 annotations={
     "readOnlyHint": False,
@@ -384,7 +390,7 @@ annotations={
 }
 ```
 
-**Update tools:**
+**Update tools (PUT/PATCH operations):**
 ```python
 annotations={
     "readOnlyHint": False,
@@ -394,7 +400,7 @@ annotations={
 }
 ```
 
-**Delete tools:**
+**Delete tools (DELETE operations):**
 ```python
 annotations={
     "readOnlyHint": False,

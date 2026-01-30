@@ -60,7 +60,24 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -e .
 ```
 
-### 3. Configure Credentials
+### 3. Setup worktree (skills and agents)
+
+To run UV-based setup and discover all Cursor skills and agents in this repo:
+
+```bash
+./setup-worktree.sh
+```
+
+Or run only the discovery step (after `uv sync`):
+
+```bash
+uv run setup-worktree
+# or: uv run python scripts/setup_worktree.py
+```
+
+This syncs dependencies, ensures `.env` from `.env.example` if missing, and reports all `.cursor/skills`, `.cursor/agents`, and `agents/` Python agents.
+
+### 4. Configure Credentials
 
 Copy the example environment file:
 ```bash
@@ -83,7 +100,7 @@ CANVAS_BASE_URL=https://texastech.instructure.com
 6. Click **Generate Token**
 7. **Copy the token immediately** — you won't see it again!
 
-### 4. Configure Test Hints (Optional)
+### 5. Configure Test Hints (Optional)
 
 For targeted testing, create `test_hints.json`:
 ```json

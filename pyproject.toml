@@ -37,9 +37,18 @@ dev = [
     "mypy>=1.8.0",
     "ruff>=0.3.0",
 ]
+# Docker / orchestration: AutoGen, LangSmith, agents
+docker = [
+    "autogen-agentchat>=0.3.0",
+    "autogen-ext[openai]>=0.3.0",
+    "openai>=1.0.0",
+    "langsmith>=0.1.0",
+    "langchain>=0.1.0",
+]
 
 [project.scripts]
 canvas-mcp = "server:main"
+setup-worktree = "scripts.setup_worktree:main"
 
 [project.urls]
 Homepage = "https://github.com/sweeden-ttu/canvas-lms-mcp"

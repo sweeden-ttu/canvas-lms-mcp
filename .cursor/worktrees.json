@@ -1,5 +1,22 @@
 {
   "setup-worktree": [
-    "npm install"
-  ]
+    "uv sync --all-extras --dev",
+    "uv run python scripts/setup_worktree.py"
+  ],
+  "canvas-lms-content": {
+    "description": "Canvas LMS content retrieval worktree: skeleton and ToC from course syllabus; fill sections with Canvas MCP and subagents",
+    "steps": [
+      "uv sync --all-extras",
+      "python scripts/docker_orchestrate.py --worktree-canvas ./worktrees/canvas-lms-content --worktree-trustworthy-ai ./worktrees/trustworthy-ai-presentation"
+    ],
+    "agents": ["Canvas MCP", "BayesianOrchestrator", "hypothesis_generator", "evidence_evaluator"]
+  },
+  "trustworthy-ai-presentation": {
+    "description": "Trustworthy AI presentation-generator worktree: skeleton and ToC from presentation topic; fill sections with presentation-generator and subagents; Reveal.js/Mermaid/Markdown",
+    "steps": [
+      "uv sync --all-extras",
+      "python scripts/docker_orchestrate.py --worktree-canvas ./worktrees/canvas-lms-content --worktree-trustworthy-ai ./worktrees/trustworthy-ai-presentation"
+    ],
+    "agents": ["presentation-generator", "BayesianOrchestrator", "jekyll-ui-web-designer", "cs-peer-reviewer-trustworthy-ai"]
+  }
 }

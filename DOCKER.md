@@ -1,6 +1,16 @@
 # Docker Setup for Canvas LMS MCP Server
 
-This document describes how to build and run the Canvas LMS MCP server using Docker with an RPM-based Linux distribution (Fedora).
+This document describes how to build and run the Canvas LMS MCP server using Docker with an RPM-based Linux distribution (Fedora). The image runs **RPM/Python/AutoGen/LangSmith/CanvasMCP agents** and can **instantiate two worktrees**: Canvas LMS content retrieval and Trustworthy AI presentation-generator.
+
+## Two Worktrees and Orchestration
+
+The default command runs **orchestration** (not the MCP server):
+
+1. **Worktree 1 – Canvas LMS content**: Builds a skeleton and table of contents from the course syllabus; fills sections using Canvas MCP and subagents.
+2. **Worktree 2 – Trustworthy AI presentation**: Builds a skeleton and ToC for the presentation topic; fills sections using the presentation-generator and subagents.
+3. **CI/CD plan**: Generates Mermaid + Markdown documentation aligning the Dockerfile with GitHub and GitLab workflows; uses hypothesis_generator and cross-repository evidence_evaluator; updates schema files, skeleton, and ToC for the presentation-generator and BayesianOrchestrator.
+
+To run the **MCP server** instead, pass `server` (or use `http` for HTTP transport). See [Run the Container](#run-the-container).
 
 ## Prerequisites
 
@@ -22,9 +32,31 @@ docker build -t canvas-lms-mcp:latest .
 
 ### Run the Container
 
+**Default: orchestration (two worktrees + CI/CD plan)**  
+```bash
+docker run -it --rm canvas-lms-mcp:latest
+# or explicitly:
+docker run -it --rm canvas-lms-mcp:latest orchestrate
+```
+
+**MCP server (stdio or HTTP)**  
+```bash
+# Stdio transport (for Claude Desktop)
+docker run -it --rm \
+  -v "$(pwd)/.env:/app/.env:ro" \
+  -v "$(pwd)/test_hints.json:/app/test_hints.json:ro" \
+  canvas-lms-mcp:latest server
+
+# HTTP transport (for MCP Inspector)
+docker run -it --rm -p 8000:8000 \
+  -v "$(pwd)/.env:/app/.env:ro" \
+  -v "$(pwd)/test_hints.json:/app/test_hints.json:ro" \
+  canvas-lms-mcp:latest http
+```
+
 **Option 1: Using the run script**
 ```bash
-# Stdio transport (default, for Claude Desktop)
+# Stdio transport (for Claude Desktop)
 ./docker-run.sh
 
 # HTTP transport (for MCP Inspector debugging)
@@ -37,15 +69,13 @@ docker build -t canvas-lms-mcp:latest .
 docker run -it --rm \
   -v "$(pwd)/.env:/app/.env:ro" \
   -v "$(pwd)/test_hints.json:/app/test_hints.json:ro" \
-  canvas-lms-mcp:latest
+  canvas-lms-mcp:latest server
 
 # HTTP transport (for debugging)
-docker run -it --rm \
-  -p 8000:8000 \
+docker run -it --rm -p 8000:8000 \
   -v "$(pwd)/.env:/app/.env:ro" \
   -v "$(pwd)/test_hints.json:/app/test_hints.json:ro" \
-  canvas-lms-mcp:latest \
-  python3 server.py --transport streamable-http --port 8000
+  canvas-lms-mcp:latest http
 ```
 
 **Option 3: Using docker-compose**

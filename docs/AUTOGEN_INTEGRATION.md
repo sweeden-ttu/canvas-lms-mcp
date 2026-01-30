@@ -62,15 +62,19 @@ Microsoft AutoGen enables building multi-agent systems where AI agents collabora
 
 ### 1. Install AutoGen Dependencies
 
+AutoGen 0.3+ uses the `autogen-agentchat` and `autogen-ext` packages (not `pyautogen`). Install as follows:
+
 ```bash
 cd canvas-lms-mcp
 
-# Add AutoGen dependencies
-uv add "pyautogen>=0.3.0" "openai>=1.0.0"
+# AutoGen 0.3+ AgentChat and OpenAI model client
+uv add "autogen-agentchat" "autogen-ext[openai]" "openai>=1.0.0"
 
-# Optional: Add Azure OpenAI support
-uv add "azure-identity>=1.15.0"
+# Optional: Azure OpenAI with AAD
+uv add "autogen-ext[azure]" "azure-identity>=1.15.0"
 ```
+
+Note: If you are on AutoGen 0.2, use `pyautogen` and the legacy `from autogen import ...` API; see the [AutoGen migration guide](https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/migration-guide.html) for 0.2 to 0.3.
 
 ### 2. Configure Environment
 
@@ -99,45 +103,43 @@ GITLAB_PROJECT_ID=your_project_id
 
 ### Create Agent Configuration File
 
-**`autogen_config.py`:**
+**`autogen_config.py`** (AutoGen 0.3+ API using `autogen_agentchat` and `autogen_ext`):
 
 ```python
-"""AutoGen agent configuration for Canvas LMS MCP integration."""
+"""AutoGen agent configuration for Canvas LMS MCP integration (AutoGen 0.3+)."""
 
+import asyncio
 import os
-from autogen import AssistantAgent, UserProxyAgent, GroupChat, GroupChatManager
-from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
+from autogen_agentchat.agents import AssistantAgent, UserProxyAgent
+from autogen_agentchat.conditions import TextMentionTermination
+from autogen_agentchat.teams import RoundRobinGroupChat
+from autogen_ext.models.openai import OpenAIChatCompletionClient
 
-# LLM Configuration
-LLM_CONFIG = {
-    "config_list": [
-        {
-            "model": "gpt-4",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.1,
-    "timeout": 120,
-}
+# Model client for OpenAI (required by AssistantAgent in 0.3+)
+model_client = OpenAIChatCompletionClient(
+    model="gpt-4",
+    api_key=os.getenv("OPENAI_API_KEY"),
+)
 
 # Canvas MCP Agent - Interfaces with Canvas LMS
 canvas_agent = AssistantAgent(
     name="CanvasMCPAgent",
+    model_client=model_client,
     system_message="""You are an expert at interfacing with Canvas LMS via the MCP server.
     You can:
     - List courses and enrollments
     - Retrieve assignments, modules, and grades
     - Fetch announcements and discussion topics
     - Access calendar events and planner items
-    
+
     Use the MCP tools available to query Canvas data. Always format responses
     clearly and handle errors gracefully.""",
-    llm_config=LLM_CONFIG,
 )
 
 # CI/CD Agent - Manages build and deployment pipelines
 cicd_agent = AssistantAgent(
     name="CICDAgent",
+    model_client=model_client,
     system_message="""You are an expert CI/CD engineer specializing in GitHub Actions and GitLab CI.
     You can:
     - Create and modify workflow YAML files
@@ -145,14 +147,14 @@ cicd_agent = AssistantAgent(
     - Set up environment secrets and variables
     - Debug pipeline failures
     - Generate status badges
-    
+
     Follow best practices for CI/CD security and efficiency.""",
-    llm_config=LLM_CONFIG,
 )
 
 # Sync Agent - Synchronizes GitHub and GitLab repositories
 sync_agent = AssistantAgent(
     name="SyncAgent",
+    model_client=model_client,
     system_message="""You are an expert at repository synchronization between GitHub and GitLab.
     You can:
     - Configure bidirectional mirroring
@@ -160,14 +162,14 @@ sync_agent = AssistantAgent(
     - Set up webhooks for real-time synchronization
     - Manage branch protection rules on both platforms
     - Handle large file storage (LFS) synchronization
-    
+
     Ensure data integrity and maintain commit history during sync operations.""",
-    llm_config=LLM_CONFIG,
 )
 
 # Badge Agent - Generates status badges and thumbnails
 badge_agent = AssistantAgent(
     name="BadgeAgent",
+    model_client=model_client,
     system_message="""You are an expert at generating status badges and thumbnails for repositories.
     You can:
     - Create shields.io badge URLs
@@ -175,45 +177,33 @@ badge_agent = AssistantAgent(
     - Configure dynamic badges from CI/CD status
     - Create workflow status badges
     - Design repository thumbnail images
-    
-    Always provide markdown-ready badge code.""",
-    llm_config=LLM_CONFIG,
+
+    Always provide markdown-ready badge code. Reply with TERMINATE when done.""",
 )
 
-# User Proxy Agent - Executes code and interacts with user
-user_proxy = UserProxyAgent(
-    name="UserProxy",
-    human_input_mode="NEVER",
-    max_consecutive_auto_reply=10,
-    is_termination_msg=lambda x: x.get("content", "").rstrip().endswith("TERMINATE"),
-    code_execution_config={
-        "work_dir": "autogen_workspace",
-        "use_docker": False,
-    },
+# User Proxy Agent - Represents the user in the conversation
+user_proxy = UserProxyAgent(name="UserProxy")
+
+# Termination when any agent replies with "TERMINATE"
+termination = TextMentionTermination("TERMINATE")
+
+# Team (replaces GroupChat + GroupChatManager in 0.2)
+team = RoundRobinGroupChat(
+    participants=[user_proxy, canvas_agent, cicd_agent, sync_agent, badge_agent],
+    termination_condition=termination,
+    max_turns=20,
 )
 
 
-def create_group_chat():
-    """Create a group chat with all agents."""
-    group_chat = GroupChat(
-        agents=[user_proxy, canvas_agent, cicd_agent, sync_agent, badge_agent],
-        messages=[],
-        max_round=20,
-    )
-    
-    manager = GroupChatManager(
-        groupchat=group_chat,
-        llm_config=LLM_CONFIG,
-    )
-    
-    return group_chat, manager
+async def run_task_async(task: str):
+    """Run a task using the agent team. Returns TaskResult with messages."""
+    result = await team.run(task=task)
+    return result.messages
 
 
 def run_task(task: str):
-    """Run a task using the agent group."""
-    group_chat, manager = create_group_chat()
-    user_proxy.initiate_chat(manager, message=task)
-    return group_chat.messages
+    """Run a task using the agent team (sync wrapper)."""
+    return asyncio.run(run_task_async(task))
 ```
 
 ### Usage Example
@@ -221,15 +211,15 @@ def run_task(task: str):
 ```python
 from autogen_config import run_task
 
-# Example: Sync repos and generate badges
-result = run_task("""
+# Example: Sync repos and generate badges (run_task returns list of messages)
+messages = run_task("""
     1. Check the current GitHub Actions workflow status
     2. Sync the repository to GitLab
     3. Generate updated status badges for:
        - Build status
        - Test coverage
        - GitLab sync status
-    4. Update the README with the new badges
+    4. Update the README with the new badges. Reply with TERMINATE when done.
 """)
 ```
 
@@ -352,13 +342,13 @@ jobs:
       - name: Install AutoGen dependencies
         run: |
           uv sync
-          uv add pyautogen openai
+          uv add autogen-agentchat "autogen-ext[openai]" openai
 
       - name: Run AutoGen pipeline
         run: |
           uv run python -c "
           from autogen_config import run_task
-          run_task('Generate status report for CI/CD pipeline')
+          run_task('Generate status report for CI/CD pipeline. Reply with TERMINATE when done.')
           "
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -566,24 +556,37 @@ class RepositorySyncAgent:
     async def get_sync_status(self) -> dict:
         """Get current synchronization status."""
         async with httpx.AsyncClient() as client:
-            # Check GitHub
-            github_resp = await client.get(
-                f"{self.github_api}/repos/{self.config.github_repo}/commits/main",
-                headers={"Authorization": f"Bearer {self.config.github_token}"}
-            )
-            github_sha = github_resp.json().get("sha", "unknown")[:7]
-            
-            # Check GitLab
-            gitlab_resp = await client.get(
-                f"{self.config.gitlab_url}/api/v4/projects/{self.config.gitlab_project_id}/repository/commits/main",
-                headers={"PRIVATE-TOKEN": self.config.gitlab_token}
-            )
-            gitlab_sha = gitlab_resp.json().get("id", "unknown")[:7]
-            
+            github_sha = "unknown"
+            gitlab_sha = "unknown"
+            error = None
+
+            try:
+                # Check GitHub
+                github_resp = await client.get(
+                    f"{self.github_api}/repos/{self.config.github_repo}/commits/main",
+                    headers={"Authorization": f"Bearer {self.config.github_token}"},
+                )
+                github_resp.raise_for_status()
+                github_sha = github_resp.json().get("sha", "unknown")[:7]
+            except (httpx.HTTPStatusError, ValueError) as e:
+                error = f"github: {e!s}"
+
+            try:
+                # Check GitLab
+                gitlab_resp = await client.get(
+                    f"{self.config.gitlab_url}/api/v4/projects/{self.config.gitlab_project_id}/repository/commits/main",
+                    headers={"PRIVATE-TOKEN": self.config.gitlab_token},
+                )
+                gitlab_resp.raise_for_status()
+                gitlab_sha = gitlab_resp.json().get("id", "unknown")[:7]
+            except (httpx.HTTPStatusError, ValueError) as e:
+                error = f"{error or ''}; gitlab: {e!s}".lstrip("; ")
+
             return {
                 "github_sha": github_sha,
                 "gitlab_sha": gitlab_sha,
-                "in_sync": github_sha == gitlab_sha,
+                "in_sync": github_sha == gitlab_sha and error is None,
+                "error": error,
             }
     
     def generate_sync_badge(self, in_sync: bool) -> str:

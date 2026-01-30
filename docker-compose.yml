@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  canvas-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: canvas-lms-mcp:latest
+    container_name: canvas-lms-mcp
+    environment:
+      # These can be overridden via .env file or environment variables
+      - CANVAS_API_TOKEN=${CANVAS_API_TOKEN:-}
+      - CANVAS_BASE_URL=${CANVAS_BASE_URL:-https://texastech.instructure.com}
+    volumes:
+      # Mount .env file if it exists
+      - ./.env:/app/.env:ro
+      # Mount test_hints.json if you want to customize it
+      - ./test_hints.json:/app/test_hints.json:ro
+    ports:
+      # Expose port for HTTP transport (MCP Inspector)
+      - "8000:8000"
+    # Use stdio transport by default (for Claude Desktop integration)
+    stdin_open: true
+    tty: true
+    # For HTTP transport, uncomment the following and comment out stdin_open/tty:
+    # command: ["python3", "server.py", "--transport", "streamable-http", "--port", "8000"]
+    restart: unless-stopped
+    networks:
+      - canvas-mcp-network
+
+networks:
+  canvas-mcp-network:
+    driver: bridge

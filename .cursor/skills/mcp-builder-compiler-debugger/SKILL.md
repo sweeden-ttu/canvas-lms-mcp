@@ -107,10 +107,21 @@ class CourseInput(BaseModel):
     response_format: ResponseFormat = Field(default=ResponseFormat.MARKDOWN)
 ```
 
-**Step 2: Implement Tool Function**
+**Step 2: Load Configuration and Implement Tool Function**
+
+**At module level (before tool definitions):**
+```python
+from config import load_env_config, get_api_headers
+
+# Load configuration at startup
+_config = load_env_config()
+```
+
+**Tool function implementation:**
 ```python
 import json
 import httpx
+from config import get_api_headers
 
 @mcp.tool(
     name="get_resource",
@@ -125,7 +136,7 @@ async def get_resource(params: CourseInput) -> str:
     """Get resource description."""
     async with httpx.AsyncClient(
         base_url=_config.base_url,
-        headers={"Authorization": f"Bearer {_config.api_token}"},
+        headers=get_api_headers(_config.api_token),
         timeout=30.0
     ) as client:
         try:
@@ -141,6 +152,22 @@ async def get_resource(params: CourseInput) -> str:
             return format_as_markdown(data)
         except Exception as e:
             return handle_error(e, "fetching resource")
+```
+
+**Alternative: Use helper function for client creation:**
+```python
+def _get_client() -> httpx.AsyncClient:
+    """Create an HTTP client with authentication."""
+    return httpx.AsyncClient(
+        base_url=_config.base_url,
+        headers=get_api_headers(_config.api_token),
+        timeout=30.0,
+    )
+
+async def get_resource(params: CourseInput) -> str:
+    """Get resource description."""
+    async with _get_client() as client:
+        # ... rest of implementation
 ```
 
 **Step 3: Error Handling Pattern**

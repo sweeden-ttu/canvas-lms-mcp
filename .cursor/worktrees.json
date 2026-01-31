@@ -1,5 +1,15 @@
 {
   "mcpSubmodules": [],
+  "review-changes": {
+    "description": "Required step after any change set: evaluate step-by-step instructions, perform peer review (e.g. cs-peer-reviewer-trustworthy-ai), attempt reproduction, and accept or reject the premise. Never use synthetic/mock/dummy data; use hypothesis + experiment + evidence instead.",
+    "steps": [
+      "Evaluate the step-by-step instructions that were followed",
+      "Perform peer review of the changes",
+      "Attempt to reproduce the results (re-run tests, re-fetch data, re-build)",
+      "Accept premise if reproduction succeeds and no synthetic/mock/dummy data; otherwise reject and revert or rewrite"
+    ],
+    "agents": ["cs-peer-reviewer-trustworthy-ai", "evidence_evaluator", "BayesianOrchestrator"]
+  },
   "setup-worktree": [
     "uv sync --all-extras --dev",
     "uv run python scripts/setup_worktree.py"

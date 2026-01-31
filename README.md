@@ -111,6 +111,35 @@ For targeted testing, create `test_hints.json`:
 }
 ```
 
+### 6. MCP submodules (optional)
+
+Additional MCP servers can be added as **git submodules** under the `mcp/` folder. From the repo root, run:
+
+```bash
+./scripts/add_mcp_submodule.sh
+# or: uv run python scripts/add_mcp_submodule.py
+```
+
+The script will prompt for a GitHub source URL, then:
+
+1. Add the repo as a submodule under `mcp/<repo-name>`
+2. Clone and sync submodules recursively
+3. Register the MCP server in Cursor project settings (`.cursor/mcp.json`)
+4. Integrate the server into `docs/MCP_SUBMODULES.md` and `.cursor/worktrees.json`
+
+Enter `q` to quit the loop. After cloning the main repo, run `git submodule update --init --recursive` to fetch all submodules. See `mcp/README.md` for details.
+
+### 7. Evaluate MCP command usefulness (optional)
+
+Once an MCP server is added and its commands have been inferred and documented (e.g. in `.cursor/mcp.json` and `docs/MCP_SUBMODULES.md`), evaluate the usefulness of each command for the following tasks:
+
+- **Canvas content**: Retrieving files from Canvas; reviewing and indexing existing course content; extracting topics, lectures, and examples.
+- **Documentation and examples**: Retrieving and crawling documentation and examples online that can enhance existing skills, agents, and features.
+- **Presentations and orchestration**: Enhancing the Reveal.js presentation or improving the BayesianOrchestrator with new skills and subagent tasks.
+- **Cross-MCP and schema**: Leveraging other MCP servers in the worktree and workflow; designing improved schema files; and updating templates to use new MCP server functionality.
+
+Use this evaluation to prioritize which commands to wire into worktrees, skills, and agents, and to keep schema and templates aligned with available MCP tools.
+
 ---
 
 ## Running the Server

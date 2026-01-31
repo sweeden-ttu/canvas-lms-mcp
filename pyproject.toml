@@ -39,10 +39,26 @@ dev = [
     "mypy>=1.8.0",
     "ruff>=0.3.0",
 ]
+# Docker / orchestration: AutoGen, LangSmith, agents
+docker = [
+    "autogen-agentchat>=0.3.0",
+    "autogen-ext[openai]>=0.3.0",
+    "openai>=1.0.0",
+    "langsmith>=0.1.0",
+    "langchain>=0.1.0",
+]
+# Embeddings pipeline: deep-dive and expert MCP integration (see docs/EMBEDDINGS_AND_PROMPTS_PLAN.md)
+embed = [
+    "sentence-transformers>=2.2.0",
+    "openai>=1.0.0",
+]
 
 [project.scripts]
 canvas-mcp = "server:main"
 canvas-orchestrator = "orchestrator:main"
+setup-worktree = "scripts.setup_worktree:main"
+embed-docs = "scripts.embed_docs:main"
+embed-mcp-server = "scripts.embed_mcp_server:main"
 
 [project.urls]
 Homepage = "https://github.com/sweeden-ttu/canvas-lms-mcp"

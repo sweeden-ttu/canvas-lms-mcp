@@ -1,20 +1,23 @@
-# Use Fedora 39 (RPM-based) as base image
-# Fedora 39 includes Python 3.12, which meets the >=3.10 requirement
-# Alternative: Use Rocky Linux 9 and install Python 3.11+ from EPEL or build from source
+# Canvas LMS MCP - RPM/Python/AutoGen/LangSmith/CanvasMCP agents + two worktrees
+# Worktree 1: Canvas LMS content retrieval (skeleton/ToC from syllabus)
+# Worktree 2: Trustworthy AI presentation-generator (skeleton/ToC from topic)
+# Orchestration: hypothesis_generator, evidence_evaluator, CI/CD plan (Mermaid/Markdown),
+# log-driven error fixes, Dockerfile/GitHub/GitLab alignment, schema/skeleton/ToC updates.
+
 FROM fedora:39
 
-# Set maintainer
 LABEL maintainer="Scott Weeden <sweeden@ttu.edu>"
-LABEL description="Canvas LMS MCP Server - RPM-based container"
+LABEL description="Canvas LMS MCP - RPM/Python/AutoGen/LangSmith/agents, two worktrees"
 
-# Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    UV_SYSTEM_PYTHON=1
+    UV_SYSTEM_PYTHON=1 \
+    LANGCHAIN_TRACING_V2="${LANGCHAIN_TRACING_V2:-false}" \
+    LANGCHAIN_PROJECT="${LANGCHAIN_PROJECT:-canvas-lms-mcp-docker}"
 
-# Install system dependencies required for Python and uv
+# System deps: Python, uv, git (for worktrees), build tools
 RUN dnf -y update && \
     dnf -y install \
         python3 \
@@ -29,56 +32,71 @@ RUN dnf -y update && \
         git \
         ca-certificates \
         && \
-    dnf clean all && \
-    rm -rf /var/cache/dnf
+    dnf clean all && rm -rf /var/cache/dnf
 
-# Verify Python version (should be 3.12+ on Fedora 39)
 RUN python3 --version && python3 -m pip --version
 
-# Install uv package manager
+# Install uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
-    mv /root/.cargo/bin/uv /usr/local/bin/uv && \
-    chmod +x /usr/local/bin/uv
+    mv /root/.cargo/bin/uv /usr/local/bin/uv && chmod +x /usr/local/bin/uv
 
-# Verify installations
-RUN python3 --version && \
-    uv --version
+RUN python3 --version && uv --version
 
-# Create app directory
 WORKDIR /app
 
-# Copy dependency files first (for better layer caching)
+# Dependency and project metadata first (cache)
 COPY pyproject.toml ./
 COPY README.md ./
 
-# Install Python dependencies using uv
-RUN uv pip install --system \
-    "mcp[cli]>=1.2.0" \
-    "httpx>=0.27.0" \
-    "python-dotenv>=1.0.0" \
-    "pydantic>=2.0.0"
+# Install base + dev + docker (AutoGen, LangSmith) with uv; optional embed extra for embeddings pipeline
+RUN uv pip install --system -e ".[dev,docker]" 2>/dev/null || \
+    uv pip install --system \
+        "mcp[cli]>=1.2.0" \
+        "httpx>=0.27.0" \
+        "python-dotenv>=1.0.0" \
+        "pydantic>=2.0.0" \
+        "pytest>=8.0.0" \
+        "pytest-asyncio>=0.23.0" \
+        "pytest-cov>=4.0.0" \
+        "mypy>=1.8.0" \
+        "ruff>=0.3.0" \
+        "autogen-agentchat" \
+        "autogen-ext[openai]" \
+        "openai>=1.0.0" \
+        "langsmith" \
+        "langchain"
+RUN uv pip install --system -e ".[embed]" 2>/dev/null || true
 
-# Copy project files
+# Application and agents
 COPY config.py ./
 COPY server.py ./
 COPY generate_spec.py ./
 COPY test_hints.json* ./
-
-# Copy tests directory (comment out if tests/ doesn't exist)
 COPY tests/ ./tests/
+COPY agents/ ./agents/
+COPY scripts/ ./scripts/
+COPY setup-worktree.sh ./
+COPY docs/ ./docs/
+# Embeddings pipeline: .cursor/embeddings, .cursor/prompts (see docs/EMBEDDINGS_AND_PROMPTS_PLAN.md)
+COPY .cursor/ .cursor/
 
-# Set up non-root user for security
-RUN useradd -m -u 1000 appuser && \
-    chown -R appuser:appuser /app
+# Two worktree roots (logical workspaces; git worktrees created at runtime if repo is mounted)
+ENV WORKTREE_CANVAS="/app/worktrees/canvas-lms-content" \
+    WORKTREE_TRUSTWORTHY_AI="/app/worktrees/trustworthy-ai-presentation"
 
-# Switch to non-root user
+RUN mkdir -p /app/worktrees/canvas-lms-content /app/worktrees/trustworthy-ai-presentation && \
+    chmod +x /app/setup-worktree.sh 2>/dev/null || true
+
+# Non-root user
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+
+# Orchestration entrypoint: run worktrees + CI/CD plan; fallback to server
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh && chown appuser /docker-entrypoint.sh
+
 USER appuser
 
-# Expose port for HTTP transport (if used)
 EXPOSE 8000
 
-# Default command - run server with stdio transport
-CMD ["python3", "server.py"]
-
-# For HTTP transport debugging, use:
-# CMD ["python3", "server.py", "--transport", "streamable-http", "--port", "8000"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["orchestrate"]

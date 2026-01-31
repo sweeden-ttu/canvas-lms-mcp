@@ -312,6 +312,12 @@ claude mcp add canvas_mcp -- /path/to/canvas-lms-mcp/.venv/bin/python /path/to/c
 
 ---
 
+## MCP submodules
+
+Additional MCP servers can be added as git submodules under `mcp/`. Run `./scripts/add_mcp_submodule.sh` (or `uv run python scripts/add_mcp_submodule.py`) and enter a GitHub repo URL when prompted. The script adds the submodule under `mcp/<repo-name>`, runs `git submodule update --init --recursive`, updates `.cursor/mcp.json` for Cursor project settings, and integrates the server into `docs/MCP_SUBMODULES.md` and `.cursor/worktrees.json`. Enter `q` to quit the loop.
+
+---
+
 ## Project Structure
 
 ```
@@ -328,6 +334,10 @@ canvas-lms-mcp/
 ├── verified_canvas_spec.json # Generated specification (auto-generated)
 ├── generate_spec.py          # Specification generator
 ├── server.py                 # MCP Server implementation
+├── mcp/                      # Git submodules for other MCP servers
+│   └── README.md
+├── .cursor/
+│   └── mcp.json              # Cursor MCP project settings (updated by add_mcp_submodule)
 └── tests/
     └── test_canvas_live.py   # Live API tests
 ```

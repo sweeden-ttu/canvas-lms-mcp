@@ -60,7 +60,24 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -e .
 ```
 
-### 3. Configure Credentials
+### 3. Setup worktree (skills and agents)
+
+To run UV-based setup and discover all Cursor skills and agents in this repo:
+
+```bash
+./setup-worktree.sh
+```
+
+Or run only the discovery step (after `uv sync`):
+
+```bash
+uv run setup-worktree
+# or: uv run python scripts/setup_worktree.py
+```
+
+This syncs dependencies, ensures `.env` from `.env.example` if missing, and reports all `.cursor/skills`, `.cursor/agents`, and `agents/` Python agents.
+
+### 4. Configure Credentials
 
 Copy the example environment file:
 ```bash
@@ -83,7 +100,7 @@ CANVAS_BASE_URL=https://texastech.instructure.com
 6. Click **Generate Token**
 7. **Copy the token immediately** — you won't see it again!
 
-### 4. Configure Test Hints (Optional)
+### 5. Configure Test Hints (Optional)
 
 For targeted testing, create `test_hints.json`:
 ```json
@@ -93,6 +110,52 @@ For targeted testing, create `test_hints.json`:
   "test_module_id": null
 }
 ```
+
+### 6. MCP submodules (optional)
+
+Additional MCP servers can be added as **git submodules** under the `mcp/` folder. From the repo root, run:
+
+```bash
+./scripts/add_mcp_submodule.sh
+# or: uv run python scripts/add_mcp_submodule.py
+```
+
+The script will prompt for a GitHub source URL, then:
+
+1. Add the repo as a submodule under `mcp/<repo-name>`
+2. Clone and sync submodules recursively
+3. Register the MCP server in Cursor project settings (`.cursor/mcp.json`)
+4. Integrate the server into `docs/MCP_SUBMODULES.md` and `.cursor/worktrees.json`
+
+Enter `q` to quit the loop. After cloning the main repo, run `git submodule update --init --recursive` to fetch all submodules. See `mcp/README.md` for details.
+
+### 7. Evaluate MCP command usefulness (optional)
+
+Once an MCP server is added and its commands have been inferred and documented (e.g. in `.cursor/mcp.json` and `docs/MCP_SUBMODULES.md`), evaluate the usefulness of each command for the following tasks:
+
+- **Canvas content**: Retrieving files from Canvas; reviewing and indexing existing course content; extracting topics, lectures, and examples.
+- **Documentation and examples**: Retrieving and crawling documentation and examples online that can enhance existing skills, agents, and features.
+- **Presentations and orchestration**: Enhancing the Reveal.js presentation or improving the BayesianOrchestrator with new skills and subagent tasks.
+- **Cross-MCP and schema**: Leveraging other MCP servers in the worktree and workflow; designing improved schema files; and updating templates to use new MCP server functionality.
+
+Use this evaluation to prioritize which commands to wire into worktrees, skills, and agents, and to keep schema and templates aligned with available MCP tools.
+
+### 8. No synthetic, mock, or dummy data; review-changes step (required)
+
+Evidence evaluators, examples, templates, and presentations must **never** use "synthetic", "mock", or "dummy" data. Whenever such fake data would be introduced:
+
+1. **Hypothesis**: State a testable hypothesis for what real data or behavior is needed.
+2. **Planned experiment**: Define a concrete experiment (e.g. live API call, real course content, real documentation fetch) to obtain or validate real data.
+3. **Evaluate evidence and results**: Run the experiment, collect evidence, and update beliefs (e.g. via BayesianOrchestrator); use the resulting real data in examples, templates, and presentations.
+
+**Review-changes step**: Every change set must include a **review-changes** step that:
+
+- Evaluates the step-by-step instructions that were followed
+- Performs a peer review of the changes (e.g. via cs-peer-reviewer-trustworthy-ai or equivalent)
+- Attempts to reproduce the results (run the same steps and verify outcomes)
+- **Accepts** the premise (and keeps the change) if reproduction succeeds and no synthetic/mock/dummy data was introduced, or **rejects** the premise (and reverts or rewrites) if mock/synthetic data would have been used or results cannot be reproduced
+
+This is enforced as a project-wide rule in `.cursor/rules/`; see that rule for full wording.
 
 ---
 

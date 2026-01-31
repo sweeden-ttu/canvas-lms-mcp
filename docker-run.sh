@@ -24,12 +24,11 @@ if [ "$TRANSPORT" = "http" ]; then
         -p 8000:8000 \
         -v "$(pwd)/.env:/app/.env:ro" \
         -v "$(pwd)/test_hints.json:/app/test_hints.json:ro" \
-        canvas-lms-mcp:latest \
-        python3 server.py --transport streamable-http --port 8000
+        canvas-lms-mcp:latest http
 else
     echo "Running Canvas LMS MCP server with stdio transport..."
     docker run -it --rm \
         -v "$(pwd)/.env:/app/.env:ro" \
         -v "$(pwd)/test_hints.json:/app/test_hints.json:ro" \
-        canvas-lms-mcp:latest
+        canvas-lms-mcp:latest server
 fi

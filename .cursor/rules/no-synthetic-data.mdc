@@ -1,0 +1,53 @@
+---
+description: Never use synthetic, mock, or dummy data; use hypothesis + experiment + evidence instead; always include a review-changes step that peer-reviews and reproduces results and accepts or rejects premises.
+alwaysApply: true
+---
+
+# No Synthetic, Mock, or Dummy Data (Global Rule)
+
+## Scope
+
+This rule applies to **all** work in this project: evidence evaluators, examples, templates, presentations, tests, documentation, and any code or content that could introduce fake data.
+
+## Prohibited
+
+- **Synthetic data**: Artificially generated data that is not from a real source (e.g. fabricated API responses, generated user records).
+- **Mock data**: Placeholder or fake data used to simulate behavior (e.g. mock objects returning hardcoded values, mock APIs with fake JSON).
+- **Dummy data**: Filler data (e.g. "foo", "test@example.com", "Sample User") used in examples, templates, or presentations instead of real or experiment-derived data.
+
+Do **not** use synthetic, mock, or dummy data in evidence evaluators, examples, templates, presentations, or tests. If you find such data, do not leave it in place; replace it using the process below.
+
+## Required alternative: Hypothesis, experiment, evidence
+
+Whenever fake data would be introduced:
+
+1. **Hypothesis**: State a testable hypothesis for what real data or behavior is needed (e.g. "Canvas API returns assignments in this shape").
+2. **Planned experiment**: Define a concrete experiment to obtain or validate real data (e.g. call the live Canvas API, fetch real course content, crawl real documentation).
+3. **Evaluate evidence and results**: Run the experiment, collect evidence, and update beliefs (e.g. via BayesianOrchestrator or EvidenceEvaluatorAgent). Use the resulting **real** data in examples, templates, and presentations.
+
+Prefer live/verified endpoints, real course IDs from `test_hints.json`, and real documentation URLs. If real data cannot be obtained (e.g. no API key), document the gap and the minimal experiment that would be run; do not substitute mock/synthetic/dummy data.
+
+## Required: review-changes step
+
+Every change set (PR, commit batch, or delivered task) must include a **review-changes** step that:
+
+1. **Evaluates step-by-step instructions**: Review the instructions that were followed and confirm they do not rely on synthetic/mock/dummy data.
+2. **Performs peer review**: Apply a peer review (e.g. via the cs-peer-reviewer-trustworthy-ai skill or equivalent) to the changes.
+3. **Attempts reproduction**: Run the same steps in a clean environment and verify outcomes (e.g. re-run tests, re-fetch data, re-build presentation).
+4. **Accept or reject premise**:
+   - **Accept**: If reproduction succeeds and no synthetic/mock/dummy data was introduced, accept the premise and keep the change.
+   - **Reject**: If mock/synthetic/dummy data would have been used or results cannot be reproduced, reject the premise and revert or rewrite the change so that real data and reproducible evidence are used instead.
+
+Do not merge or finalize changes without completing the review-changes step and either accepting or explicitly rejecting the premise.
+
+## When you find fake data
+
+If you discover existing synthetic, mock, or dummy data in the codebase:
+
+1. Do not add more; do not leave it as-is in new code.
+2. Generate a hypothesis for what real data is needed.
+3. Propose (or run) a planned experiment to obtain that data.
+4. Replace the fake data with real data or with a documented placeholder that references the experiment (e.g. "TODO: populate from live API per experiment X").
+5. Add or complete a review-changes step: evaluate instructions, peer review, reproduce, and accept or reject the premise.
+
+This rule is project-wide and applies to all agents, skills, worktrees, and contributors.

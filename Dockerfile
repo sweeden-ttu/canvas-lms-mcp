@@ -48,7 +48,7 @@ WORKDIR /app
 COPY pyproject.toml ./
 COPY README.md ./
 
-# Install base + dev + docker (AutoGen, LangSmith) with uv
+# Install base + dev + docker (AutoGen, LangSmith) with uv; optional embed extra for embeddings pipeline
 RUN uv pip install --system -e ".[dev,docker]" 2>/dev/null || \
     uv pip install --system \
         "mcp[cli]>=1.2.0" \
@@ -62,6 +62,7 @@ RUN uv pip install --system -e ".[dev,docker]" 2>/dev/null || \
         "openai>=1.0.0" \
         "langsmith" \
         "langchain"
+RUN uv pip install --system -e ".[embed]" 2>/dev/null || true
 
 # Application and agents
 COPY config.py ./
@@ -72,6 +73,9 @@ COPY tests/ ./tests/
 COPY agents/ ./agents/
 COPY scripts/ ./scripts/
 COPY setup-worktree.sh ./
+COPY docs/ ./docs/
+# Embeddings pipeline: .cursor/embeddings, .cursor/prompts (see docs/EMBEDDINGS_AND_PROMPTS_PLAN.md)
+COPY .cursor/ .cursor/
 
 # Two worktree roots (logical workspaces; git worktrees created at runtime if repo is mounted)
 ENV WORKTREE_CANVAS="/app/worktrees/canvas-lms-content" \

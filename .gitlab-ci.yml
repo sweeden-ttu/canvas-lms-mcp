@@ -1,0 +1,108 @@
+# GitLab CI/CD: build, test, embeddings pipeline, agent review
+# Aligns with docs/EMBEDDINGS_AND_PROMPTS_PLAN.md and .cursor/worktrees.json review-changes
+
+stages:
+  - build
+  - test
+  - embeddings
+  - agent-review
+
+variables:
+  PYTHON_VERSION: "3.11"
+  UV_CACHE_DIR: ".uv-cache"
+
+# ============================================
+# Build
+# ============================================
+build:
+  stage: build
+  image: python:3.11-bookworm
+  before_script:
+    - pip install uv
+    - uv sync --all-extras --dev
+  script:
+    - uv run ruff check .
+    - uv run mypy server.py --ignore-missing-imports || true
+  artifacts:
+    paths:
+      - .venv/
+      - .uv-cache/
+    expire_in: 1 hour
+
+# ============================================
+# Test
+# ============================================
+test:
+  stage: test
+  image: python:3.11-bookworm
+  dependencies:
+    - build
+  before_script:
+    - pip install uv
+    - uv sync --all-extras --dev
+  script:
+    - uv run pytest tests/ -v --tb=short
+  variables:
+    CANVAS_API_TOKEN: $CANVAS_API_TOKEN
+    CANVAS_BASE_URL: $CANVAS_BASE_URL
+
+# ============================================
+# Embeddings pipeline
+# ============================================
+embeddings:
+  stage: embeddings
+  image: python:3.11-bookworm
+  dependencies: []
+  before_script:
+    - pip install uv
+    - uv sync --all-extras --dev
+    - uv pip install -e ".[embed]" 2>/dev/null || true
+  script:
+    - uv run python scripts/embed_docs.py
+    - |
+      for dir in mcp/*/; do
+        [ -d "$dir" ] || continue
+        name=$(basename "$dir")
+        uv run python scripts/embed_mcp_server.py "$name" 2>/dev/null || true
+      done
+  artifacts:
+    paths:
+      - .cursor/embeddings/
+      - .cursor/prompts/
+    expire_in: 1 week
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - changes:
+        - docs/**/*
+        - .cursor/skills/**/*
+        - .cursor/agents/**/*
+        - .cursor/rules/**/*
+        - .cursor/worktrees.json
+        - scripts/embed_docs.py
+        - scripts/embed_mcp_server.py
+        - mcp/**/*
+    - when: manual
+
+# ============================================
+# Agent review (review-changes step)
+# ============================================
+agent-review:
+  stage: agent-review
+  image: python:3.11-bookworm
+  dependencies:
+    - build
+  before_script:
+    - pip install uv
+    - uv sync --all-extras --dev
+  script:
+    - uv run pytest tests/ -v --tb=short
+    - |
+      echo "Agent review checklist (see docs/AGENT_REVIEWS.md):"
+      echo "  1. Evaluate step-by-step instructions"
+      echo "  2. Peer review (cs-peer-reviewer-trustworthy-ai, evidence_evaluator)"
+      echo "  3. Reproduce (re-run tests, re-fetch data, re-build)"
+      echo "  4. Accept or reject premise (no synthetic/mock/dummy data)"
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - when: manual

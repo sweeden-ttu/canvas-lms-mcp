@@ -14,6 +14,25 @@ case "${1:-orchestrate}" in
   http)
     exec python3 /app/server.py --transport streamable-http --port 8000 "${@:2}"
     ;;
+  embed)
+    if command -v uv >/dev/null 2>&1; then
+      cd /app && uv sync --all-extras 2>/dev/null || true
+      uv run python3 /app/scripts/embed_docs.py
+      for dir in /app/mcp/*/; do
+        [ -d "$dir" ] || continue
+        name=$(basename "$dir")
+        uv run python3 /app/scripts/embed_mcp_server.py "$name" 2>/dev/null || true
+      done
+    else
+      python3 /app/scripts/embed_docs.py
+      for dir in /app/mcp/*/; do
+        [ -d "$dir" ] || continue
+        name=$(basename "$dir")
+        python3 /app/scripts/embed_mcp_server.py "$name" 2>/dev/null || true
+      done
+    fi
+    exit 0
+    ;;
   orchestrate|"")
     # Run UV-based setup (skills/agents discovery)
     if command -v uv >/dev/null 2>&1; then

@@ -29,10 +29,11 @@ build/
 .gitignore
 .gitattributes
 
-# Documentation
-docs/
+# Documentation (README and docs/ copied for embeddings pipeline)
 *.md
 !README.md
+!docs/
+!docs/*.md
 
 # Tests (optional - uncomment if you don't want tests in image)
 # tests/
@@ -46,12 +47,9 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Cursor specific
-.cursor/
+# Cursor: .cursor/ is copied for embeddings pipeline (embed_docs, embed_mcp_server, prompts)
+# activate/ (venv) not needed in container
 activate/
-
-# Skills directory (not needed in container)
-.cursor/skills/
 
 # Duplicate skills directory
 skills/

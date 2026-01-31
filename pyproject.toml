@@ -81,3 +81,9 @@ indent-style = "space"
 # Point Pyright/Pylance at the project virtual environment so imports like httpx resolve
 venvPath = "."
 venv = ".venv"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+]

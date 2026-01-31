@@ -96,6 +96,16 @@ For targeted testing, create `test_hints.json`:
 
 ---
 
+## Setup and CI/CD
+
+For full setup steps, GitHub Actions, GitLab CI/CD, and running the MCP server in Podman, see **[docs/SETUP_AND_CICD.md](docs/SETUP_AND_CICD.md)**. It covers:
+
+- Local setup and dependencies
+- Unit and live tests (`tests/test_config_unit.py`, `tests/test_server_unit.py`, `tests/test_canvas_live.py`)
+- GitHub Actions (`.github/workflows/autogen-ci.yml`) and GitLab CI (`.gitlab-ci.yml`)
+- Running the Canvas MCP server in Podman: `./scripts/run_canvas_mcp_podman.sh`
+- Reproducing CI failures with Podman (see [docs/PODMAN_RUNNER.md](docs/PODMAN_RUNNER.md))
+
 ## Running the Server
 
 ### Option A: Direct Execution (Testing)
@@ -316,12 +326,17 @@ canvas-lms-mcp/
 ### Running Tests
 
 ```bash
-# Run all tests
-uv run pytest tests/ -v
+# Run all tests (unit + live; requires .env for full run)
+uv run python -m pytest tests/ -v --tb=short
+
+# Config-only unit tests (no .env required)
+uv run python -m pytest tests/test_config_unit.py -v
 
 # Run with coverage
-uv run pytest tests/ --cov=. --cov-report=html
+uv run python -m pytest tests/ --cov=. --cov-report=html
 ```
+
+Unit tests: `tests/test_config_unit.py` (config, headers, test hints), `tests/test_server_unit.py` (format, error handling, input models, tool registration). Live API tests: `tests/test_canvas_live.py`.
 
 ### Generating the Specification
 
@@ -385,6 +400,8 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ## Integration Documentation
 
+- **Setup and CI/CD**: [docs/SETUP_AND_CICD.md](docs/SETUP_AND_CICD.md) – local setup, GitHub/GitLab CI/CD, Podman MCP server
+- **MCP servers for course content**: [docs/MCP_SERVERS_COURSE_CONTENT.md](docs/MCP_SERVERS_COURSE_CONTENT.md) – other Canvas MCP servers, syllabus/module/file extraction, [schema/syllabus_schema.json](schema/syllabus_schema.json)
 - **Kiro CLI Integration**: See installation instructions above for Kiro CLI setup
 - **Claude Desktop Integration**: See [CLAUDE.md](CLAUDE.md) for detailed Claude Desktop setup
 - **Amazon Q CLI Integration**: See [QCHAT_INTEGRATION.md](QCHAT_INTEGRATION.md) for Q CLI setup

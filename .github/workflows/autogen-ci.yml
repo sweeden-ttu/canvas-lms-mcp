@@ -70,6 +70,9 @@ jobs:
           CANVAS_API_TOKEN: ${{ secrets.CANVAS_API_TOKEN }}
           CANVAS_BASE_URL: ${{ secrets.CANVAS_BASE_URL }}
 
+      - name: Run validation pipelines
+        run: uv run python pipelines/run_pipelines.py
+
   # ============================================
   # Log review + Podman reproduce (one pod per job, self-hosted runner)
   # See docs/PODMAN_RUNNER.md for setting up a runner with label "podman".

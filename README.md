@@ -585,9 +585,24 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ---
 
+## Validation Pipelines
+
+Content, link, and news validation with LangChain/LangSmith integration:
+
+```bash
+uv run python pipelines/run_pipelines.py
+```
+
+See [docs/VALIDATION_PIPELINES.md](docs/VALIDATION_PIPELINES.md).
+
+## Jekyll Site
+
+Proposal and project plan (aligned with CS5374 syllabus): [jekyll_site/](jekyll_site/). Topics and timing follow course modules in `course_content/CS5374-Spring2026/`.
+
 ## Integration Documentation
 
 - **Setup and CI/CD**: [docs/SETUP_AND_CICD.md](docs/SETUP_AND_CICD.md) – local setup, GitHub/GitLab CI/CD, Podman MCP server
+- **Validation Pipelines**: [docs/VALIDATION_PIPELINES.md](docs/VALIDATION_PIPELINES.md) – content, link, news validation, LangSmith tracing
 - **MCP servers for course content**: [docs/MCP_SERVERS_COURSE_CONTENT.md](docs/MCP_SERVERS_COURSE_CONTENT.md) – other Canvas MCP servers, syllabus/module/file extraction, [schema/syllabus_schema.json](schema/syllabus_schema.json)
 - **Kiro CLI Integration**: See installation instructions above for Kiro CLI setup
 - **Claude Desktop Integration**: See [CLAUDE.md](CLAUDE.md) for detailed Claude Desktop setup

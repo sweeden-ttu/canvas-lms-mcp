@@ -1,0 +1,98 @@
+{
+  "course_id": 70713,
+  "course_name": "Spring 2026 TTU Software Verification and Validation (CS-5374-D01) Full Term",
+  "syllabus_file": "syllabus.html",
+  "mediasite_lectures": "https://engrmediacast.ttu.edu/Mediasite/Channel/96542-cs5374-d01-namin-spring-2026/browse/null/most-recent/null/0/null",
+  "modules": [
+    {
+      "name": "Video Channel",
+      "folder": "01_Video_Channel",
+      "items": [
+        {
+          "title": "My Mediasite Quick Steps 25-26.pdf",
+          "file": "My Mediasite Quick Steps 25-26.pdf"
+        },
+        {
+          "title": "Video Channel",
+          "url": "https://engrmediacast.ttu.edu/Mediasite/Channel/96542-cs5374-d01-namin-spring-2026"
+        }
+      ]
+    },
+    {
+      "name": "Outline + Syllabus",
+      "folder": "02_Outline_Syllabus",
+      "items": [
+        {
+          "title": "CS5374-SoftwareVerificationandValidation-TTU-CS-Spring2026.pdf",
+          "file": "CS5374-SoftwareVerificationandValidation-TTU-CS-Spring2026.pdf"
+        }
+      ]
+    },
+    {
+      "name": "Lecture Notes : Software Testing",
+      "folder": "03_Lecture_Notes_Software_Testing",
+      "items": [
+        {
+          "title": "Introduction to Testing.pdf",
+          "file": "Introduction to Testing.pdf"
+        }
+      ]
+    },
+    {
+      "name": "LangSmith Tutorial + Hands-On Experiences",
+      "folder": "04_LangSmith_Tutorial_1",
+      "items": [
+        {
+          "title": "v0.1_LangSmith_Setup_Instructions-v1.pdf",
+          "file": "v0.1_LangSmith_Setup_Instructions-v1.pdf"
+        }
+      ]
+    },
+    {
+      "name": "LangSmith Tutorial + Hands-On Experiences",
+      "folder": "05_LangSmith_Tutorial_2",
+      "items": [
+        {
+          "title": "v0.1_LangSmith_Setup_Instructions-v1.pdf",
+          "file": "v0.1_LangSmith_Setup_Instructions-v1.pdf"
+        },
+        {
+          "title": "langsmith.zip",
+          "file": "langsmith.zip"
+        }
+      ]
+    },
+    {
+      "name": "OpenSource Tools for Testing/Debugging AI/LLM/RL",
+      "folder": "06_OpenSource_Tools_AI_LLM_RL",
+      "items": [
+        {
+          "title": "Collection_of_frameworks_tools_projects.pdf",
+          "file": "Collection_of_frameworks_tools_projects.pdf"
+        }
+      ]
+    },
+    {
+      "name": "LangGraph - Hands on Experiences #1",
+      "folder": "07_LangGraph_Hands_On",
+      "items": [
+        {
+          "title": "LangGraph - Example 1.pdf",
+          "file": "LangGraph - Example 1.pdf"
+        },
+        {
+          "title": "LangGraph-Handson 1 Output.png",
+          "file": "LangGraph-Handson 1 Output.png"
+        },
+        {
+          "title": "LangGraph_HandsOn - 1 Instruction.pdf",
+          "file": "LangGraph_HandsOn - 1 Instruction.pdf"
+        },
+        {
+          "title": "langgraph_demo1.py",
+          "file": "langgraph_demo1.py"
+        }
+      ]
+    }
+  ]
+}

@@ -230,6 +230,9 @@ $RECYCLE.BIN/
 # Project Specific
 # ============================================
 
+# Downloaded course content
+course_content/
+
 # Test outputs and temporary files
 test_results/
 *.log

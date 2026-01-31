@@ -66,10 +66,8 @@ class PerceptronFeatureExtractor:
         features = self.extract_features(content).reshape(1, -1)
         if not self.is_fitted or features.shape[1] == 0:
             return 0.0
-        try:
-            return float(self.perceptron.decision_function(features)[0])
-        except Exception:
-            return 0.0
+        proba = self.perceptron.predict_proba(features)[0]
+        return float(np.max(proba))
 
     def save(self, path: Path) -> None:
         """Save model to disk."""

@@ -131,6 +131,7 @@ class RLContextBuilder:
             next_actions = [
                 f"add_module_{m['id']}"
                 for m in course_content.get("modules", [])
+                if m["id"] not in added_module_ids
             ]
 
             self.update_q_value(state, action, reward, next_state, next_actions)

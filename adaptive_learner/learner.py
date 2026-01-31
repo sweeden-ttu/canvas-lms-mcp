@@ -28,18 +28,21 @@ class AdaptiveCourseLearner:
         self,
         course_id: int,
         iterations: int = 5,
+        course_content: dict | None = None,
     ) -> list[str]:
         """
-        Fetch course content, learn patterns, and build optimal context.
+        Fetch course content (if not provided), learn patterns, and build optimal context.
 
         Args:
             course_id: Canvas course ID
             iterations: Max RL iterations for context building
+            course_content: Optional pre-fetched content; if None, fetches from API
 
         Returns:
             List of context strings (module summaries)
         """
-        course_content = self.fetcher.fetch_course_content(course_id)
+        if course_content is None:
+            course_content = self.fetcher.fetch_course_content(course_id)
         self.fetcher.save_to_folder(course_content, self.knowledge_base)
         self.perceptron.learn_patterns([course_content])
         context = self.rl_agent.build_context_iteratively(

@@ -42,10 +42,12 @@ def run_pipeline(
     posts_dir = output_dir / "_posts"
     slides_dir = output_dir / "slides"
 
-    # 1. Fetch and learn from course
+    # 1. Fetch course content once, then learn (avoids duplicate API calls)
     learner = AdaptiveCourseLearner(knowledge_base_path=output_dir / "knowledge_base")
     course_content = learner.get_course_content(course_id)
-    context = learner.learn_from_course(course_id, iterations=iterations)
+    context = learner.learn_from_course(
+        course_id, iterations=iterations, course_content=course_content
+    )
 
     # 2. Generate blog series
     series_slug = f"course-{course_id}-notes"

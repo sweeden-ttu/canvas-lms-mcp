@@ -54,6 +54,16 @@ docker run -it --rm -p 8000:8000 \
   canvas-lms-mcp:latest http
 ```
 
+**Embeddings pipeline (deep-dive and expert MCP prompts)**  
+```bash
+# Generate embeddings and per-server prompt templates; mount .cursor and mcp to persist
+docker run -it --rm \
+  -v "$(pwd)/.cursor:/app/.cursor" \
+  -v "$(pwd)/mcp:/app/mcp" \
+  -v "$(pwd)/docs:/app/docs" \
+  canvas-lms-mcp:latest embed
+```
+
 **Option 1: Using the run script**
 ```bash
 # Stdio transport (for Claude Desktop)

@@ -57,6 +57,9 @@ RUN uv pip install --system -e ".[dev,docker]" 2>/dev/null || \
         "pydantic>=2.0.0" \
         "pytest>=8.0.0" \
         "pytest-asyncio>=0.23.0" \
+        "pytest-cov>=4.0.0" \
+        "mypy>=1.8.0" \
+        "ruff>=0.3.0" \
         "autogen-agentchat" \
         "autogen-ext[openai]" \
         "openai>=1.0.0" \

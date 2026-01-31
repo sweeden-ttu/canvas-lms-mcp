@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "canvas_mcp": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/sdw/Documents/gh/canvas-lms-mcp",
+        "run",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "CANVAS_API_TOKEN": "${CANVAS_API_TOKEN}",
+        "CANVAS_BASE_URL": "https://texastech.instructure.com"
+      }
+    }
+  }
+}
+

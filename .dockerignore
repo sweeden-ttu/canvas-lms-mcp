@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
+
+# Environment files (should be provided at runtime)
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (README and docs/ copied for embeddings pipeline)
+*.md
+!README.md
+!docs/
+!docs/*.md
+
+# Tests (optional - uncomment if you don't want tests in image)
+# tests/
+# *.py.test
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cursor: .cursor/ is copied for embeddings pipeline (embed_docs, embed_mcp_server, prompts)
+# activate/ (venv) not needed in container
+activate/
+
+# Duplicate skills directory
+skills/
+
+# GitHub workflows (not needed in container)
+.github/
+
+# Node modules (if any)
+node_modules/
+package-lock.json
+
+# Temporary files
+*.tmp
+*.bak
+*.swp

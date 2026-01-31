@@ -1,4 +1,5 @@
 {
+  "mcpSubmodules": [],
   "setup-worktree": [
     "uv sync --all-extras --dev",
     "uv run python scripts/setup_worktree.py"

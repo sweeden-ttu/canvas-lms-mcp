@@ -1,0 +1,59 @@
+# CS5374 Spring 2026 - Module topics and timing aligned with Canvas syllabus
+# Source: course_content/CS5374-Spring2026/manifest.json
+
+modules:
+  - id: 1
+    name: Video Channel
+    folder: "01_Video_Channel"
+    weeks: "1"
+    topics:
+      - Mediasite lecture access
+      - Course video logistics
+  - id: 2
+    name: Outline + Syllabus
+    folder: "02_Outline_Syllabus"
+    weeks: "1"
+    topics:
+      - Course overview
+      - Syllabus and requirements
+      - Project proposal due
+  - id: 3
+    name: Lecture Notes - Software Testing
+    folder: "03_Lecture_Notes_Software_Testing"
+    weeks: "2-3"
+    topics:
+      - Introduction to testing
+      - Test design
+      - V&V fundamentals
+  - id: 4
+    name: LangSmith Tutorial 1
+    folder: "04_LangSmith_Tutorial_1"
+    weeks: "4"
+    topics:
+      - LangSmith setup
+      - Tracing LLM applications
+      - Evaluation basics
+  - id: 5
+    name: LangSmith Tutorial 2
+    folder: "05_LangSmith_Tutorial_2"
+    weeks: "5"
+    topics:
+      - LangSmith hands-on
+      - Datasets and evaluations
+      - Integration with LangChain
+  - id: 6
+    name: OpenSource Tools for AI/LLM/RL
+    folder: "06_OpenSource_Tools_AI_LLM_RL"
+    weeks: "6-7"
+    topics:
+      - AI/LLM testing frameworks
+      - Debugging tools
+      - RL verification
+  - id: 7
+    name: LangGraph Hands-On
+    folder: "07_LangGraph_Hands_On"
+    weeks: "8-9"
+    topics:
+      - LangGraph state machines
+      - Agent verification
+      - Multi-step workflow testing

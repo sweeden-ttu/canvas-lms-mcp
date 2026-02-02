@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sweeden-ttu/canvas-lms-mcp/schema/syllabus_schema.json",
+  "title": "Canvas Course Syllabus Schema",
+  "description": "Schema for Canvas LMS course and syllabus data. Used for extracting course documents, syllabus body, and module/file references. Aligns with Canvas REST API: GET /api/v1/courses/:id?include=syllabus_body and verified_canvas_spec.json.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Canvas course ID"
+    },
+    "name": {
+      "type": "string",
+      "description": "Course display name"
+    },
+    "course_code": {
+      "type": "string",
+      "description": "Course code (e.g. CS-5368-D01)"
+    },
+    "start_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Course start date (ISO 8601)"
+    },
+    "end_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Course end date (ISO 8601)"
+    },
+    "workflow_state": {
+      "type": "string",
+      "enum": ["unpublished", "available", "completed", "deleted"],
+      "description": "Course availability state"
+    },
+    "public_syllabus": {
+      "type": "boolean",
+      "description": "Whether syllabus is public"
+    },
+    "public_syllabus_to_auth_users": {
+      "type": "boolean",
+      "description": "Whether syllabus is visible to authenticated users"
+    },
+    "syllabus_body": {
+      "type": ["string", "null"],
+      "contentMediaType": "text/html",
+      "description": "Syllabus HTML body. Present when requested with include=syllabus_body on GET /api/v1/courses/:id"
+    },
+    "default_view": {
+      "type": "string",
+      "description": "Default course view (e.g. modules, feed)"
+    },
+    "time_zone": {
+      "type": "string",
+      "description": "Course time zone (e.g. America/Chicago)"
+    },
+    "calendar": {
+      "type": "object",
+      "properties": {
+        "ics": {
+          "type": "string",
+          "format": "uri",
+          "description": "ICS feed URL for course calendar"
+        }
+      }
+    },
+    "enrollments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "role": { "type": "string" },
+          "enrollment_state": { "type": "string" }
+        }
+      }
+    }
+  },
+  "required": ["id", "name"],
+  "additionalProperties": true
+}

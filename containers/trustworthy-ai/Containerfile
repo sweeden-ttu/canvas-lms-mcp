@@ -1,0 +1,18 @@
+# Container for gitlab.com/sweeden3/trustworthy-ai
+# Built and run with Podman inside canvas-lms-mcp.
+# Clone the repo and serve static content (e.g. Reveal.js, Jekyll, or plain HTML).
+
+# Stage 1: clone the repo
+FROM alpine:3.19 AS source
+RUN apk add --no-cache git
+ARG REPO_URL=https://gitlab.com/sweeden3/trustworthy-ai.git
+ARG REPO_BRANCH=main
+RUN git clone --depth 1 --branch "${REPO_BRANCH}" "${REPO_URL}" /app/trustworthy-ai || \
+    git clone --depth 1 "${REPO_URL}" /app/trustworthy-ai
+
+# Stage 2: serve with nginx
+FROM nginx:alpine
+COPY --from=source /app/trustworthy-ai /usr/share/nginx/html
+RUN chown -R nginx:nginx /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

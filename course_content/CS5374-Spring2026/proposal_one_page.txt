@@ -1,0 +1,41 @@
+CS5374 Project Proposal - One Page (for Canvas submission)
+==========================================================
+
+INTRODUCTION:
+
+Large language models and retrieval-augmented generation (RAG) systems have become powerful tools for answering questions about legal and governmental matters, yet they frequently hallucinate or return outdated information. When these systems invent judge names, cite non-existent laws, fabricate election details, or surface unverified court documents, the consequences can be serious: litigants may receive incorrect legal advice, public officials may be misrepresented, and invalid ordinances or statutes may be cited as binding authority. This project addresses that risk by building a Trustworthy AI validation pipeline that verifies legal and governmental content against authoritative sources before any AI system presents it to users. The overarching purpose is to ensure that information about legal news, judges, elected officials, elections, laws, court documents, and legal templates is grounded in verifiable data and that every output includes clear provenance.
+
+SUMMARY:
+
+The proposed system will use LangChain and LangGraph to construct validator agents that ingest, parse, and verify structured content at each stage of the pipeline. For legal news sources, the system will check URLs against domain trust lists and integrate with fact-check and media bias services such as NewsGuard and AllSides. Judge names will be validated against federal and state court rosters maintained by the U.S. Courts and state judicial directories. Elected officials and their terms will be verified using official government APIs and Secretary of State election board data, supplemented by curated sources such as Ballotpedia where source provenance is explicitly checked. Election details and opponents will be grounded in certified filings and results from state election boards and the Federal Election Commission. City, county, and state laws and ordinances will be verified against municipal code repositories such as eCode360 and state legislature databases. Court documents will be validated through PACER, the CourtListener API, and state court e-filing systems. Legal document templates will be checked against official court form registries and verified via checksum validation. The pipeline will enforce schema validation and source grounding at every stage, and only content that passes verification will be indexed and made available. All outputs will carry provenance metadata indicating the source, date, and verification status.
+
+-------------------------------------------------------------------
+
+Project Title:
+Trustworthy AI Legal and Governmental Content Validator: Verification of Legal News Sources, Officials, Laws, Court Documents, and Templates
+
+Project Personnel:
+Scott Weeden,   Distance (Central Texas)   sweeden@ttu.edu
+
+Executive Summary (up to 10 lines):
+- Problem: LLMs hallucinate legal and governmental content (fake judges, laws, election data), causing serious harm.
+- Approach: Build a validation pipeline that verifies content against authoritative sources before AI systems surface it.
+- Content types: Legal news sources, judge names, elected officials, election details and opponents, city/county/state laws, court documents, templates.
+- Method: LangChain/LangGraph validator agents; integrate official registries (courts, election boards, municipal codes); enforce schema and source grounding.
+- Trust signal: Only verified content returned; all outputs include provenance (source, date, verification status).
+
+Deliverable (First Round) - 5 lines:
+1. Design document and threat model for the validation pipeline.
+2. Validator modules for legal news sources, judge names, and elected officials.
+3. LangGraph prototype with validator nodes (pass/fail routing).
+4. Unit and integration tests for each validator.
+5. Documented test coverage for Trustworthy AI criteria.
+
+Deliverable (Final / Second Round) - 5 lines:
+1. Full validator suite: legal news, judges, officials, elections, laws, court documents, templates.
+2. Integration with authoritative sources per content type (state courts, SOS election data, municipal codes, PACER/CourtListener).
+3. End-to-end RAG pipeline with validation gates; only verified content retrievable.
+4. Security review report (red-team: prompt injection, exfiltration, tool abuse).
+5. 15–20 minute presentation demonstrating the pipeline, trust guarantees, and lessons learned.
+
+Note: Projects should be defined within the scope of "Trustworthy AI."

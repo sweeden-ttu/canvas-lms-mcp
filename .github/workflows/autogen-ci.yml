@@ -29,6 +29,7 @@ on:
 env:
   PYTHON_VERSION: "3.11"
   UV_CACHE_DIR: /tmp/.uv-cache
+  GIT_BRANCH_NAME_4SYNC: cs5374-cid70713-f11855957-m_item_id3998930
 
 jobs:
   # ============================================

@@ -1,0 +1,17 @@
+title: "CS5374 Project Proposal & Plan"
+description: "Software Verification and Validation - Project proposal, plan, and timeline aligned with course syllabus"
+baseurl: ""
+url: ""
+
+markdown: kramdown
+kramdown:
+  math_engine: katex
+  syntax_highlighter: rouge
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - README.md
+
+# plugins: jekyll-sitemap, jekyll-feed (add to Gemfile if needed)

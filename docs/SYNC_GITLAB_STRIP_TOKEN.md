@@ -72,3 +72,43 @@ git fetch origin
 git fetch gitlab
 git diff origin/main gitlab/main -- .github/ .gitlab-ci.yml > docs/sync-diff-github-vs-gitlab.txt
 ```
+
+## Continue: run from a clone with write access to .git
+
+If the repo is on a read-only or restricted mount (e.g. cannot chmod .git/config), run these from a normal clone:
+
+```bash
+cd /path/to/your/clone/canvas-lms-mcp
+git remote add gitlab https://gitlab.com/sweeden3/canvas-lms-mcp.git   # if not already added
+git fetch origin
+git pull origin main --rebase   # or: git pull origin main
+git push origin main
+git push gitlab main
+```
+
+That syncs the commit (sync doc, diff file, strip-secrets CI) to both GitHub and GitLab.
+
+## GitLab push from local UNIX accounts (sweeden3 credentials)
+
+Git is configured to push to GitLab using **sweeden3** .
+
+**Per-user clone:** Each of sdw3098, jck1278, and cursor has a clone. To sync and push to GitLab:
+
+1. **Fetch latest from GitHub (HTTPS, no SSH key needed):**
+   ```bash
+   git fetch https://github.com/sweeden-ttu/canvas-lms-mcp.git main
+   git reset --hard FETCH_HEAD
+   ```
+
+2. **Set GitLab remote to HTTPS with credentials and push:**
+   ```bash
+   git remote set-url gitlab "https://sweeden3@gitlab.com/sweeden3/canvas-lms-mcp.git"
+   git push gitlab main
+   ```
+
+**Verified:** sdw3098 pushed successfully (main 25b9a28..9d2d61f to GitLab). jck1278 and cursor reported "Everything up-to-date" after that. **glab** CLI expects a Personal Access Token (`glab auth login --stdin` or `--token`); for git push, HTTPS URL with credentials is sufficient.
+
+s sufficient.
+t push, HTTPS URL with credentials is sufficient.
+
+sufficient.

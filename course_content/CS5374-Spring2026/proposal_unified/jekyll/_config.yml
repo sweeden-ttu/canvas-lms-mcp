@@ -1,0 +1,10 @@
+title: "Trustworthy AI Legal Validator"
+description: "CS5374 Project Proposal - Spring 2026"
+baseurl: ""
+url: ""
+permalink: /blog/:year/:month/:day/:title/
+
+markdown: kramdown
+highlighter: rouge
+
+exclude: [Gemfile, Gemfile.lock, README.md]

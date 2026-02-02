@@ -1,0 +1,18 @@
+---
+description: In between broswer commands
+alwaysApply: false
+---
+# Browser automation
+
+## Verify before continuing
+
+Before running the **next** browser command, always confirm the **previous** command was successful:
+
+1. **Check the last response**: Ensure the tool returned a valid result (e.g. metadata with `viewId`, `url`, `title`), not an error payload or empty result.
+2. **Confirm page state**: If the last command was navigation, verify the returned `url` and `title` match the intended page (e.g. no "Not Found", no login/captcha unless expected).
+3. **Only then proceed**: Run the next browser command (navigate, snapshot, click, etc.) only after this verification. If the previous command failed or landed on an unexpected page, fix or re-run before continuing.
+
+Do not chain browser commands without checking success of the prior one.
+e continuing.
+
+Do not chain browser commands without checking success of the prior one.

@@ -1,0 +1,42 @@
+---
+description: Git config by remote—sweeden3 for GitLab, sweeden-ttu for GitHub; sync branch in GIT_BRANCH_NAME_4SYNC; push/pull to both.
+alwaysApply: true
+---
+
+# Git configuration and sync (GitLab.com / GitHub.com)
+
+## Git configuration by remote
+
+Always set git configuration according to the destination remote when pushing branches:
+
+- **When pushing to GitLab.com** (remote `gitlab` or host `gitlab.com`):  
+  Use identity **sweeden3**.
+  ```bash
+  git config user.name "sweeden3"
+  git config user.email "sweeden3@gitlab"   # or your GitLab-associated email
+  ```
+  Apply before push: `git push gitlab <branch>`.
+
+- **When pushing to GitHub.com** (remote `origin` or host `github.com`):  
+  Use identity **sweeden-ttu**.
+  ```bash
+  git config user.name "sweeden-ttu"
+  git config user.email "sweeden-ttu@github"   # or your GitHub-associated email
+  ```
+  Apply before push: `git push origin <branch>`.
+
+If you use a single working tree for both remotes, switch config per push, or use per-remote config (e.g. `git config --global user.name` for the default and override per-repo when switching remotes).
+
+## Sync branch: GIT_BRANCH_NAME_4SYNC
+
+- **Ground-truth branch name:** The branch used for syncing across all local users and all git providers (GitLab.com, GitHub.com) is: **cs5374-cid70713-f11855957-m_item_id3998930**. This is the single source of truth.
+- **Variable:** That branch name is stored in the **secret variable** `GIT_BRANCH_NAME_4SYNC` (in env_save / .env.save for local users; in CI/CD variables for pipelines). Do not hardcode the sync branch name in committed config; use this variable.
+- **Usage:** When scripting or documenting sync steps, read the branch name from `GIT_BRANCH_NAME_4SYNC` and use it for both push and pull to GitLab and GitHub.
+- **Push and pull:** The branch named in `GIT_BRANCH_NAME_4SYNC` is the one to push to and pull from both:
+  - **GitLab.com:** `git push gitlab $GIT_BRANCH_NAME_4SYNC` and `git pull gitlab $GIT_BRANCH_NAME_4SYNC`
+  - **GitHub.com:** `git push origin $GIT_BRANCH_NAME_4SYNC` and `git pull origin $GIT_BRANCH_NAME_4SYNC`
+
+This should match the environment variable which is set in ~/.bashrc
+
+ do not commit its value.  Always set the environment variable in .bashrc to be main or master and always change it in ~/.bashrc whenever synchronizing between branches (that means /home/cursor/.bashrc /home/sdw3098/.bashrc and /home/jck1278/.bashrc need to be update andset the GIT_BRANCH_NAME_4SYNC whenver about to synchronize)
+

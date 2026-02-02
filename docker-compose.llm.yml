@@ -1,0 +1,38 @@
+# Local LLM runner (Docker Model Runner-style).
+# Inspired by GitLab Runner K8s agent layout: single service, config, volumes.
+# Default: Ollama (OpenAI-compatible, run LLMs locally).
+# Override image/command via env: LLM_IMAGE, LLM_COMMAND (see .env.llm.example).
+# Ref: https://docs.ollama.com/docker
+# Ref: https://www.docker.com/blog/run-llms-locally/
+
+services:
+  llm-runner:
+    image: ${LLM_IMAGE:-ollama/ollama}
+    container_name: llm-runner
+    command: ${LLM_COMMAND:-}   # optional; omit to use image default (Ollama serve)
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_ORIGINS=*
+    volumes:
+      - llm-data:/root/.ollama
+    ports:
+      - "${LLM_PORT:-11434}:11434"
+    restart: unless-stopped
+    networks:
+      - llm-network
+    # For NVIDIA GPU (optional): uncomment and ensure nvidia container runtime.
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+networks:
+  llm-network:
+    driver: bridge
+
+volumes:
+  llm-data:
+    name: llm-data

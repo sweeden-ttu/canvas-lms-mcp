@@ -1,0 +1,137 @@
+---
+description: Modify existing files only; commit changes automatically; add new files to git; create descriptive branches when on main; sync with remote.
+alwaysApply: true
+---
+
+# File Management and Git Workflow (Global Rule)
+
+## Scope
+
+This rule applies to **all** coding agents and AI assistants working on this project. It governs how files are created, modified, committed, and how branches are managed.
+
+## File Creation Policy
+
+### Prefer Modification Over Creation
+
+**Do NOT create new files** unless absolutely necessary. Instead:
+
+1. **Update existing files**: Modify, append, or extend existing files to add functionality
+2. **Reuse existing patterns**: Follow established file structures and conventions
+3. **Consolidate related changes**: Group related modifications into existing files rather than splitting into new files
+
+### When New Files Are Necessary
+
+New files should only be created when:
+- The functionality genuinely requires a new module/component that doesn't fit existing files
+- A new file type is required (e.g., new configuration format, new test suite)
+- The change introduces a new domain/feature area that warrants separation
+
+**Before creating a new file**, ask: "Can this be added to an existing file instead?"
+
+## Git Workflow Requirements
+
+### Automatic Commit Behavior
+
+**Always commit changes automatically** after completing a task or logical unit of work:
+
+1. **Stage all changes**: Include both modified and new files
+2. **Create descriptive commit messages**: Use clear, concise messages that explain what changed and why
+3. **Commit frequently**: Don't accumulate large batches of uncommitted changes
+
+### Commit Message Format
+
+Use this format for commit messages:
+
+```
+Brief summary (50 chars or less)
+
+More detailed explanation if needed, explaining:
+- What was changed
+- Why it was changed
+- Any important context or considerations
+```
+
+### Adding New Files to Git
+
+**When new files are created** (which should be rare per the policy above):
+
+1. **Automatically add to git**: Use `git add <filename>` immediately after creation
+2. **Include in next commit**: New files should be committed along with related changes
+3. **Verify .gitignore**: Ensure new files aren't accidentally ignored (unless they should be)
+
+**Note**: This is a one-time application that applies to the current session. After this rule is established, agents should follow it going forward.
+
+## Branch Management
+
+### Creating Descriptive Branches
+
+**When the current branch is `main`** (or `master`):
+
+1. **Create a new branch** before making changes
+2. **Use descriptive branch names** that reflect the changes being made
+3. **Follow naming convention**: `feature/`, `fix/`, `refactor/`, `docs/`, `chore/` prefixes
+4. **Include brief description**: Branch names should be self-explanatory
+
+### Branch Naming Examples
+
+- `feature/add-bayesian-agents` - Adding new Bayesian reasoning agents
+- `fix/duplicate-file-cleanup` - Removing duplicate files
+- `refactor/organize-project-structure` - Reorganizing project files
+- `docs/add-organization-philosophy` - Adding documentation
+- `chore/update-dependencies` - Updating project dependencies
+
+### Branch Creation Process
+
+1. **Check current branch**: `git branch --show-current` or `git status`
+2. **If on main/master**: Create new branch with descriptive name
+3. **If on feature branch**: Continue working on that branch
+4. **Make changes**: Modify files, commit as you go
+5. **Push to remote**: Sync the branch with remote repository
+
+### Syncing with Remote
+
+**Always sync branches with remote**:
+
+1. **Push new branches**: `git push -u origin <branch-name>` (sets upstream)
+2. **Push updates**: `git push` for existing branches
+3. **Verify remote sync**: Confirm changes are visible on remote repository
+
+## Workflow Checklist
+
+For every coding task, ensure:
+
+- [ ] Checked if changes can be made to existing files instead of creating new ones
+- [ ] Modified/updated existing files where possible
+- [ ] Committed changes with descriptive messages
+- [ ] Added any new files to git (if created)
+- [ ] Created descriptive branch if starting from main
+- [ ] Pushed changes to remote repository
+- [ ] Verified remote sync was successful
+
+## Exceptions
+
+This rule may be relaxed when:
+
+- **Initial project setup**: Creating foundational project structure
+- **Major refactoring**: When restructuring requires new file organization
+- **New feature domains**: Introducing entirely new functional areas
+- **Documentation**: Creating new documentation files (though prefer updating existing docs)
+
+Even in these cases, prefer modification over creation when possible.
+
+## Integration with Other Rules
+
+This rule works in conjunction with:
+
+- **No synthetic data rule**: When modifying files, ensure no synthetic/mock data is introduced
+- **Review-changes step**: After committing, ensure review-changes step is completed
+- **Organization philosophy**: Follow the project's organization principles when deciding file locations
+
+## Enforcement
+
+This rule is project-wide and applies to:
+- All AI coding agents and assistants
+- All automated workflows
+- All contributors (human and AI)
+
+When in doubt, **modify existing files** rather than creating new ones, and **always commit and sync with remote**.

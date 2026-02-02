@@ -1,0 +1,35 @@
+{
+  "fetched_at": "2026-02-02T15:47:29.556936Z",
+  "source": "canvas_announcements",
+  "course_ids": [
+    58606,
+    53482,
+    51243,
+    70713
+  ],
+  "count": 3,
+  "contacts": [
+    {
+      "email": "sonalsin@ttu.edu",
+      "source": "announcement_message",
+      "announcement_title": "TAs Office  + Date + Time",
+      "announcement_id": 1868548,
+      "course_id": 70713
+    },
+    {
+      "email": "halqudah@ttu.edu",
+      "source": "announcement_message",
+      "announcement_title": "TAs Office  + Date + Time",
+      "announcement_id": 1868548,
+      "course_id": 70713
+    },
+    {
+      "name": "Akbar Siami Namin",
+      "html_url": "https://texastech.instructure.com/courses/70713/users/4673",
+      "source": "announcement_author",
+      "announcement_title": "TAs Office  + Date + Time",
+      "announcement_id": 1868548,
+      "course_id": 70713
+    }
+  ]
+}

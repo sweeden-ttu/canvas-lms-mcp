@@ -8,6 +8,8 @@
 .env
 .env.local
 .env.*.local
+env_save
+.env.save
 *.pem
 *.key
 secrets/
@@ -230,8 +232,8 @@ $RECYCLE.BIN/
 # Project Specific
 # ============================================
 
-# Downloaded course content
-course_content/
+# Downloaded course content (uncomment to exclude from commits)
+# course_content/
 
 # Test outputs and temporary files
 test_results/

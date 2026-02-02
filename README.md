@@ -453,7 +453,7 @@ canvas-lms-mcp/
 ├── pyproject.toml            # Project metadata and dependencies
 ├── README.md                 # This file
 ├── CLAUDE.md                 # Instructions for Claude Code
-├── config.py                 # Configuration loader
+├── config.py                 # Configuration loader (canonical location)
 ├── server.py                 # MCP Server implementation
 ├── generate_spec.py          # Specification generator
 ├── test_hints.json           # Test configuration hints
@@ -468,12 +468,19 @@ canvas-lms-mcp/
 │       ├── orchestrator.py         # Agent orchestration
 │       └── schemas.py              # Pydantic schemas
 ├── .cursor/                  # Cursor IDE configuration
-│   ├── rules/                # Project-wide rules
+│   ├── rules/                # Project-wide rules (canonical location)
 │   ├── skills/               # Cursor skills
-│   └── agents/               # Cursor agent definitions
+│   └── agents/               # Cursor agent definitions (canonical location)
+│       ├── langsmith-langchain-orchestrator.md
+│       ├── latex-transcriber.md
+│       └── presentation-generator.md
 ├── docs/                     # Documentation
 ├── tests/                    # Test suite
 │   └── test_canvas_live.py   # Live API tests
+├── pipelines/                # Data processing pipelines
+├── content_pipeline/          # Content generation tools
+├── jekyll_site/              # Jekyll site and presentation content
+│   └── _data/                # Structured data (YAML format)
 └── [other directories...]
 ```
 
@@ -510,7 +517,10 @@ Configuration follows a clear hierarchy:
 2. **Project configs** (`pyproject.toml`, `.env.example`) → Root level
 3. **Runtime configs** (`.env`, `test_hints.json`) → Root level (gitignored if sensitive)
 
-**Example**: Cursor rules belong in `.cursor/rules/`, not duplicated in a `rules/` directory at the root.
+**Examples**: 
+- Cursor rules belong in `.cursor/rules/`, not duplicated in a `rules/` directory at the root.
+- Cursor agent definitions belong in `.cursor/agents/`, not duplicated in `agents/` directory.
+- Project configuration (`config.py`) belongs at the root, not duplicated in subdirectories like `skills/`.
 
 ### 4. **Import Path Consistency**
 

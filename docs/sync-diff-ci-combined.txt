@@ -1,0 +1,193 @@
+# Sync diff: CI-related changes (current tree vs origin/main)
+# Combined by source provider: GitHub (origin). No secret values.
+# Generated: sync-diff-ci-combined.txt for add/commit/sync workflow.
+# Regenerate: git diff origin/main -- .github/ .gitlab-ci.yml .gitignore
+
+diff --git a/.github/reproduce/Dockerfile.repro b/.github/reproduce/Dockerfile.repro
+deleted file mode 100644
+index 7219f51..0000000
+--- a/.github/reproduce/Dockerfile.repro
++++ /dev/null
+@@ -1,25 +0,0 @@
+-# Reproduction image for CI build-test failure. Re-runs the same steps as
+-# .github/workflows/autogen-ci.yml build-test job so errors can be reproduced
+-# in one Podman pod on the runner. Python 3.11 to match CI.
+-FROM python:3.11-bookworm
+-
+-ENV UV_CACHE_DIR=/tmp/.uv-cache
+-
+-RUN apt-get update && apt-get install -y --no-install-recommends \
+-    ca-certificates \
+-    curl \
+-    git \
+-    && rm -rf /var/lib/apt/lists/*
+-
+-RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
+-    mv /root/.local/bin/uv /usr/local/bin/uv 2>/dev/null || true
+-
+-WORKDIR /workspace
+-
+-# Copy repo (injected at build time from checkout)
+-COPY . .
+-
+-RUN uv sync --all-extras --dev 2>/dev/null || true
+-
+-# Default: run the same steps as build-test and capture output
+-CMD bash -c 'set -e; uv run ruff check . 2>&1; uv run mypy server.py --ignore-missing-imports 2>&1; uv run pytest tests/ -v --tb=short 2>&1'
+diff --git a/.github/reproduce/run-repro.sh b/.github/reproduce/run-repro.sh
+deleted file mode 100644
+index d220342..0000000
+--- a/.github/reproduce/run-repro.sh
++++ /dev/null
+@@ -1,43 +0,0 @@
+-#!/usr/bin/env bash
+-# Build one Podman image and run one Podman pod (single container) to reproduce
+-# the CI build-test steps. Writes repro.log and extracts error lines to repro-errors.txt.
+-# Run from repo root on a self-hosted runner with Podman installed.
+-# One pod per CI/CD job only.
+-
+-REPO_ROOT="${1:-.}"
+-cd "$REPO_ROOT"
+-IMAGE_NAME="${IMAGE_NAME:-canvas-lms-mcp-repro}"
+-POD_NAME="${POD_NAME:-repro-pod}"
+-LOG_FILE="${LOG_FILE:-repro.log}"
+-ERRORS_FILE="${ERRORS_FILE:-repro-errors.txt}"
+-
+-: > "$LOG_FILE"
+-
+-# Remove any existing pod with this name (idempotent)
+-podman pod rm -f "$POD_NAME" 2>/dev/null || true
+-podman rmi -f "$IMAGE_NAME" 2>/dev/null || true
+-
+-echo "Building Podman image $IMAGE_NAME..."
+-podman build -f .github/reproduce/Dockerfile.repro -t "$IMAGE_NAME" . 2>&1 | tee -a "$LOG_FILE" || true
+-
+-echo "Creating one pod $POD_NAME..."
+-podman pod create --name "$POD_NAME" 2>&1 | tee -a "$LOG_FILE" || true
+-
+-echo "Running reproduction (one container in pod)..."
+-podman run --rm --pod "$POD_NAME" \
+-    -e CANVAS_API_TOKEN="${CANVAS_API_TOKEN:-}" \
+-    -e CANVAS_BASE_URL="${CANVAS_BASE_URL:-}" \
+-    "$IMAGE_NAME" 2>&1 | tee -a "$LOG_FILE" || true
+-
+-# Review log for errors: common failure patterns
+-echo "Reviewing log for errors..."
+-grep -E -i '(FAILED|Error|error:|ERROR|Traceback|AssertionError|SyntaxError|ImportError)' "$LOG_FILE" > "$ERRORS_FILE" 2>/dev/null || true
+-if [ -s "$ERRORS_FILE" ]; then
+-  echo "Error lines written to $ERRORS_FILE"
+-  cat "$ERRORS_FILE"
+-fi
+-
+-# Teardown: one pod per job, remove it when done
+-podman pod rm -f "$POD_NAME" 2>/dev/null || true
+-
+-echo "Reproduction complete. Log: $LOG_FILE"
+diff --git a/.github/workflows/autogen-ci.yml b/.github/workflows/autogen-ci.yml
+index 25119a6..28111fe 100644
+--- a/.github/workflows/autogen-ci.yml
++++ b/.github/workflows/autogen-ci.yml
+@@ -31,18 +31,64 @@ env:
+   UV_CACHE_DIR: /tmp/.uv-cache
+ 
+ jobs:
++  # ============================================
++  # Strip env_save / .env.save from repo (never commit credentials)
++  # ============================================
++  strip-env-save:
++    name: Strip env_save / .env.save
++    runs-on: ubuntu-latest
++    permissions:
++      contents: write
++    steps:
++      - name: Checkout repository
++        uses: actions/checkout@v4
++        with:
++          fetch-depth: 0
++          token: ${{ secrets.GITHUB_TOKEN }}
++
++      - name: Check for env_save / .env.save
++        id: check
++        run: |
++          FOUND=0
++          [ -f env_save ] && FOUND=1
++          [ -f .env.save ] && FOUND=1
++          echo "found=$FOUND" >> $GITHUB_OUTPUT
++
++      - name: Skip if commit is our removal
++        id: skip
++        run: |
++          if git log -1 --pretty=%B | grep -q '\[skip ci\]'; then
++            echo "skip=1" >> $GITHUB_OUTPUT
++          else
++            echo "skip=0" >> $GITHUB_OUTPUT
++          fi
++
++      - name: Remove env_save and .env.save and push
++        if: steps.check.outputs.found == '1' && steps.skip.outputs.skip == '0'
++        run: |
++          git config user.name "github-actions[bot]"
++          git config user.email "github-actions[bot]@users.noreply.github.com"
++          git rm -f env_save .env.save 2>/dev/null || true
++          git diff --staged --quiet && exit 0
++          git commit -m "chore: remove env_save and .env.save [skip ci]"
++          git push
++        env:
++          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
++
+   # ============================================
+   # Build and Test Stage
+   # ============================================
+   build-test:
+     name: Build & Test
+     runs-on: ubuntu-latest
+-    
++    needs: strip-env-save
+     steps:
+       - name: Checkout repository
+         uses: actions/checkout@v4
+         with:
+           fetch-depth: 0
++      - name: Pull latest (in case strip-env-save pushed)
++        run: git pull origin ${{ github.ref_name }} || true
+ 
+       - name: Set up Python
+         uses: actions/setup-python@v5
+@@ -128,7 +174,7 @@ jobs:
+ 
+       - name: Add GitLab remote
+         run: |
+-          git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@gitlab.com/${{ secrets.GITLAB_PROJECT_PATH }}.git || true
++          git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@gitlab.com/sweeden3/canvas-lms-mcp.git || true
+ 
+       - name: Push to GitLab
+         run: |
+diff --git a/.github/workflows/langsmith-ci.yml b/.github/workflows/langsmith-ci.yml
+index fdfba77..616e5be 100644
+--- a/.github/workflows/langsmith-ci.yml
++++ b/.github/workflows/langsmith-ci.yml
+@@ -145,7 +145,7 @@ jobs:
+ 
+       - name: Push to GitLab
+         run: |
+-          git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@gitlab.com/${{ secrets.GITLAB_PROJECT_PATH }}.git || true
++          git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@gitlab.com/sweeden3/canvas-lms-mcp.git || true
+           git push gitlab main --force || true
+           git push gitlab --tags --force || true
+ 
+diff --git a/.gitignore b/.gitignore
+index 667bca7..410caa4 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -8,6 +8,8 @@
+ .env
+ .env.local
+ .env.*.local
++env_save
++.env.save
+ *.pem
+ *.key
+ secrets/
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 40f926c..74bd947 100644
+Binary files a/.gitlab-ci.yml and b/.gitlab-ci.yml differ

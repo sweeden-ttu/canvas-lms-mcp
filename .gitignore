@@ -230,8 +230,8 @@ $RECYCLE.BIN/
 # Project Specific
 # ============================================
 
-# Downloaded course content
-course_content/
+# Downloaded course content (uncomment to exclude from commits)
+# course_content/
 
 # Test outputs and temporary files
 test_results/

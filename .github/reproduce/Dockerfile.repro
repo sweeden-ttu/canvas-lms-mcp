@@ -1,0 +1,25 @@
+# Reproduction image for CI build-test failure. Re-runs the same steps as
+# .github/workflows/autogen-ci.yml build-test job so errors can be reproduced
+# in one Podman pod on the runner. Python 3.11 to match CI.
+FROM python:3.11-bookworm
+
+ENV UV_CACHE_DIR=/tmp/.uv-cache
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    mv /root/.local/bin/uv /usr/local/bin/uv 2>/dev/null || true
+
+WORKDIR /workspace
+
+# Copy repo (injected at build time from checkout)
+COPY . .
+
+RUN uv sync --all-extras --dev 2>/dev/null || true
+
+# Default: run the same steps as build-test and capture output
+CMD bash -c 'set -e; uv run ruff check . 2>&1; uv run mypy server.py --ignore-missing-imports 2>&1; uv run pytest tests/ -v --tb=short 2>&1'

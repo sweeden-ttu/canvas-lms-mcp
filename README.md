@@ -458,9 +458,125 @@ canvas-lms-mcp/
 ├── generate_spec.py          # Specification generator
 ├── test_hints.json           # Test configuration hints
 ├── verified_canvas_spec.json # Generated API specification
-└── tests/
-    └── test_canvas_live.py   # Live API tests
+├── agents/                   # AI agent modules
+│   ├── __init__.py           # Agent module exports
+│   └── bayesian/             # Bayesian reasoning agents
+│       ├── __init__.py       # Bayesian agent exports
+│       ├── hypothesis_generator.py  # Hypothesis generation
+│       ├── evidence_evaluator.py    # Evidence evaluation
+│       ├── backwards_reasoner.py   # Backwards reasoning
+│       ├── orchestrator.py         # Agent orchestration
+│       └── schemas.py              # Pydantic schemas
+├── .cursor/                  # Cursor IDE configuration
+│   ├── rules/                # Project-wide rules
+│   ├── skills/               # Cursor skills
+│   └── agents/               # Cursor agent definitions
+├── docs/                     # Documentation
+├── tests/                    # Test suite
+│   └── test_canvas_live.py   # Live API tests
+└── [other directories...]
 ```
+
+## Organization Philosophy
+
+This project follows a **modular, hierarchical organization** philosophy designed to maintain clarity, prevent duplication, and support scalable development. The key principles are:
+
+### 1. **Single Source of Truth**
+
+Each module, class, or component exists in **exactly one location**. Duplicate files are eliminated to prevent:
+- Import confusion (which version is being used?)
+- Maintenance burden (updates must be made in multiple places)
+- Version drift (files diverge over time)
+
+**Example**: Bayesian reasoning agents live in `agents/bayesian/`, not duplicated at the root level. The root `__init__.py` re-exports from the canonical location.
+
+### 2. **Logical Grouping by Functionality**
+
+Files are organized into directories that reflect their purpose:
+
+- **`agents/`**: AI agent implementations, organized by domain (e.g., `bayesian/`)
+- **`.cursor/`**: Cursor IDE-specific configuration (rules, skills, agents)
+- **`docs/`**: Project documentation
+- **`tests/`**: Test files
+- **`scripts/`**: Utility scripts
+- **`pipelines/`**: Data processing pipelines
+- **`content_pipeline/`**: Content generation tools
+
+### 3. **Configuration Hierarchy**
+
+Configuration follows a clear hierarchy:
+
+1. **Tool-specific configs** (`.cursor/rules/`, `.cursor/skills/`) → Tool-specific directories
+2. **Project configs** (`pyproject.toml`, `.env.example`) → Root level
+3. **Runtime configs** (`.env`, `test_hints.json`) → Root level (gitignored if sensitive)
+
+**Example**: Cursor rules belong in `.cursor/rules/`, not duplicated in a `rules/` directory at the root.
+
+### 4. **Import Path Consistency**
+
+Import paths follow Python package conventions:
+
+- **Root-level imports**: `from canvas_lms_mcp import ...` (via `__init__.py`)
+- **Module imports**: `from .agents.bayesian import ...` (relative imports within package)
+- **External imports**: Standard library and third-party packages
+
+The root `__init__.py` serves as a **facade** that re-exports from canonical locations, allowing clean imports while maintaining internal organization.
+
+### 5. **Separation of Concerns**
+
+Different types of code are separated:
+
+- **Core logic** (`agents/`, `pipelines/`) → Reusable, testable modules
+- **Entry points** (`server.py`, scripts) → Thin wrappers that use core modules
+- **Configuration** (`.cursor/`, `docs/`) → Declarative, tool-specific configs
+- **Tests** (`tests/`) → Mirror the source structure
+
+### 6. **Elimination of Duplication**
+
+When duplicates are found:
+
+1. **Identify the canonical location** (usually the more specific/nested path)
+2. **Update imports** to point to the canonical location
+3. **Remove duplicates**
+4. **Verify** no broken imports remain
+
+**Recent cleanup**: Removed duplicate Bayesian agent files from root (`backwards_reasoner.py`, `evidence_evaluator.py`, etc.) that were already properly located in `agents/bayesian/`.
+
+### 7. **Documentation Co-location**
+
+Documentation lives near what it describes:
+
+- **Module docs**: Docstrings in source files
+- **Project docs**: `docs/` directory
+- **Tool docs**: Tool-specific directories (e.g., `.cursor/` may contain usage notes)
+- **README files**: In relevant subdirectories for complex modules
+
+### 8. **Maintainability Through Structure**
+
+The organization supports:
+
+- **Easy navigation**: Developers can quickly find related files
+- **Clear dependencies**: Import paths reveal module relationships
+- **Scalable growth**: New modules fit naturally into existing structure
+- **Tool integration**: Tool-specific configs don't pollute the root directory
+
+### Guidelines for Contributors
+
+When adding new code:
+
+1. **Place files in the appropriate directory** based on their purpose
+2. **Avoid creating duplicates** - check if similar functionality exists first
+3. **Update `__init__.py` files** if adding new public exports
+4. **Follow existing patterns** - match the style of similar files
+5. **Document location decisions** - if unsure, ask or follow the hierarchy above
+
+When refactoring:
+
+1. **Identify duplicates** using `find` or `grep`
+2. **Choose canonical location** (usually the more specific path)
+3. **Update all imports** before deleting duplicates
+4. **Test imports** to ensure nothing breaks
+5. **Update documentation** if file locations change
 
 ---
 

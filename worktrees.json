@@ -1,0 +1,53 @@
+{
+  "mcpSubmodules": [],
+  "embeddings-pipeline": {
+    "description": "Generate embeddings and prompts for deep-dive and expert MCP integration. No synthetic data; use real docs and tool schemas.",
+    "steps": [
+      "uv run python scripts/embed_docs.py",
+      "For each mcp/<name>: uv run python scripts/embed_mcp_server.py <name>"
+    ],
+    "agents": ["evidence_evaluator", "BayesianOrchestrator"],
+    "see": "docs/EMBEDDINGS_AND_PROMPTS_PLAN.md"
+  },
+  "agent-reviews": {
+    "description": "Review-changes step: evaluate instructions, peer review, reproduce, accept or reject premise. No synthetic/mock/dummy data.",
+    "steps": [
+      "Evaluate step-by-step instructions",
+      "Peer review (cs-peer-reviewer-trustworthy-ai, evidence_evaluator)",
+      "Reproduce (re-run tests, re-fetch data, re-build)",
+      "Accept or reject premise"
+    ],
+    "agents": ["cs-peer-reviewer-trustworthy-ai", "evidence_evaluator", "BayesianOrchestrator"],
+    "see": "docs/AGENT_REVIEWS.md"
+  },
+  "review-changes": {
+    "description": "Required step after any change set: evaluate step-by-step instructions, perform peer review (e.g. cs-peer-reviewer-trustworthy-ai), attempt reproduction, and accept or reject the premise. Never use synthetic/mock/dummy data; use hypothesis + experiment + evidence instead.",
+    "steps": [
+      "Evaluate the step-by-step instructions that were followed",
+      "Perform peer review of the changes",
+      "Attempt to reproduce the results (re-run tests, re-fetch data, re-build)",
+      "Accept premise if reproduction succeeds and no synthetic/mock/dummy data; otherwise reject and revert or rewrite"
+    ],
+    "agents": ["cs-peer-reviewer-trustworthy-ai", "evidence_evaluator", "BayesianOrchestrator"]
+  },
+  "setup-worktree": [
+    "uv sync --all-extras --dev",
+    "uv run python scripts/setup_worktree.py"
+  ],
+  "canvas-lms-content": {
+    "description": "Canvas LMS content retrieval worktree: skeleton and ToC from course syllabus; fill sections with Canvas MCP and subagents",
+    "steps": [
+      "uv sync --all-extras",
+      "python scripts/docker_orchestrate.py --worktree-canvas ./worktrees/canvas-lms-content --worktree-trustworthy-ai ./worktrees/trustworthy-ai-presentation"
+    ],
+    "agents": ["Canvas MCP", "BayesianOrchestrator", "hypothesis_generator", "evidence_evaluator"]
+  },
+  "trustworthy-ai-presentation": {
+    "description": "Trustworthy AI presentation-generator worktree: skeleton and ToC from presentation topic; fill sections with presentation-generator and subagents; Reveal.js/Mermaid/Markdown",
+    "steps": [
+      "uv sync --all-extras",
+      "python scripts/docker_orchestrate.py --worktree-canvas ./worktrees/canvas-lms-content --worktree-trustworthy-ai ./worktrees/trustworthy-ai-presentation"
+    ],
+    "agents": ["presentation-generator", "BayesianOrchestrator", "jekyll-ui-web-designer", "cs-peer-reviewer-trustworthy-ai"]
+  }
+}

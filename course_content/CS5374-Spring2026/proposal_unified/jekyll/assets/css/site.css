@@ -1,0 +1,16 @@
+:root {
+  --accent: #00529b;
+  --ttu-red: #cc0000;
+  --max-width: 70ch;
+}
+body { font-family: system-ui, sans-serif; line-height: 1.6; margin: 0; padding: 1rem; }
+main { max-width: var(--max-width); margin: 0 auto; }
+header, footer { text-align: center; padding: 1rem; border-bottom: 1px solid #eee; }
+nav a { margin: 0 1rem; color: var(--accent); }
+.post, .page { margin-top: 2rem; }
+.meta { color: #666; font-size: 0.9em; }
+.callout { padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+.callout--info { background: #e3f2fd; border-left: 4px solid var(--accent); }
+.series-nav { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #ddd; padding: 0.5rem; text-align: left; }

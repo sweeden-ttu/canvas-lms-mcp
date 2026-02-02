@@ -1,0 +1,61 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{fontawesome5}
+\usepackage{tcolorbox}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{natbib}
+
+\geometry{margin=1in}
+\definecolor{ttured}{RGB}{204,0,0}
+\definecolor{accent}{RGB}{0,82,155}
+
+\hypersetup{colorlinks=true, linkcolor=accent, urlcolor=accent, citecolor=accent}
+\titleformat{\section}{\large\bfseries\color{accent}}{\thesection}{1em}{}
+
+\begin{document}
+
+\begin{center}
+  {\Large\bfseries CS5374 Project Proposal}\\[0.5em]
+  {\normalsize Software Verification and Validation --- Spring 2026}\\[0.3em]
+  \colorbox{ttured!15}{\parbox{0.9\textwidth}{\centering\bfseries\color{ttured}
+    Trustworthy AI Legal and Governmental Content Validator
+  }}\\[0.5em]
+  \faIcon{users} \textit{Scope: Trustworthy AI}
+\end{center}
+
+\section*{Introduction}
+Large language models and retrieval-augmented generation (RAG) systems have become powerful tools for answering questions about legal and governmental matters, yet they frequently hallucinate or return outdated information. When these systems invent judge names, cite non-existent laws, fabricate election details, or surface unverified court documents, the consequences can be serious. This project addresses that risk by building a Trustworthy AI validation pipeline that verifies legal and governmental content against authoritative sources before any AI system presents it to users.
+
+\section*{Summary}
+The proposed system will use LangChain and LangGraph to construct validator agents. For legal news, the system integrates NewsGuard and AllSides. Judge names are validated against U.S. Courts and state rosters. Elected officials and elections use Secretary of State and FEC data. Laws are verified via eCode360 and state databases. Court documents use PACER and CourtListener. All outputs carry provenance metadata.
+
+\section*{Hypothesis}
+We hypothesize that a pipeline verifying content against authoritative databases will significantly reduce hallucination rates in legal citations, and that LangGraph validator nodes (with pass/fail routing) will outperform post-hoc verification by enabling retries before outputs are surfaced.
+
+\section*{Experiments}
+\textbf{Exp. 1:} Baseline hallucination rate (LLM without verification). \textbf{Exp. 2:} Verification pipeline effectiveness (precision, recall, hallucination rate). \textbf{Exp. 3:} Validator node vs. post-hoc verification (accuracy, latency). \textbf{Exp. 4:} Security red-team (GARAK; prompt injection, exfiltration).
+
+\section*{Expected Results}
+Baseline: 58--88\% hallucination (Stanford). Target: 95\%+ precision post-verification. Red-team will identify 1--2 injection vectors; mitigations documented.
+
+\section*{Deliverables}
+\textbf{First Round:} Design doc, threat model, validators (news, judges, officials), LangGraph prototype, tests. \textbf{Final:} Full validator suite, RAG pipeline with gates, security report, 15--20 min presentation.
+
+\section*{References}
+\begin{enumerate}[leftmargin=*]
+  \item Stanford Law. Hallucination-Free? Assessing AI Legal Research Tools. \url{https://law.stanford.edu/publications/hallucination-free-assessing-the-reliability-of-leading-ai-legal-research-tools/}
+  \item Stanford Law. Large Legal Fictions: Profiling Legal Hallucinations in LLMs. \url{https://law.stanford.edu/publications/large-legal-fictions-profiling-legal-hallucinations-in-large-language-models/}
+  \item Mata v. Avianca, Inc., 22-CV-1461 (S.D.N.Y. 2023).
+  \item CourtListener API. \url{https://www.courtlistener.com/api/}
+  \item GARAK. \url{https://github.com/NVIDIA/garak}
+\end{enumerate}
+
+\end{document}

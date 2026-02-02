@@ -70,6 +70,42 @@ jobs:
           CANVAS_API_TOKEN: ${{ secrets.CANVAS_API_TOKEN }}
           CANVAS_BASE_URL: ${{ secrets.CANVAS_BASE_URL }}
 
+      - name: Run validation pipelines
+        run: uv run python pipelines/run_pipelines.py
+
+  # ============================================
+  # Log review + Podman reproduce (one pod per job, self-hosted runner)
+  # See docs/PODMAN_RUNNER.md for setting up a runner with label "podman".
+  # ============================================
+  reproduce-failure:
+    name: Review logs & reproduce in Podman
+    runs-on: [self-hosted, podman]
+    needs: build-test
+    if: failure() && needs.build-test.result == 'failure'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Review errors and run reproduction (one Podman pod)
+        run: |
+          chmod +x .github/reproduce/run-repro.sh
+          .github/reproduce/run-repro.sh .
+        env:
+          CANVAS_API_TOKEN: ${{ secrets.CANVAS_API_TOKEN }}
+          CANVAS_BASE_URL: ${{ secrets.CANVAS_BASE_URL }}
+
+      - name: Upload reproduction log
+        uses: actions/upload-artifact@v4
+        with:
+          name: podman-repro-log-${{ github.run_id }}
+          path: |
+            repro.log
+            repro-errors.txt
+          retention-days: 14
+          if-no-files-found: ignore
+
   # ============================================
   # GitLab Sync Stage
   # ============================================
@@ -149,7 +185,7 @@ jobs:
     if: github.event_name == 'schedule' || github.event.inputs.run_embeddings == 'true'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v-4
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5

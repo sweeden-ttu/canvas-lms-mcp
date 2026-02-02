@@ -3,6 +3,9 @@ description: "Software Verification and Validation - Project proposal, plan, and
 baseurl: ""
 url: ""
 
+# Data directory points to root _data (universal, not just for Jekyll)
+data_dir: "../_data"
+
 markdown: kramdown
 kramdown:
   math_engine: katex

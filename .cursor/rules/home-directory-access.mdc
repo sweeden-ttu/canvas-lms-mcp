@@ -1,0 +1,44 @@
+---
+description: When accessing files under /home, specify user context (cursor, jck1278, sdw3098), login as that user first, use env_save from .cursor.
+alwaysApply: true
+---
+
+# Access to /home directory
+
+## Scope
+
+This rule applies whenever you are instructed to access files or folders underneath the **/home** directory (e.g. `/home/cursor/...`, `/home/jck1278/...`, `/home/sdw3098/...`).
+
+## Required: user context
+
+Always include **context** as one of these local users:
+
+- **cursor**
+- **jck1278**
+- **sdw3098**
+
+When the instruction refers to a path under `/home`, determine which user owns or is associated with that path (e.g. `/home/jck1278/...` implies **jck1278**) and treat that as the user context for the operation.
+
+## Required: login as that user before accessing
+
+Before reading, writing, or listing files under that user's home directory:
+
+1. **Login as that user** (e.g. use `sudo -u <username>` when running commands that touch that user's files, or ensure the operation runs in that user's context).
+2. Do not access or modify files under another user's home directory without running as that user (e.g. `sudo -u jck1278 ...` for paths under `/home/jck1278`).
+
+## Credentials: env_save in .cursor
+
+Use the **env_save** credentials stored in that user's **.cursor** folder when login or authenticated access is needed:
+
+- **Path:** `/home/<username>/.cursor/.env.save`
+- For **cursor:** `/home/cursor/.cursor/.env.save`
+- For **jck1278:** `/home/jck1278/.cursor/.env.save`
+- For **sdw3098:** `/home/sdw3098/.cursor/.env.save`
+
+The canonical source of truth for env_save content is `/mnt/shared/Shared/env_save`; the per-user `.cursor/.env.save` files are synced from there. Use the credentials (e.g. GitLab, GitHub, or other host/user/password entries) from the appropriate `.env.save` when performing actions as that user (e.g. git push, glab, or other tools that need authentication).
+
+## Summary
+
+- **Under /home** → identify context user: **cursor**, **jck1278**, or **sdw3098**.
+- **Before accessing** that user's files → run as that user (e.g. `sudo -u <username>`).
+- **When credentials are needed** → use env_save from `/home/<username>/.cursor/.env.save` (or the canonical `/mnt/shared/Shared/env_save`).

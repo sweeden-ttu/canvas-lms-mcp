@@ -1,0 +1,305 @@
+---
+description: All new data must be verified or prompt-documented, stored in YAML under _data folder; consolidate structured data; use relational design principles; no duplicates; minimum 4 columns; use Canvas IDs when available; negative IDs for new items; sync Canvas when needed; interview before submitting assignments.
+alwaysApply: true
+---
+
+# Data Management and Verification (Global Rule)
+
+## Scope
+
+This rule applies to **all** data introduction, storage, and management in this project. It governs how data is verified, structured, stored, and synchronized with Canvas LMS.
+
+## Data Verification Requirements
+
+### Verification Before Storage
+
+**All new data introduced must be either:**
+
+1. **Verified**: Data has been validated against a real source (e.g., Canvas API, live endpoints, real course content)
+2. **Prompt-documented**: Details are specifically stated in a prompt or documentation explaining:
+   - Source of the data
+   - Verification method used
+   - Assumptions made
+   - Any gaps or limitations
+
+**Do NOT store unverified or undocumented data.**
+
+### Verification Methods
+
+Acceptable verification methods include:
+- **API calls**: Data fetched from live Canvas API endpoints
+- **Manual verification**: Data confirmed by user or instructor
+- **Cross-referencing**: Data validated against multiple sources
+- **Documented experiments**: Data obtained through documented hypothesis-experiment-evidence process
+
+## Data Storage Format and Location
+
+### YAML Format Required
+
+**All structured data must be stored in YAML format** under the `_data` folder (typically `jekyll_site/_data/` or project root `_data/`).
+
+### File Organization
+
+Structured data should be **consolidated** using a relational database design approach:
+
+1. **Primary data files**: Main entity files (e.g., `courses.yml`, `assignments.yml`, `students.yml`)
+2. **Related data directories**: Use `.d` directories for related data (e.g., `courses.d/`, `assignments.d/`)
+3. **Consolidation principle**: Group related data together, avoid fragmentation
+
+### Example Structure
+
+```
+_data/
+├── courses.yml              # Main courses data
+├── courses.d/               # Related course data
+│   ├── modules.yml
+│   ├── assignments.yml
+│   └── students.yml
+├── assignments.yml          # Main assignments data
+├── assignments.d/           # Related assignment data
+│   ├── submissions.yml
+│   └── grades.yml
+└── nav.yml                  # Navigation data (existing)
+```
+
+## Relational Database Design Principles
+
+### Design as Relational Database
+
+When structuring data in YAML files, **think in relational database terms**:
+
+1. **Entities**: Each YAML file represents a table/entity
+2. **Relationships**: Use foreign keys (IDs) to link related data
+3. **Normalization**: Avoid redundant data; reference instead of duplicate
+4. **Integrity**: Maintain referential integrity through consistent ID usage
+
+### Minimum Column Requirement
+
+**All data rows must have at least four columns/fields.**
+
+This ensures:
+- Sufficient context for each record
+- Proper relational structure
+- Meaningful data relationships
+
+**Example of valid 4+ column structure:**
+```yaml
+assignments:
+  - id: 12345
+    course_id: 58606
+    name: "Project Proposal"
+    due_date: "2026-02-15"
+    points: 100
+    status: "published"
+```
+
+## ID Management
+
+### Using Existing Canvas IDs
+
+**Always use existing Canvas IDs** when available:
+
+- **account_ids**: Use Canvas account IDs that already exist
+- **course_ids**: Use Canvas course IDs from verified sources (e.g., `test_hints.json`, API responses)
+- **assignment_ids**: Use Canvas assignment IDs from API responses
+- **user_ids**: Use Canvas user IDs from verified sources
+
+**Sources for existing IDs:**
+- Canvas API responses
+- `test_hints.json` configuration
+- Previously verified data files
+- User-provided verified IDs
+
+### Negative IDs for New Items
+
+**For new data, projects, and assignments not yet submitted to Canvas:**
+
+1. **Use negative numbers counting downwards**: Start from `-1`, then `-2`, `-3`, etc.
+2. **Track unique IDs**: Ensure each new item gets a unique negative ID
+3. **Maintain ID registry**: Keep track of negative IDs to prevent collisions
+4. **Map on submission**: When items are submitted to Canvas, map negative IDs to Canvas-assigned IDs
+
+**Example:**
+```yaml
+assignments:
+  - id: -1                    # New assignment, not yet in Canvas
+    course_id: 58606           # Existing Canvas course ID
+    name: "New Project"
+    due_date: "2026-03-01"
+    status: "draft"
+    canvas_id: null            # Will be populated after submission
+  
+  - id: -2                     # Another new assignment
+    course_id: 58606
+    name: "Research Paper"
+    due_date: "2026-03-15"
+    status: "draft"
+    canvas_id: null
+```
+
+### ID Tracking
+
+Maintain an ID registry or use a consistent pattern:
+- **Negative IDs**: Temporary IDs for unsynced items
+- **Positive IDs**: Canvas-assigned IDs for synced items
+- **Mapping**: Track negative → positive ID mappings after Canvas submission
+
+## Data Duplication Prevention
+
+### No Duplicated Data Rows
+
+**Do NOT create duplicate data rows.** Instead:
+
+1. **Reference existing data**: Use IDs to reference existing records
+2. **Consolidate duplicates**: Merge duplicate entries into single records
+3. **Use relationships**: Link related data through foreign keys
+4. **Normalize structure**: Follow database normalization principles
+
+### Duplicate Detection
+
+Before adding new data:
+1. **Check existing files**: Search for similar data in `_data` folder
+2. **Verify uniqueness**: Ensure the new record is truly unique
+3. **Update instead of duplicate**: If similar data exists, update it rather than creating a duplicate
+
+## Canvas Synchronization
+
+### When to Recommend Synchronization
+
+**Recommend synchronizing with Canvas when:**
+
+1. **Too much local data**: Significant amount of local data has accumulated
+2. **Data conflicts**: Potential conflicts between local and Canvas data
+3. **Before major operations**: Before bulk updates or submissions
+4. **Periodic sync**: Regular intervals (e.g., weekly, before important deadlines)
+
+### Synchronization Process
+
+When synchronizing:
+1. **Fetch from Canvas**: Retrieve current data from Canvas API
+2. **Compare with local**: Identify differences between local and Canvas data
+3. **Resolve conflicts**: Handle conflicts (prefer Canvas data for synced items)
+4. **Update local files**: Update `_data` files with Canvas data
+5. **Map negative IDs**: Update negative ID mappings after submission
+
+## Assignment Submission Workflow
+
+### Interview Before Submission
+
+**Always interview the user before submitting assignments:**
+
+1. **Confirm intent**: Verify the user wants to submit
+2. **Review details**: Show what will be submitted (assignment name, course, due date, points)
+3. **Check prerequisites**: Ensure all required data is present
+4. **Warn about consequences**: Inform about Canvas submission implications
+5. **Get explicit approval**: Require explicit confirmation before proceeding
+
+### Submission Recommendations
+
+**Only recommend submitting:**
+
+1. **Past due assignments**: Assignments with due dates in the past
+2. **Assignments due today**: Assignments with due dates matching today's date
+
+**Do NOT recommend submitting:**
+- Future-dated assignments (unless explicitly requested)
+- Draft assignments without user approval
+- Assignments with incomplete data
+
+### Submission Process
+
+When submitting assignments:
+
+1. **Interview user**: Follow interview process above
+2. **Validate data**: Ensure all required fields are present (minimum 4 columns)
+3. **Check Canvas**: Verify course exists and user has permissions
+4. **Submit via API**: Use Canvas API to create/update assignment
+5. **Update local data**: Update `_data` files with Canvas-assigned IDs
+6. **Map IDs**: Replace negative IDs with Canvas-assigned positive IDs
+7. **Verify submission**: Confirm submission was successful
+
+## Data File Checklist
+
+Before storing data in `_data` folder, ensure:
+
+- [ ] Data is verified or prompt-documented
+- [ ] Data is in YAML format
+- [ ] File location follows consolidation structure
+- [ ] Data follows relational database design principles
+- [ ] Each row has at least 4 columns/fields
+- [ ] No duplicate data rows exist
+- [ ] Existing Canvas IDs are used when available
+- [ ] Negative IDs are used for new unsynced items
+- [ ] ID tracking is maintained
+- [ ] Data structure supports future Canvas synchronization
+
+## Integration with Other Rules
+
+This rule works in conjunction with:
+
+- **No synthetic data rule**: All data must be verified, not synthetic/mock
+- **File management rule**: Modify existing `_data` files rather than creating duplicates
+- **Review-changes step**: Verify data changes through review process
+
+## Examples
+
+### Valid Data Entry
+
+```yaml
+# _data/courses.yml
+courses:
+  - id: 58606                    # Existing Canvas course ID
+    name: "CS5374 - Software Testing"
+    account_id: 1                 # Existing Canvas account ID
+    term: "Spring 2026"
+    status: "active"
+    start_date: "2026-01-15"
+    end_date: "2026-05-15"
+    enrollment_count: 25
+
+# _data/assignments.yml
+assignments:
+  - id: -1                       # New assignment, not in Canvas
+    course_id: 58606             # References existing course
+    name: "Project Proposal"
+    due_date: "2026-02-15"
+    points: 100
+    assignment_type: "project"
+    status: "draft"
+    canvas_id: null
+```
+
+### Invalid Data Entry (Too Few Columns)
+
+```yaml
+# INVALID - Only 2 columns
+assignments:
+  - id: -1
+    name: "Project"
+```
+
+### Invalid Data Entry (Duplicate)
+
+```yaml
+# INVALID - Duplicate entry
+assignments:
+  - id: 12345
+    course_id: 58606
+    name: "Project Proposal"
+    due_date: "2026-02-15"
+  - id: 12345                    # Duplicate ID
+    course_id: 58606
+    name: "Project Proposal"
+    due_date: "2026-02-15"
+```
+
+## Enforcement
+
+This rule is project-wide and applies to:
+- All data introduction and storage
+- All Canvas synchronization operations
+- All assignment submission workflows
+- All AI agents and coding assistants
+- All contributors (human and AI)
+
+When in doubt, **verify data before storing**, **consolidate related data**, and **always interview before submitting to Canvas**.

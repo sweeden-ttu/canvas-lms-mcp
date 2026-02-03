@@ -1,0 +1,40 @@
+Category,Total_Amount,Tax_Form,Notes,Ghost_Risk
+Employment Income (W-2),$20746.42,W-2,OASISBATCH PAYROLL + Texas Tech University,LOW - Employer reported
+Gig Economy - Uber,$804.08,Schedule C / 1099-NEC,Rideshare/delivery driver income,LOW - Platform reported
+Gig Economy - DoorDash,$1651.30,Schedule C / 1099-NEC,Delivery driver income,LOW - Platform reported
+eBay Sales,$152.49,Schedule C,Online retail sales - qualifying for 0.375% TX rate,LOW - Platform reported
+Bitcoin Sales (Schedule D),$4049.53,Schedule D / Form 8949,Short-term capital gains from cryptocurrency,MEDIUM - Self-reported
+Business Payments (Verify),$120.00,1099-NEC / Schedule C,Lonestarveteranscorp L.l.c - verify nature,MEDIUM - Verify with CPA
+Personal Transfers (EXCLUDED),$1016.00,NOT REPORTABLE,P2P payments from Tracy Myers/Mark Adrian/Nankuronaisa/Judy Wagner,HIGH RISK if included
+Internal Transfers (EXCLUDED),$9999.99,NOT REPORTABLE,Savings transfers - not income,EXCLUDE
+Loans (EXCLUDED),$436.01,NOT REPORTABLE,Cash App Loan drawdowns - not income,EXCLUDE
+Refunds (EXCLUDED),$406.77,NOT REPORTABLE,Dispute credits and refunds - not income,EXCLUDE
+
+SUMMARY FOR CPA:
+===============
+Total W-2 Employment Income,$20746.42
+Total Schedule C Gig Economy (Uber+DoorDash),$2455.38
+Total Schedule C Retail (eBay),$152.49
+Total Schedule D Bitcoin Capital Gains,$4049.53
+Business Payments to Verify,$120.00
+---
+TOTAL REPORTABLE INCOME,$27523.82
+
+TEXAS FRANCHISE TAX NOTES:
+==========================
+Per Form 05-915 Instructions:
+- No Tax Due Threshold: $2650000 (entity owes no tax if below)
+- Retail/Wholesale Rate: 0.375% (qualifying retailers)
+- Standard Rate: 0.75% (most entities)
+- EZ Computation Rate: 0.331% (entities under $20M)
+
+This taxpayer appears to be an individual with gig economy income.
+If operating as a sole proprietorship: NOT subject to Texas Franchise Tax
+If operating as an LLC: Subject to franchise tax but likely under no-tax-due threshold
+
+PACMAN GAME RESULTS:
+====================
+Lives Used: 4 (large deposits analyzed: Texas Tech $3793.25 + $9095.25 + $673.97 OASIS + $609.15 BTC)
+Ghosts Avoided: Personal transfers excluded (Tracy Myers $175.00 Mark Adrian $44.82 Judy Wagner $441.00 etc.)
+Safe Income Captured: $27523.82
+Risk Level: LOW - All gig economy income platform-reported will match 1099s

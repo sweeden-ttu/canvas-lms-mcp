@@ -264,6 +264,9 @@ results.json
 # Claude Desktop config (system-specific, don't share)
 claude_desktop_config.json
 
+# Cursor MCP config (may contain user-specific absolute paths, don't share)
+.cursor/mcp.json
+
 # ============================================
 # Documentation build
 # ============================================

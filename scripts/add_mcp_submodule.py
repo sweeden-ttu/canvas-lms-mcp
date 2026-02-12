@@ -80,15 +80,23 @@ def ensure_mcp_servers_key(data: dict) -> dict:
     return data
 
 
+def _directory_arg(submodule_path: Path) -> str:
+    """Return a repo-relative path for MCP config to avoid user-specific absolute paths in version control."""
+    try:
+        return str(submodule_path.resolve().relative_to(REPO_ROOT.resolve()))
+    except ValueError:
+        return str(submodule_path.resolve())
+
+
 def infer_server_command(submodule_path: Path) -> dict:
-    """Infer command/args for an MCP server (Python uv run server.py or npx)."""
-    resolved = str(submodule_path.resolve())
+    """Infer command/args for an MCP server (Python uv run server.py or npx). Uses repo-relative paths."""
+    dir_arg = _directory_arg(submodule_path)
     # Prefer uv + server.py (Python MCP)
     server_py = submodule_path / "server.py"
     if server_py.exists():
         return {
             "command": "uv",
-            "args": ["--directory", resolved, "run", "python", "server.py"],
+            "args": ["--directory", dir_arg, "run", "python", "server.py"],
         }
     # Node: package.json with scripts.start or main (use npx from submodule dir)
     package_json = submodule_path / "package.json"
@@ -97,13 +105,13 @@ def infer_server_command(submodule_path: Path) -> dict:
             pkg = json.loads(package_json.read_text())
             scripts = pkg.get("scripts") or {}
             if "start" in scripts:
-                return {"command": "sh", "args": ["-c", f"cd {resolved} && npm run start"]}
+                return {"command": "sh", "args": ["-c", f"cd {dir_arg} && npm run start"]}
             main = pkg.get("main", "dist/index.js")
-            return {"command": "sh", "args": ["-c", f"cd {resolved} && node {main}"]}
+            return {"command": "sh", "args": ["-c", f"cd {dir_arg} && node {main}"]}
         except (json.JSONDecodeError, OSError):
             pass
     # Fallback: uv run python server.py (user can edit .cursor/mcp.json)
-    return {"command": "uv", "args": ["--directory", resolved, "run", "python", "server.py"]}
+    return {"command": "uv", "args": ["--directory", dir_arg, "run", "python", "server.py"]}
 
 
 def install_to_cursor(name: str, submodule_path: Path) -> None:

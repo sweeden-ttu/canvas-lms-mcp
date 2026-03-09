@@ -4,7 +4,7 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/sdw/Documents/gh/canvas-lms-mcp",
+        "/path/to/canvas-lms-mcp",
         "run",
         "python",
         "server.py"
